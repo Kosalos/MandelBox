@@ -146,8 +146,19 @@
                                     </segue>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GLu-c9-8ah">
+                                <rect key="frame" x="818" y="707" width="78" height="36"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <state key="normal" title="Resolution">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="resolutionButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="jgf-xg-zSw"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gUW-2t-ZIx">
-                                <rect key="frame" x="822" y="734" width="22" height="22"/>
+                                <rect key="frame" x="818" y="751" width="22" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal">
@@ -176,6 +187,7 @@
                         <outlet property="imageView" destination="SKK-Rp-etB" id="7YQ-Bm-Qam"/>
                         <outlet property="juliaOnOff" destination="fcb-ay-gsb" id="Bs4-pi-bhS"/>
                         <outlet property="resetButton" destination="yfK-it-LnG" id="RUC-au-Bdh"/>
+                        <outlet property="resolutionButton" destination="GLu-c9-8ah" id="slJ-DK-uWs"/>
                         <outlet property="sCameraZ" destination="wxv-GA-04r" id="osU-pR-7T2"/>
                         <outlet property="sEpsilon" destination="eUE-y4-Pwf" id="S6B-Ku-XLz"/>
                         <outlet property="sFocusZ" destination="L4i-3o-zWc" id="D7u-SH-j1I"/>
@@ -192,7 +204,7 @@
         <!--SaveLoadVC-->
         <scene sceneID="7cL-dd-aq2">
             <objects>
-                <viewController title="KeypadVC" id="IYT-Gi-YRN" userLabel="SaveLoadVC" customClass="SaveLoadViewController" customModule="Dynamical_Stereo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="KeypadVC" id="IYT-Gi-YRN" userLabel="SaveLoadVC" customClass="SaveLoadViewController" customModule="MandelBox" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="YOC-hq-7i4"/>
                         <viewControllerLayoutGuide type="bottom" id="QOV-Ux-k8R"/>
@@ -205,7 +217,7 @@
                                 <rect key="frame" x="13" y="9" width="373" height="583"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SLCell" rowHeight="58" id="XKy-ra-BmS" customClass="SaveLoadCell" customModule="Dynamical_Stereo" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SLCell" rowHeight="58" id="XKy-ra-BmS" customClass="SaveLoadCell" customModule="MandelBox" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="373" height="58"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="XKy-ra-BmS" id="fcL-5w-6kH">
@@ -213,7 +225,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UZq-6A-MRc">
-                                                    <rect key="frame" x="9" y="6" width="287" height="41"/>
+                                                    <rect key="frame" x="2" y="3" width="287" height="46.5"/>
                                                     <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="287" id="KyH-Hh-fWP"/>
@@ -226,7 +238,7 @@
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ufx-IT-ja3">
-                                                    <rect key="frame" x="304" y="6" width="54" height="41"/>
+                                                    <rect key="frame" x="297" y="3" width="68" height="46.5"/>
                                                     <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="54" id="Bc1-68-PZl"/>
@@ -279,7 +291,7 @@
         <!--Help View Controller-->
         <scene sceneID="SJ5-qL-JDu">
             <objects>
-                <viewController id="5CA-AY-ZSF" customClass="HelpViewController" customModule="Dynamical_Stereo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="5CA-AY-ZSF" customClass="HelpViewController" customModule="MandelBox" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="wV2-J6-T2n"/>
                         <viewControllerLayoutGuide type="bottom" id="A4n-4y-7J1"/>

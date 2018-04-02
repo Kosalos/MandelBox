@@ -6,6 +6,9 @@ http://digitalfreepen.com/mandelbox370/
 All the slider boxes work the same way:
 Press and hold to either side of center to affect the parameter in the specfied direction and speed.
 
+Note: not shown on image above, there is a new button "Res: Low".
+Press this to toggle image resolution between Low and High.
+
 A.  Camera position
 The top widget controls the X,Y coordinates of the camera,
 The second widget controls the Z coordinate.

@@ -1,11 +1,14 @@
 import UIKit
 import Metal
 
-let SIZE:Int = 900  //  <<<<< bump this higher for much enhanced viewing
-
 //let scrnSz:[CGPoint] = [ CGPoint(x:768,y:1024), CGPoint(x:834,y:1112), CGPoint(x:1024,y:1366) ] // portrait
-//let scrnIndex = 2
+//let scrnIndex = 0
 //let scrnLandscape:Bool = true
+
+let IMAGESIZE_LOW:Int = 600
+let IMAGESIZE_HIGH:Int = 2500
+
+var imageSize:Int = IMAGESIZE_LOW
 
 var control = Control()
 var vc:ViewController! = nil
@@ -23,7 +26,7 @@ class ViewController: UIViewController {
     var circleMove:Bool = false
 
     let threadGroupCount = MTLSizeMake(20,20, 1)   // integer factor of SIZE
-    lazy var threadGroups: MTLSize = { MTLSizeMake(SIZE / threadGroupCount.width, SIZE / threadGroupCount.height, 1) }()
+    var threadGroups = MTLSize()
 
     @IBOutlet var dCameraXY: DeltaView!
     @IBOutlet var sCameraZ: SliderView!
@@ -43,11 +46,18 @@ class ViewController: UIViewController {
     @IBOutlet var resetButton: UIButton!
     @IBOutlet var saveLoadButton: UIButton!
     @IBOutlet var helpButton: UIButton!
+    @IBOutlet var resolutionButton: UIButton!
     @IBOutlet var juliaOnOff: UISwitch!
     
     @IBAction func resetButtonPressed(_ sender: UIButton) { reset() }
     @IBAction func juliaOnOffChanged(_ sender: UISwitch) { control.juliaboxMode = sender.isOn;  updateImage() }
     
+    @IBAction func resolutionButtonPressed(_ sender: UIButton) {
+        imageSize = imageSize == IMAGESIZE_LOW ? IMAGESIZE_HIGH : IMAGESIZE_LOW
+        setResolution()
+        updateImage()
+    }
+
     var cameraX:Float = 0.0
     var cameraY:Float = 0.0
     var cameraZ:Float = 0.0
@@ -76,12 +86,7 @@ class ViewController: UIViewController {
         }
         catch { fatalError("error creating pipelines") }
 
-        let textureDescriptor = MTLTextureDescriptor.texture2DDescriptor(
-            pixelFormat: .bgra8Unorm_srgb,
-            width: SIZE,
-            height: SIZE,
-            mipmapped: false)
-        outTexture = self.device.makeTexture(descriptor: textureDescriptor)!
+        setResolution()
         
         cBuffer = device.makeBuffer(bytes: &control, length: MemoryLayout<Control>.stride, options: MTLResourceOptions.storageModeShared)
         
@@ -129,7 +134,7 @@ class ViewController: UIViewController {
     //MARK: -
 
     func reset() {
-        control.size = Int32(SIZE)
+        control.size = Int32(imageSize)
         
         control.camera = vector_float3(1.59,3.89,0.75)
         control.focus = vector_float3(-0.52,-1.22,-0.31)
@@ -163,11 +168,27 @@ class ViewController: UIViewController {
     
     func updateWidgets() {
         juliaOnOff.isOn = control.juliaboxMode
+        unWrapFloat3()
 
         for s in sList { s.setNeedsDisplay() }
         for d in dList { d.setNeedsDisplay() }
         
         updateImage()
+    }
+    
+    func setResolution() {
+        let textureDescriptor = MTLTextureDescriptor.texture2DDescriptor(
+            pixelFormat: .bgra8Unorm_srgb,
+            width: imageSize,
+            height: imageSize,
+            mipmapped: false)
+        outTexture = self.device.makeTexture(descriptor: textureDescriptor)!
+        
+        threadGroups = MTLSizeMake(
+            imageSize / threadGroupCount.width,
+            imageSize / threadGroupCount.height,1)
+        
+        resolutionButton.setTitle(imageSize == IMAGESIZE_LOW ? "Res: Low" : "Res: High", for: UIControlState.normal)
     }
     
     //MARK: -
@@ -213,7 +234,8 @@ class ViewController: UIViewController {
             sScaleFactor.frame = frame(cxs,bys,cxs + gap,0)
             y = by
             dFocusXY.frame = frame(cxs,cxs,0,cxs + gap)
-            sFocusZ.frame  = frame(cxs,bys,0,bys + 56)
+            sFocusZ.frame  = frame(cxs,bys,0,bys + gap + 4)
+            resolutionButton.frame = frame(80,bys,0,bys + gap)
             sEpsilon.frame = frame(cxs,bys,cxs + gap,0)
             y = by
             dSphere.frame = frame(cxs,cxs,0,cxs + gap)
@@ -248,7 +270,8 @@ class ViewController: UIViewController {
             sScaleFactor.frame = frame(cxs,bys,cxs + gap,0)
             y = by
             dFocusXY.frame = frame(cxs,cxs,0,cxs + gap)
-            sFocusZ.frame  = frame(cxs,bys,0,bys + 56)
+            sFocusZ.frame  = frame(cxs,bys,0,bys + gap)
+            resolutionButton.frame = frame(80,bys,0,bys + gap)
             sEpsilon.frame = frame(cxs,bys,0,0)
             x = left
             y = by + 260
