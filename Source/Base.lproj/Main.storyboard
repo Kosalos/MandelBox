@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BV1-FR-VrT">
+    <device id="ipad12_9" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tXr-a1-R10">
+            <objects>
+                <viewController id="BV1-FR-VrT" customClass="ViewController" customModule="MandelBox" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="9sQ-bp-QHc"/>
+                        <viewControllerLayoutGuide type="bottom" id="yDg-Pc-LEh"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="3se-qz-xqx" customClass="Background" customModule="MandelBox" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yfK-it-LnG">
+                                <rect key="frame" x="818" y="629" width="78" height="36"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <state key="normal" title="Reset">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="resetButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="Pra-dd-cje"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SKK-Rp-etB" customClass="UIImageView">
+                                <rect key="frame" x="63" y="67" width="473" height="328"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
+                            </view>
+                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zBN-Ao-HjU" customClass="DeltaView" customModule="MandelBox" customModuleProvider="target">
+                                <rect key="frame" x="66.999999999999773" y="460" width="200" height="200"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
+                            </view>
+                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wxv-GA-04r" customClass="SliderView" customModule="MandelBox" customModuleProvider="target">
+                                <rect key="frame" x="66.773820124665917" y="695" width="200" height="50.000000000000057"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
+                            </view>
+                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FLx-Dh-uA9" customClass="DeltaView" customModule="MandelBox" customModuleProvider="target">
+                                <rect key="frame" x="352" y="457" width="200" height="200"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
+                            </view>
+                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L4i-3o-zWc" customClass="SliderView" customModule="MandelBox" customModuleProvider="target">
+                                <rect key="frame" x="351.67943009795181" y="700" width="200" height="50.000000000000057"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
+                            </view>
+                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w4S-kB-HIs" customClass="SliderView" customModule="MandelBox" customModuleProvider="target">
+                                <rect key="frame" x="270.99999999999977" y="967" width="200" height="34.999999999999801"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
+                            </view>
+                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WLa-71-fZs" customClass="SliderView" customModule="MandelBox" customModuleProvider="target">
+                                <rect key="frame" x="270.32608695652129" y="1037" width="200.00000000000023" height="35.000000000000114"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
+                            </view>
+                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eUE-y4-Pwf" userLabel="SEpsilon" customClass="SliderView" customModule="MandelBox" customModuleProvider="target">
+                                <rect key="frame" x="270.35000000000014" y="1096" width="199.99999999999989" height="35.000000000000057"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
+                            </view>
+                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="skC-Xh-auf" userLabel="Sstep" customClass="DeltaView" customModule="MandelBox" customModuleProvider="target">
+                                <rect key="frame" x="530" y="954" width="127" height="118"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
+                            </view>
+                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UmV-Sx-Npc" userLabel="Sstep" customClass="DeltaView" customModule="MandelBox" customModuleProvider="target">
+                                <rect key="frame" x="530" y="1096" width="127" height="98"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
+                            </view>
+                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mt0-3c-Kgm" userLabel="Sstep" customClass="DeltaView" customModule="MandelBox" customModuleProvider="target">
+                                <rect key="frame" x="794" y="810" width="127" height="118"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
+                            </view>
+                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sKd-ao-9Ev" userLabel="Sstep" customClass="DeltaView" customModule="MandelBox" customModuleProvider="target">
+                                <rect key="frame" x="794" y="936" width="127" height="118"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
+                            </view>
+                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oNU-8q-mDD" userLabel="Sstep" customClass="DeltaView" customModule="MandelBox" customModuleProvider="target">
+                                <rect key="frame" x="794" y="1062" width="127" height="118"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
+                            </view>
+                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RDg-xR-1eU" customClass="DeltaView" customModule="MandelBox" customModuleProvider="target">
+                                <rect key="frame" x="603" y="71" width="200" height="200"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
+                            </view>
+                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ycd-2w-FDg" customClass="SliderView" customModule="MandelBox" customModuleProvider="target">
+                                <rect key="frame" x="603" y="288" width="200" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
+                            </view>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fcb-ay-gsb">
+                                <rect key="frame" x="603" y="359" width="49" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="onTintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="thumbTintColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <action selector="juliaOnOffChanged:" destination="BV1-FR-VrT" eventType="valueChanged" id="LDx-Ph-oqB"/>
+                                </connections>
+                            </switch>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HeO-5k-4ZX">
+                                <rect key="frame" x="818" y="673" width="78" height="36"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <state key="normal" title="Save/Load">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="IYT-Gi-YRN" kind="popoverPresentation" popoverAnchorView="HeO-5k-4ZX" id="b1J-iZ-4hF">
+                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                    </segue>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gUW-2t-ZIx">
+                                <rect key="frame" x="822" y="734" width="22" height="22"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="5CA-AY-ZSF" kind="popoverPresentation" popoverAnchorView="gUW-2t-ZIx" id="MRJ-L9-Fmm">
+                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                    </segue>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.026657605508461555" green="0.077108541822286741" blue="0.15452622898527923" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <gestureRecognizers/>
+                    </view>
+                    <connections>
+                        <outlet property="dBox" destination="UmV-Sx-Npc" id="n46-MO-QRd"/>
+                        <outlet property="dCameraXY" destination="zBN-Ao-HjU" id="hIb-tx-Ygq"/>
+                        <outlet property="dColorB" destination="oNU-8q-mDD" id="Suf-Vj-UEj"/>
+                        <outlet property="dColorG" destination="sKd-ao-9Ev" id="mLd-cY-lYF"/>
+                        <outlet property="dColorR" destination="mt0-3c-Kgm" id="4st-ZI-i3Q"/>
+                        <outlet property="dFocusXY" destination="FLx-Dh-uA9" id="Rto-2a-lW7"/>
+                        <outlet property="dJuliaXY" destination="RDg-xR-1eU" id="A5F-4t-RmD"/>
+                        <outlet property="dSphere" destination="skC-Xh-auf" id="r28-jK-ecv"/>
+                        <outlet property="helpButton" destination="gUW-2t-ZIx" id="MIj-05-rc9"/>
+                        <outlet property="imageView" destination="SKK-Rp-etB" id="7YQ-Bm-Qam"/>
+                        <outlet property="juliaOnOff" destination="fcb-ay-gsb" id="Bs4-pi-bhS"/>
+                        <outlet property="resetButton" destination="yfK-it-LnG" id="RUC-au-Bdh"/>
+                        <outlet property="sCameraZ" destination="wxv-GA-04r" id="osU-pR-7T2"/>
+                        <outlet property="sEpsilon" destination="eUE-y4-Pwf" id="S6B-Ku-XLz"/>
+                        <outlet property="sFocusZ" destination="L4i-3o-zWc" id="D7u-SH-j1I"/>
+                        <outlet property="sJuliaZ" destination="ycd-2w-FDg" id="gjw-K1-K2C"/>
+                        <outlet property="sScaleFactor" destination="WLa-71-fZs" id="jH5-N8-r7I"/>
+                        <outlet property="sZoom" destination="w4S-kB-HIs" id="RkW-rO-Mmn"/>
+                        <outlet property="saveLoadButton" destination="HeO-5k-4ZX" id="2lA-b6-kMi"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-801" y="-192"/>
+        </scene>
+        <!--SaveLoadVC-->
+        <scene sceneID="7cL-dd-aq2">
+            <objects>
+                <viewController title="KeypadVC" id="IYT-Gi-YRN" userLabel="SaveLoadVC" customClass="SaveLoadViewController" customModule="Dynamical_Stereo" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="YOC-hq-7i4"/>
+                        <viewControllerLayoutGuide type="bottom" id="QOV-Ux-k8R"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="left" id="Jf7-hc-17i">
+                        <rect key="frame" x="0.0" y="0.0" width="400" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="58" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="tdf-xW-8Km">
+                                <rect key="frame" x="13" y="9" width="373" height="583"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SLCell" rowHeight="58" id="XKy-ra-BmS" customClass="SaveLoadCell" customModule="Dynamical_Stereo" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="373" height="58"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="XKy-ra-BmS" id="fcL-5w-6kH">
+                                            <rect key="frame" x="0.0" y="0.0" width="373" height="57.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UZq-6A-MRc">
+                                                    <rect key="frame" x="9" y="6" width="287" height="41"/>
+                                                    <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="287" id="KyH-Hh-fWP"/>
+                                                    </constraints>
+                                                    <state key="normal" title="Load">
+                                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="buttonTapped:" destination="XKy-ra-BmS" eventType="touchUpInside" id="pvx-Sj-XjZ"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ufx-IT-ja3">
+                                                    <rect key="frame" x="304" y="6" width="54" height="41"/>
+                                                    <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="54" id="Bc1-68-PZl"/>
+                                                    </constraints>
+                                                    <state key="normal" title="Save">
+                                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="buttonTapped:" destination="XKy-ra-BmS" eventType="touchUpInside" id="DoP-hI-lQV"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <constraints>
+                                                <constraint firstItem="UZq-6A-MRc" firstAttribute="leading" secondItem="fcL-5w-6kH" secondAttribute="leadingMargin" constant="-6" id="1Vs-dq-xRW"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="Ufx-IT-ja3" secondAttribute="trailing" id="5au-fI-CgL"/>
+                                                <constraint firstItem="UZq-6A-MRc" firstAttribute="top" secondItem="fcL-5w-6kH" secondAttribute="topMargin" constant="-5" id="Dr0-oy-cRq"/>
+                                                <constraint firstItem="UZq-6A-MRc" firstAttribute="baseline" secondItem="Ufx-IT-ja3" secondAttribute="firstBaseline" id="HAQ-DG-fYd"/>
+                                                <constraint firstItem="Ufx-IT-ja3" firstAttribute="leading" secondItem="UZq-6A-MRc" secondAttribute="trailing" constant="8" id="Lbl-NF-np0"/>
+                                                <constraint firstItem="Ufx-IT-ja3" firstAttribute="baseline" secondItem="UZq-6A-MRc" secondAttribute="firstBaseline" id="NNO-f4-kY6"/>
+                                                <constraint firstItem="UZq-6A-MRc" firstAttribute="top" secondItem="Ufx-IT-ja3" secondAttribute="top" id="aBJ-jd-i7t"/>
+                                                <constraint firstItem="UZq-6A-MRc" firstAttribute="bottom" secondItem="fcL-5w-6kH" secondAttribute="bottomMargin" id="rOP-3M-m4p"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="loadCell" destination="UZq-6A-MRc" id="zbM-B2-Rj2"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="tdf-xW-8Km" firstAttribute="centerY" secondItem="Jf7-hc-17i" secondAttribute="centerY" id="4JS-29-6nL"/>
+                            <constraint firstItem="tdf-xW-8Km" firstAttribute="centerX" secondItem="Jf7-hc-17i" secondAttribute="centerX" id="Ejo-DF-H96"/>
+                            <constraint firstItem="tdf-xW-8Km" firstAttribute="leading" secondItem="Jf7-hc-17i" secondAttribute="leadingMargin" constant="-7" id="V3K-bu-ZVp"/>
+                            <constraint firstItem="QOV-Ux-k8R" firstAttribute="top" secondItem="tdf-xW-8Km" secondAttribute="bottom" constant="8" symbolic="YES" id="vNm-Rc-Tah"/>
+                        </constraints>
+                    </view>
+                    <value key="contentSizeForViewInPopover" type="size" width="400" height="600"/>
+                    <size key="freeformSize" width="400" height="600"/>
+                    <connections>
+                        <outlet property="tableView" destination="tdf-xW-8Km" id="0Zv-dY-IvE"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wvV-2f-ShA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-212" y="-24"/>
+        </scene>
+        <!--Help View Controller-->
+        <scene sceneID="SJ5-qL-JDu">
+            <objects>
+                <viewController id="5CA-AY-ZSF" customClass="HelpViewController" customModule="Dynamical_Stereo" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="wV2-J6-T2n"/>
+                        <viewControllerLayoutGuide type="bottom" id="A4n-4y-7J1"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="left" id="dWY-RQ-I3o">
+                        <rect key="frame" x="0.0" y="0.0" width="640" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="help" translatesAutoresizingMaskIntoConstraints="NO" id="gLn-8S-ygD">
+                                <rect key="frame" x="35" y="20" width="562" height="206"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="gLn-8S-ygD" secondAttribute="height" multiplier="281:75" constant="-209.81333333333328" id="MJd-XD-5MD"/>
+                                    <constraint firstAttribute="width" constant="562" id="W06-rk-Qkf"/>
+                                </constraints>
+                            </imageView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LFJ-2t-2Yd">
+                                <rect key="frame" x="21" y="234" width="599" height="346"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <accessibility key="accessibilityConfiguration">
+                            <accessibilityTraits key="traits" staticText="YES"/>
+                        </accessibility>
+                        <constraints>
+                            <constraint firstItem="LFJ-2t-2Yd" firstAttribute="top" secondItem="gLn-8S-ygD" secondAttribute="bottom" constant="8" id="0V4-eS-Zjk"/>
+                            <constraint firstItem="LFJ-2t-2Yd" firstAttribute="leading" secondItem="dWY-RQ-I3o" secondAttribute="leadingMargin" constant="1" id="1o8-RX-EYm"/>
+                            <constraint firstAttribute="bottom" secondItem="LFJ-2t-2Yd" secondAttribute="bottom" constant="20" symbolic="YES" id="2ON-lV-u38"/>
+                            <constraint firstItem="LFJ-2t-2Yd" firstAttribute="centerX" secondItem="dWY-RQ-I3o" secondAttribute="centerX" id="K9K-Ab-gNX"/>
+                            <constraint firstItem="gLn-8S-ygD" firstAttribute="top" secondItem="wV2-J6-T2n" secondAttribute="bottom" id="NDQ-GJ-OZ7"/>
+                            <constraint firstItem="gLn-8S-ygD" firstAttribute="leading" secondItem="dWY-RQ-I3o" secondAttribute="leadingMargin" constant="15" id="laU-R1-42C"/>
+                        </constraints>
+                    </view>
+                    <value key="contentSizeForViewInPopover" type="size" width="640" height="600"/>
+                    <size key="freeformSize" width="640" height="600"/>
+                    <connections>
+                        <outlet property="textView" destination="LFJ-2t-2Yd" id="tgm-Rk-fY8"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8mt-XW-AV7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-129.4921875" y="-323.27964860907758"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="help" width="1231" height="517"/>
+    </resources>
+</document>
