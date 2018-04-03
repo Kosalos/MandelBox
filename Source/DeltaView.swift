@@ -6,7 +6,7 @@ class DeltaView: UIView {
     var swidth:Float = 0
     var ident:Int = 0
     var active = true
-    
+    var highLightPoint = CGPoint()
     var valuePointerX:UnsafeMutableRawPointer! = nil
     var valuePointerY:UnsafeMutableRawPointer! = nil
     var deltaValue:Float = 0
@@ -39,6 +39,11 @@ class DeltaView: UIView {
         let addr = address(of:&v)
         valuePointerY = UnsafeMutableRawPointer(bitPattern:addr)!
         setNeedsDisplay()
+    }
+    
+    func highlight(_ x:CGFloat, _ y:CGFloat) {
+        highLightPoint.x = x
+        highLightPoint.y = y
     }
     
     func setActive(_ v:Bool) {
@@ -94,7 +99,7 @@ class DeltaView: UIView {
             UIBezierPath(rect:r).fill()
         }
 
-        // edge, cursor -------------------------------------------------
+        // edge -------------------------------------------------
         let ctx = context!
         ctx.saveGState()
         let path = UIBezierPath(rect:bounds)
@@ -103,17 +108,13 @@ class DeltaView: UIView {
         ctx.addPath(path.cgPath)
         ctx.strokePath()
         ctx.restoreGState()
-
+        
         UIColor.black.set()
         context?.setLineWidth(2)
         
         drawVLine(CGFloat(scenter),0,bounds.height)
         drawHLine(0,bounds.width,CGFloat(scenter))
-
-        let x = valueRatio(0) * bounds.width
-        let y = (CGFloat(1) - valueRatio(1)) * bounds.height
-        drawFilledCircle(CGPoint(x:x,y:y),15,UIColor.black.cgColor)
-
+        
         // value ------------------------------------------
         func formatted(_ v:Float) -> String { return String(format:"%6.4f",v) }
         func formatted2(_ v:Float) -> String { return String(format:"%7.5f",v) }
@@ -130,7 +131,7 @@ class DeltaView: UIView {
         
         func coloredValue(_ v:Float, _ y:CGFloat) { drawText(vx,y,valueColor(v),16, formatted(v)) }
         
-        drawText(10,8,.white,16,name)
+        drawText(10,8,.lightGray,16,name)
         
 //        if valuePointerX != nil {
 //            let xx:Float = valuePointerX.load(as: Float.self)
@@ -145,6 +146,29 @@ class DeltaView: UIView {
 //                coloredValue(yy,28)
 //            }
 //        }
+        
+        // cursor -------------------------------------------------
+        UIColor.black.set()
+        context?.setLineWidth(2)
+        
+        let x = valueRatio(0) * bounds.width
+        let y = (CGFloat(1) - valueRatio(1)) * bounds.height
+        drawFilledCircle(CGPoint(x:x,y:y),15,UIColor.black.cgColor)
+        
+        // highlight --------------------------------------
+        
+        if highLightPoint.x != 0 {
+            let den = CGFloat(mRange.y - mRange.x)
+            if den != 0 {
+                let vx:CGFloat = (highLightPoint.x - CGFloat(mRange.x)) / den
+                let vy:CGFloat = (highLightPoint.y - CGFloat(mRange.x)) / den
+                let x = CGFloat(vx) * bounds.width
+                let y = (CGFloat(1) - vy) * bounds.height
+                
+                drawFilledCircle(CGPoint(x:x,y:y),4,UIColor.lightGray.cgColor)
+            }
+        }
+        
     }
     
     func fClamp2(_ v:Float, _ range:float2) -> Float {

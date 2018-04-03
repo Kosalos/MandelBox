@@ -88,27 +88,14 @@ class SliderView: UIView {
             UIBezierPath(rect:r).fill()
         }
         
-        // edge, cursor -------------------------------------------------
-        let ctx = context!
-        ctx.saveGState()
-        ctx.setStrokeColor(UIColor.black.cgColor)
+        // edge -------------------------------------------------
+        context!.setStrokeColor(UIColor.black.cgColor)
 
         let path = UIBezierPath(rect:bounds)
-        let x = valueRatio() * bounds.width
-        ctx.setLineWidth(4)
-        path.removeAllPoints()
-        path.move(to: CGPoint(x:x, y:0))
-        path.addLine(to: CGPoint(x:x, y:bounds.height))
-        ctx.addPath(path.cgPath)
-        ctx.strokePath()
+        context!.setLineWidth(2)
+        context!.addPath(path.cgPath)
+        context!.strokePath()
 
-        let path2 = UIBezierPath(rect:bounds)
-        ctx.setLineWidth(2)
-        ctx.addPath(path2.cgPath)
-        ctx.strokePath()
-        
-        ctx.restoreGState()
-        
         // value ------------------------------------------
         func formatted(_ v:Float) -> String { return String(format:"%6.4f",v) }
         func formatted2(_ v:Float) -> String { return String(format:"%7.5f",v) }
@@ -126,7 +113,7 @@ class SliderView: UIView {
         func coloredValue(_ v:Float) { drawText(vx,8,valueColor(v),16, formatted(v)) }
         
         if valuePointer != nil {
-            drawText(10,8,.white,16,name)
+            drawText(10,8,.lightGray,16,name)
             
 //            switch valuetype {
 //            case .int32 :
@@ -142,9 +129,17 @@ class SliderView: UIView {
 //                    coloredValue(v)
 //                }
 //            }
-            
-            return
         }
+        
+        // cursor -------------------------------------------------
+        let x = valueRatio() * bounds.width
+        context!.setStrokeColor(UIColor.black.cgColor)
+        context!.setLineWidth(4)
+        path.removeAllPoints()
+        path.move(to: CGPoint(x:x, y:0))
+        path.addLine(to: CGPoint(x:x, y:bounds.height))
+        context!.addPath(path.cgPath)
+        context!.strokePath()
     }
     
     func fClamp2(_ v:Float, _ range:float2) -> Float {

@@ -106,15 +106,15 @@ class ViewController: UIViewController {
         sFocusZ.initializeFloat(&focusZ, .delta, -cameraRange,cameraRange,cameraJog, "Focus Z")
         
         sZoom.initializeFloat(&control.zoom, .delta, 0.2,2, 0.03, "Zoom")
-        sScaleFactor.initializeFloat(&control.scaleFactor, .delta, 2.0,5.0, 0.03, "ScaleFactor")
+        sScaleFactor.initializeFloat(&control.scaleFactor, .delta, 2.0,5.0, 0.03, "Scale Factor")
         sEpsilon.initializeFloat(&control.epsilon, .delta, 0.00001, 0.005, 0.001, "epsilon")
         
-        let boxRange:Float = 4
-        let boxJog:Float = 0.1
-        dSphere.initializeFloat1(&control.sph1, 0.1,boxRange,boxJog, "Sphere")
+        dSphere.initializeFloat1(&control.sph1, 0.002,2,0.1 , "Sphere")
         dSphere.initializeFloat2(&control.sph2)
-        dBox.initializeFloat1(&control.box1, 0.1,boxRange,boxJog, "Box")
+        dSphere.highlight(0.25,1)
+        dBox.initializeFloat1(&control.box1, 0.1,3,0.1, "Box")
         dBox.initializeFloat2(&control.box2)
+        dBox.highlight(1,2)
 
         dColorR.initializeFloat1(&control.colorR1, 0,1,0.06, "R"); dColorR.initializeFloat2(&control.colorR2)
         dColorG.initializeFloat1(&control.colorG1, 0,1,0.06, "G"); dColorG.initializeFloat2(&control.colorG2)
@@ -134,14 +134,14 @@ class ViewController: UIViewController {
         control.size = IMAGESIZE_LOW
         setResolution()
         
-        control.camera = vector_float3(1.59,3.89,0.75)
+        control.camera = vector_float3(0.38135, 2.3424, -0.380833)
         control.focus = vector_float3(-0.52,-1.22,-0.31)
         control.zoom = 0.6141
         control.epsilon = 0.000074
         control.scaleFactor = 3
         
-        control.sph1 = 2.2
-        control.sph2 = 1.02
+        control.sph1 = 0.25
+        control.sph2 = 1
         control.box1 = 1
         control.box2 = 2
         

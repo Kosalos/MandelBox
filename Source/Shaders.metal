@@ -8,6 +8,81 @@ constant int MAX_STEPS = 100;
 constant float MAX_DIST = 75.0;
 
 //MARK: -
+/*
+ 
+ vec3 getColor(vec3 pos)
+ {
+ // For the Juliabox, c is a constant. For the Mandelbox, c is variable.
+ vec3 c = juliaboxMode ? juliaboxConstant : pos;
+ vec3 v = pos;
+ 
+ float minDist = 1.0;
+ 
+ for (int i = 0; i < MAX_ITERS; i++)
+ {
+ // GLSL doesn't support variable loop indices...
+ if (i == maxIterations)
+ break;
+ 
+ // Box fold
+ v = clamp(v, -1.0, 1.0) * 2.0 - v;
+ 
+ // Sphere fold.
+ float mag = dot(v, v);
+ if (mag < 0.25)
+ v = v * 4.0;
+ else if (mag < 1.0)
+ v = v / mag;
+ 
+ v = v * scaleFactor + c;
+ minDist = min(minDist, length(v));
+ }
+ 
+ float fractionalIterationCount = log(dot(v, v));
+ return vec3(
+ 0.85 + 0.15 * sin(fractionalIterationCount * 0.52 + 0.7),
+ 0.85 + 0.15 * sin(fractionalIterationCount * 0.73 + 1.8),
+ 0.85 + 0.15 * sin(fractionalIterationCount * 0.31 + 1.1));
+ }
+ 
+ float distanceEstimate(vec3 rayPos, float constant1, float constant2)
+ {
+ // For the Juliabox, c is a constant. For the Mandelbox, c is variable.
+ vec3 c = juliaboxMode ? juliaboxConstant : rayPos;
+ vec3 v = rayPos;
+ float dr = 1.0;
+ 
+ for (int i = 0; i < MAX_ITERS; i++)
+ {
+ // GLSL doesn't support variable loop indices...
+ if (i == maxIterations)
+ break;
+ 
+ // Box fold
+ v = clamp(v, -1.0, 1.0) * 2.0 - v;
+ 
+ // Sphere fold.
+ float mag = dot(v, v);
+ if (mag < 0.25)
+ {
+ v = v * 4.0;
+ dr = dr * 4.0;
+ }
+ else if (mag < 1.0)
+ {
+ v = v / mag;
+ dr = dr / mag;
+ }
+ 
+ v = v * scaleFactor + c;
+ dr = dr * abs(scaleFactor) + 1.0;
+ }
+ 
+ return (length(v) - constant1) / dr - constant2;
+ }
+ 
+
+*/
 
 float3 getColor(float3 pos,constant Control &control)
 {
@@ -18,18 +93,16 @@ float3 getColor(float3 pos,constant Control &control)
     
     for (int i = 0; i < MAX_ITERS; i++) {
         
-        // Box fold
+//        v = clamp(v, -1.0, 1.0) * 2.0 - v;
         v = clamp(v, -control.box1, control.box1) * control.box2 - v;
+
         
         // Sphere fold.
         float mag = dot(v, v);
-        if (mag < 0.25) {
-            v = v * control.sph1;
-        }
+        if (mag < control.sph1)
+            v = v * 4.0;
         else if (mag < control.sph2)
-        {
-            v = v / control.sph2;
-        }
+            v = v / mag;
         
         v = v * control.scaleFactor + c;
         minDist = min(minDist, length(v));
@@ -54,17 +127,20 @@ float distanceEstimate(float3 rayPos, float constant1, float constant2,constant 
     for (int i = 0; i < MAX_ITERS; i++) {
         
         // Box fold
+//        v = clamp(v, -1.0, 1.0) * 2.0 - v;
         v = clamp(v, -control.box1, control.box1) * control.box2 - v;
-        
+
         // Sphere fold.
         float mag = dot(v, v);
-        if (mag < 0.25) {
-            v = v * control.sph1;
-            dr = dr * control.sph1;
+        if (mag < control.sph1)
+        {
+            v = v * 4.0;
+            dr = dr * 4.0;
         }
-        else if (mag < control.sph2) {
-            v = v / control.sph2;
-            dr = dr / control.sph2;
+        else if (mag < control.sph2)
+        {
+            v = v / mag;
+            dr = dr / mag;
         }
         
         v = v * control.scaleFactor + c;
@@ -214,3 +290,74 @@ kernel void mandelBoxShader
     
     outTexture.write(rayMarch(direction,control),p);
 }
+
+
+
+
+/*
+ float3 getColor(float3 pos,constant Control &control)
+ {
+ // For the Juliabox, c is a constant. For the Mandelbox, c is variable.
+ float3 c = control.juliaboxMode ? control.julia : pos;
+ float3 v = pos;
+ float minDist = 1.0;
+ 
+ for (int i = 0; i < MAX_ITERS; i++) {
+ 
+ // Box fold
+ v = clamp(v, -control.box1, control.box1) * control.box2 - v;
+ 
+ // Sphere fold.
+ float mag = dot(v, v);
+ if (mag < 0.25) {
+ v = v * control.sph1;
+ }
+ else if (mag < control.sph2)
+ {
+ v = v / control.sph2;
+ }
+ 
+ v = v * control.scaleFactor + c;
+ minDist = min(minDist, length(v));
+ }
+ 
+ float fractionalIterationCount = log(dot(v, v));
+ return float3(
+ control.colorB1 + control.colorB2 * sin(fractionalIterationCount * 0.52 + 0.7),
+ control.colorG1 + control.colorG2 * sin(fractionalIterationCount * 0.73 + 1.8),
+ control.colorR1 + control.colorR2 * sin(fractionalIterationCount * 0.31 + 1.1));
+ }
+ 
+ //MARK: -
+ 
+ float distanceEstimate(float3 rayPos, float constant1, float constant2,constant Control &control)
+ {
+ // For the Juliabox, c is a constant. For the Mandelbox, c is variable.
+ float3 c = control.juliaboxMode ? control.julia : rayPos;
+ float3 v = rayPos;
+ float dr = 1.0;
+ 
+ for (int i = 0; i < MAX_ITERS; i++) {
+ 
+ // Box fold
+ v = clamp(v, -control.box1, control.box1) * control.box2 - v;
+ 
+ // Sphere fold.
+ float mag = dot(v, v);
+ if (mag < 0.25) {
+ v = v * control.sph1;
+ dr = dr * control.sph1;
+ }
+ else if (mag < control.sph2) {
+ v = v / control.sph2;
+ dr = dr / control.sph2;
+ }
+ 
+ v = v * control.scaleFactor + c;
+ dr = dr * abs(control.scaleFactor) + 1.0;
+ }
+ 
+ return (length(v) - constant1) / dr - constant2;
+ }
+
+*/
