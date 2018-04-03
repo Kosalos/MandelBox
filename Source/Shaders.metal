@@ -115,6 +115,7 @@ float3 getColor(float3 pos,constant Control &control)
                   control.colorR1 + control.colorR2 * sin(fractionalIterationCount * 0.31 + 1.1));
 }
 
+
 //MARK: -
 
 float distanceEstimate(float3 rayPos, float constant1, float constant2,constant Control &control)

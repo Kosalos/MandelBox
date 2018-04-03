@@ -128,6 +128,7 @@ class ViewController: UIViewController {
         timer = Timer.scheduledTimer(timeInterval: 1.0/30.0, target:self, selector: #selector(timerHandler), userInfo: nil, repeats:true)
     }
     
+    
     //MARK: -
 
     func reset() {

@@ -130,6 +130,7 @@ class DeltaView: UIView {
         }
         
         func coloredValue(_ v:Float, _ y:CGFloat) { drawText(vx,y,valueColor(v),16, formatted(v)) }
+  
         
         drawText(10,8,.lightGray,16,name)
         

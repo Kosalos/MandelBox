@@ -109,6 +109,7 @@ class SliderView: UIView {
             if v < 0 { c = UIColor.red } else if v > 0 { c = UIColor.green }
             return c
         }
+      
         
         func coloredValue(_ v:Float) { drawText(vx,8,valueColor(v),16, formatted(v)) }
         
