@@ -5,10 +5,8 @@ import Metal
 //let scrnIndex = 0
 //let scrnLandscape:Bool = true
 
-let IMAGESIZE_LOW:Int = 600
-let IMAGESIZE_HIGH:Int = 3000
-
-var imageSize:Int = IMAGESIZE_LOW
+let IMAGESIZE_LOW:Int32 = 400
+let IMAGESIZE_HIGH:Int32 = 3000
 
 var control = Control()
 var vc:ViewController! = nil
@@ -53,7 +51,7 @@ class ViewController: UIViewController {
     @IBAction func juliaOnOffChanged(_ sender: UISwitch) { control.juliaboxMode = sender.isOn;  updateImage() }
     
     @IBAction func resolutionButtonPressed(_ sender: UIButton) {
-        imageSize = imageSize == IMAGESIZE_LOW ? IMAGESIZE_HIGH : IMAGESIZE_LOW
+        control.size = (control.size == IMAGESIZE_LOW) ? IMAGESIZE_HIGH : IMAGESIZE_LOW
         setResolution()
         updateImage()
     }
@@ -86,8 +84,6 @@ class ViewController: UIViewController {
         }
         catch { fatalError("error creating pipelines") }
 
-        setResolution()
-        
         cBuffer = device.makeBuffer(bytes: &control, length: MemoryLayout<Control>.stride, options: MTLResourceOptions.storageModeShared)
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.rotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
@@ -128,13 +124,15 @@ class ViewController: UIViewController {
         sJuliaZ.initializeFloat(&juliaZ, .delta, -10,10,1, "Julia Z")
 
         reset()
+        
         timer = Timer.scheduledTimer(timeInterval: 1.0/30.0, target:self, selector: #selector(timerHandler), userInfo: nil, repeats:true)
     }
     
     //MARK: -
 
     func reset() {
-        control.size = Int32(imageSize)
+        control.size = IMAGESIZE_LOW
+        setResolution()
         
         control.camera = vector_float3(1.59,3.89,0.75)
         control.focus = vector_float3(-0.52,-1.22,-0.31)
@@ -177,18 +175,19 @@ class ViewController: UIViewController {
     }
     
     func setResolution() {
+        let sz = Int(control.size)
         let textureDescriptor = MTLTextureDescriptor.texture2DDescriptor(
             pixelFormat: .bgra8Unorm_srgb,
-            width: imageSize,
-            height: imageSize,
+            width: sz,
+            height: sz,
             mipmapped: false)
         outTexture = self.device.makeTexture(descriptor: textureDescriptor)!
         
         threadGroups = MTLSizeMake(
-            imageSize / threadGroupCount.width,
-            imageSize / threadGroupCount.height,1)
+            sz / threadGroupCount.width,
+            sz / threadGroupCount.height,1)
         
-        resolutionButton.setTitle(imageSize == IMAGESIZE_LOW ? "Res: Low" : "Res: High", for: UIControlState.normal)
+        resolutionButton.setTitle(control.size == IMAGESIZE_LOW ? " Res: Low" : " Res: High", for: UIControlState.normal)
     }
     
     //MARK: -

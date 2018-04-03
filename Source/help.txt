@@ -8,6 +8,7 @@ Press and hold to either side of center to affect the parameter in the specfied 
 
 Note: not shown on image above, there is a new button "Res: Low".
 Press this to toggle image resolution between Low and High.
+Use Low resolution to quickly navigate to region of interest, then switch to Hi res for viewing.
 
 A.  Camera position
 The top widget controls the X,Y coordinates of the camera,
