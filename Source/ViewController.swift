@@ -6,7 +6,7 @@ import Metal
 //let scrnLandscape:Bool = true
 
 let IMAGESIZE_LOW:Int = 600
-let IMAGESIZE_HIGH:Int = 2500
+let IMAGESIZE_HIGH:Int = 3000
 
 var imageSize:Int = IMAGESIZE_LOW
 
