@@ -2,11 +2,11 @@ import UIKit
 import Metal
 
 //let scrnSz:[CGPoint] = [ CGPoint(x:768,y:1024), CGPoint(x:834,y:1112), CGPoint(x:1024,y:1366) ] // portrait
-//let scrnIndex = 0
+//let scrnIndex = 2
 //let scrnLandscape:Bool = true
 
-let IMAGESIZE_LOW:Int32 = 400
-let IMAGESIZE_HIGH:Int32 = 3000
+let IMAGESIZE_LOW:Int32 = 600
+let IMAGESIZE_HIGH:Int32 = 2000
 
 var control = Control()
 var vc:ViewController! = nil
@@ -40,6 +40,8 @@ class ViewController: UIViewController {
     @IBOutlet var dColorB: DeltaView!
     @IBOutlet var dJuliaXY: DeltaView!
     @IBOutlet var sJuliaZ: SliderView!
+    @IBOutlet var dLightXY: DeltaView!
+    @IBOutlet var sLightZ: SliderView!
     @IBOutlet var imageView: UIImageView!
     @IBOutlet var resetButton: UIButton!
     @IBOutlet var saveLoadButton: UIButton!
@@ -65,7 +67,10 @@ class ViewController: UIViewController {
     var juliaX:Float = 0.0
     var juliaY:Float = 0.0
     var juliaZ:Float = 0.0
-    
+    var lightX:Float = 0.0
+    var lightY:Float = 0.0
+    var lightZ:Float = 0.0
+
     var sList:[SliderView]! = nil
     var dList:[DeltaView]! = nil
 
@@ -93,8 +98,8 @@ class ViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        sList = [ sCameraZ,sFocusZ,sZoom,sScaleFactor,sEpsilon,sJuliaZ]
-        dList = [ dCameraXY,dFocusXY,dSphere,dBox,dColorR,dColorG,dColorB,dJuliaXY ]
+        sList = [ sCameraZ,sFocusZ,sZoom,sScaleFactor,sEpsilon,sJuliaZ,sLightZ]
+        dList = [ dCameraXY,dFocusXY,dSphere,dBox,dColorR,dColorG,dColorB,dJuliaXY,dLightXY ]
 
         let cameraRange:Float = 20
         let cameraJog:Float = 0.25
@@ -122,6 +127,9 @@ class ViewController: UIViewController {
 
         dJuliaXY.initializeFloat1(&juliaX, -10,10, 1, "Julia XY"); dJuliaXY.initializeFloat2(&juliaY)
         sJuliaZ.initializeFloat(&juliaZ, .delta, -10,10,1, "Julia Z")
+
+        dLightXY.initializeFloat1(&lightX, -1,1, 1, "Light XY"); dLightXY.initializeFloat2(&lightY)
+        sLightZ.initializeFloat(&lightZ, .delta, -1,1,1, "Light Z")
 
         reset()
         
@@ -157,6 +165,10 @@ class ViewController: UIViewController {
         control.juliaboxMode = false
         juliaOnOff.isOn = false
         
+        control.light.x = 0.33
+        control.light.y = 0.66
+        control.light.z = 1.0
+
         unWrapFloat3()
         
         for s in sList { s.setNeedsDisplay() }
@@ -223,7 +235,7 @@ class ViewController: UIViewController {
         if ys > xs {    // portrait
             sz = xs - 10
             by = sz + 10  // top of widgets
-            x = (xs - 600) / 2
+            x = (xs - 750) / 2
             y = by
 
             imageView.frame = CGRect(x:5, y:5, width:sz, height:sz)
@@ -247,12 +259,12 @@ class ViewController: UIViewController {
             y = by
             dJuliaXY.frame = frame(cxs,cxs,0,cxs + gap)
             sJuliaZ.frame  = frame(cxs,bys,0,bys + gap + 5)
-            
-            let x2 = x
-            juliaOnOff.frame = frame(50,30,80,0)
-            resetButton.frame = frame(50,bys,0,bys+gap)
-            x = x2
-            saveLoadButton.frame = frame(80,bys,100,0)
+            juliaOnOff.frame = frame(50,30,0,bys + gap)
+            resetButton.frame = frame(50,bys,cxs + gap,0)
+            y = by
+            dLightXY.frame = frame(cxs,cxs,0,cxs + gap)
+            sLightZ.frame  = frame(cxs,bys,0,bys + gap + 5)
+            saveLoadButton.frame = frame(80,bys,0,bys + gap)
             helpButton.frame = frame(bys,bys,0,0)
         }
         else {          // landscape
@@ -283,12 +295,16 @@ class ViewController: UIViewController {
             dColorB.frame = frame(cxs2,cxs2,0,0)
             x = left
             y = by + 520
-            dJuliaXY.frame = frame(cxs,cxs,0,cxs + gap)
-            sJuliaZ.frame  = frame(cxs,bys,0,bys+gap)
+            dJuliaXY.frame = frame(cxs,cxs,cxs + gap,0)
+            dLightXY.frame = frame(cxs,cxs,0,cxs + gap)
+            x = left
+            sJuliaZ.frame  = frame(cxs,bys,cxs+gap,0)
+            sLightZ.frame  = frame(cxs,bys,0,bys + gap)
+            x = left
             juliaOnOff.frame = frame(50,30,cxs + gap,0)
-            y = by + 520
-            resetButton.frame = frame(50,bys,0,bys+gap*2)
-            saveLoadButton.frame = frame(80,bys,30,bys+gap*2)
+            saveLoadButton.frame = frame(80,bys,0,bys+gap)
+            x = left
+            resetButton.frame = frame(50,bys,cxs + gap,-5)
             helpButton.frame = frame(bys,bys,0,0)
         }
     }
@@ -305,6 +321,9 @@ class ViewController: UIViewController {
         juliaX = control.julia.x
         juliaY = control.julia.y
         juliaZ = control.julia.z
+        lightX = control.light.x
+        lightY = control.light.y
+        lightZ = control.light.z
     }
     
     func wrapFloat3() {
@@ -317,6 +336,9 @@ class ViewController: UIViewController {
         control.julia.x = juliaX
         control.julia.y = juliaY
         control.julia.z = juliaZ
+        control.light.x = lightX
+        control.light.y = lightY
+        control.light.z = lightZ
     }
     
     //MARK: -

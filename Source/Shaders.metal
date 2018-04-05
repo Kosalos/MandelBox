@@ -166,10 +166,13 @@ float4 rayMarch(float3 rayDir,constant Control &control) {
                            1.0);
             
             // Use two lights.
-            float3 light = mix(
-                               getBlinnShading(normal, rayDir, normalize(float3(1.0, 2.0, 3.0))),
-                               getBlinnShading(normal, rayDir, normalize(float3(-1.0, 1.5, 2.5))),
-                               0.5);
+//            float3 light = mix(
+//                               getBlinnShading(normal, rayDir, normalize(float3(1.0, 2.0, 3.0))),
+//                               getBlinnShading(normal, rayDir, normalize(float3(-1.0, 1.5, 2.5))),
+//                               0.5);
+
+            float3 light = getBlinnShading(normal, rayDir, normalize(control.light));
+
             color = float4(mix(light, color.xyz, 0.8), 1.0);
         }
     }

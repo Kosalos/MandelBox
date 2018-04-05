@@ -186,10 +186,13 @@ class DeltaView: UIView {
     //MARK: ==================================
 
     func getValue(_ who:Int) -> Float {
-        if valuePointerX == nil { return 0 } // assume Y also okay
         switch who {
-        case 0 : return valuePointerX.load(as: Float.self)
-        default: return valuePointerY.load(as: Float.self)
+        case 0 :
+            if valuePointerX == nil { return 0 }
+            return valuePointerX.load(as: Float.self)
+        default:
+            if valuePointerY == nil { return 0 }
+            return valuePointerY.load(as: Float.self)
         }
     }
     
@@ -214,7 +217,7 @@ class DeltaView: UIView {
     //MARK: ==================================
     
     func update() -> Bool {
-        if valuePointerX == nil || !active || !touched { return false }
+        if valuePointerX == nil || valuePointerY == nil || !active || !touched { return false }
         
         var valueX = getValue(0)
         var valueY = getValue(1)
@@ -222,8 +225,8 @@ class DeltaView: UIView {
         valueX = fClamp2(valueX + deltaX * deltaValue, mRange)
         valueY = fClamp2(valueY + deltaY * deltaValue, mRange)
 
-        valuePointerX.storeBytes(of:valueX, as:Float.self)
-        valuePointerY.storeBytes(of:valueY, as:Float.self)
+        if let valuePointerX = valuePointerX { valuePointerX.storeBytes(of:valueX, as:Float.self) }
+        if let valuePointerY = valuePointerY { valuePointerY.storeBytes(of:valueY, as:Float.self) }
 
         setNeedsDisplay()
         return true
@@ -235,7 +238,7 @@ class DeltaView: UIView {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if !active { return }
-        if valuePointerX == nil { return }
+        if valuePointerX == nil || valuePointerY == nil { return }
         
         if touches.count > numberTouches { numberTouches = touches.count }
         

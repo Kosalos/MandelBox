@@ -6,35 +6,24 @@ http://digitalfreepen.com/mandelbox370/
 All the slider boxes work the same way:
 Press and hold to either side of center to affect the parameter in the specfied direction and speed.
 
-Note: not shown on image above, there is a new button "Res: Low".
-Press this to toggle image resolution between Low and High.
-Use Low resolution to quickly navigate to region of interest, then switch to Hi res for viewing.
-
 A.  Camera position
-The top widget controls the X,Y coordinates of the camera,
-The second widget controls the Z coordinate.
+The top widget controls the X,Y coordinates of the camera, the second widget controls the Z coordinate.
 
 B. Focus position
 The X,Y,Z coordinates of the position the camera looks at.
 
-C. Zoom
-Changing the width of the field ov view affects a zoom effect.
+C. Changing the width of the field ov view affects a zoom effect.
 
-D. Scale Factor.
-MandelBox parameter controlling the degree of box and sphere folding.
+D. MandelBox parameter controlling the degree of box and sphere folding.
 
-E. epsilon
-MandelBox parameter specified how accuratedly we determine the mandelbox surface.
-smaller values (on the left side) result in finer resolutuion
+E. MandelBox parameter specified how accuratedly we determine the mandelbox surface.
+   Smaller values (on the left side) result in finer resolution.
 
-F. Sphere
-Mandelbox uses two parameters to determine spherical folding. Both are controlled here.
+F. Mandelbox uses two parameters to determine spherical folding. Both are controlled here.
 
-G. Box
-Mandelbox uses two parameters to determine box folding. Both are controlled here.
+G. Mandelbox uses two parameters to determine box folding. Both are controlled here.
 
-H. R,G,B
-Each widget controls two aspects of its assigned red, green or blue color.
+H. Each widget controls two aspects of its assigned red, green or blue color.
 
 I. Julia constant
 If enabled by toggle switch J,  this 3D coordinate is the Julia constant.
@@ -44,3 +33,9 @@ J. Toggle switch enables the Julia constant coord.
 K. Reset all params.
 
 L. Launch save/load dialog.
+
+M. Control the position of the light.
+
+N. Press this to toggle image resolution between Low and High.
+Use Low resolution to quickly navigate to region of interest, then switch to Hi res for viewing.
+

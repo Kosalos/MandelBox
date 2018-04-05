@@ -113,13 +113,13 @@
                                 <gestureRecognizers/>
                             </view>
                             <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RDg-xR-1eU" customClass="DeltaView" customModule="MandelBox" customModuleProvider="target">
-                                <rect key="frame" x="603" y="71" width="200" height="200"/>
+                                <rect key="frame" x="603" y="71" width="119" height="117"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <gestureRecognizers/>
                             </view>
                             <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ycd-2w-FDg" customClass="SliderView" customModule="MandelBox" customModuleProvider="target">
-                                <rect key="frame" x="603" y="288" width="200" height="50"/>
+                                <rect key="frame" x="603" y="206" width="119" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <gestureRecognizers/>
@@ -172,6 +172,18 @@
                                     </segue>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LiV-GR-noI" customClass="DeltaView" customModule="MandelBox" customModuleProvider="target">
+                                <rect key="frame" x="818" y="71" width="119" height="117"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
+                            </view>
+                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5dQ-KU-atc" customClass="SliderView" customModule="MandelBox" customModuleProvider="target">
+                                <rect key="frame" x="818" y="206" width="119" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.026657605508461555" green="0.077108541822286741" blue="0.15452622898527923" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <gestureRecognizers/>
@@ -184,6 +196,7 @@
                         <outlet property="dColorR" destination="mt0-3c-Kgm" id="4st-ZI-i3Q"/>
                         <outlet property="dFocusXY" destination="FLx-Dh-uA9" id="Rto-2a-lW7"/>
                         <outlet property="dJuliaXY" destination="RDg-xR-1eU" id="A5F-4t-RmD"/>
+                        <outlet property="dLightXY" destination="LiV-GR-noI" id="3Zw-5G-fO0"/>
                         <outlet property="dSphere" destination="skC-Xh-auf" id="r28-jK-ecv"/>
                         <outlet property="helpButton" destination="gUW-2t-ZIx" id="MIj-05-rc9"/>
                         <outlet property="imageView" destination="SKK-Rp-etB" id="7YQ-Bm-Qam"/>
@@ -194,6 +207,7 @@
                         <outlet property="sEpsilon" destination="eUE-y4-Pwf" id="S6B-Ku-XLz"/>
                         <outlet property="sFocusZ" destination="L4i-3o-zWc" id="D7u-SH-j1I"/>
                         <outlet property="sJuliaZ" destination="ycd-2w-FDg" id="gjw-K1-K2C"/>
+                        <outlet property="sLightZ" destination="5dQ-KU-atc" id="UOM-66-tpp"/>
                         <outlet property="sScaleFactor" destination="WLa-71-fZs" id="jH5-N8-r7I"/>
                         <outlet property="sZoom" destination="w4S-kB-HIs" id="RkW-rO-Mmn"/>
                         <outlet property="saveLoadButton" destination="HeO-5k-4ZX" id="2lA-b6-kMi"/>
@@ -201,7 +215,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-801" y="-192"/>
+            <point key="canvasLocation" x="-801.5625" y="-192.38653001464127"/>
         </scene>
         <!--SaveLoadVC-->
         <scene sceneID="7cL-dd-aq2">
@@ -303,9 +317,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="help" translatesAutoresizingMaskIntoConstraints="NO" id="gLn-8S-ygD">
-                                <rect key="frame" x="35" y="20" width="562" height="206"/>
+                                <rect key="frame" x="35" y="28" width="562" height="198"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="gLn-8S-ygD" secondAttribute="height" multiplier="281:75" constant="-209.81333333333328" id="MJd-XD-5MD"/>
+                                    <constraint firstAttribute="width" secondItem="gLn-8S-ygD" secondAttribute="height" multiplier="281:75" constant="-179.84000000000003" id="MJd-XD-5MD"/>
                                     <constraint firstAttribute="width" constant="562" id="W06-rk-Qkf"/>
                                 </constraints>
                             </imageView>
@@ -325,7 +339,7 @@
                             <constraint firstItem="LFJ-2t-2Yd" firstAttribute="leading" secondItem="dWY-RQ-I3o" secondAttribute="leadingMargin" constant="1" id="1o8-RX-EYm"/>
                             <constraint firstAttribute="bottom" secondItem="LFJ-2t-2Yd" secondAttribute="bottom" constant="20" symbolic="YES" id="2ON-lV-u38"/>
                             <constraint firstItem="LFJ-2t-2Yd" firstAttribute="centerX" secondItem="dWY-RQ-I3o" secondAttribute="centerX" id="K9K-Ab-gNX"/>
-                            <constraint firstItem="gLn-8S-ygD" firstAttribute="top" secondItem="wV2-J6-T2n" secondAttribute="bottom" id="NDQ-GJ-OZ7"/>
+                            <constraint firstItem="gLn-8S-ygD" firstAttribute="top" secondItem="wV2-J6-T2n" secondAttribute="bottom" constant="8" id="NDQ-GJ-OZ7"/>
                             <constraint firstItem="gLn-8S-ygD" firstAttribute="leading" secondItem="dWY-RQ-I3o" secondAttribute="leadingMargin" constant="15" id="laU-R1-42C"/>
                         </constraints>
                     </view>
@@ -341,6 +355,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="help" width="1231" height="517"/>
+        <image name="help" width="1481" height="508"/>
     </resources>
 </document>
