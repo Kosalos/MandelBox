@@ -106,13 +106,13 @@ class ViewController: UIViewController {
         sFocusZ.initializeFloat(&focusZ, .delta, -cameraRange,cameraRange,cameraJog, "Focus Z")
         
         sZoom.initializeFloat(&control.zoom, .delta, 0.2,2, 0.03, "Zoom")
-        sScaleFactor.initializeFloat(&control.scaleFactor, .delta, 2.0,5.0, 0.03, "Scale Factor")
+        sScaleFactor.initializeFloat(&control.scaleFactor, .delta, -5.0,5.0, 0.3, "Scale Factor")
         sEpsilon.initializeFloat(&control.epsilon, .delta, 0.00001, 0.005, 0.001, "epsilon")
         
-        dSphere.initializeFloat1(&control.sph1, 0.002,2,0.1 , "Sphere")
+        dSphere.initializeFloat1(&control.sph1, 0,3,0.1 , "Sphere")
         dSphere.initializeFloat2(&control.sph2)
         dSphere.highlight(0.25,1)
-        dBox.initializeFloat1(&control.box1, 0.1,3,0.1, "Box")
+        dBox.initializeFloat1(&control.box1, 0,3,0.1, "Box")
         dBox.initializeFloat2(&control.box2)
         dBox.highlight(1,2)
 
