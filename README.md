@@ -7,7 +7,3 @@ where I stole all the ideas.
 Great app for draining your iPad battery.
 Recently added a Resolution toggle, so you can use Low res to quickly navigate to a region of interest, and then switch to High resolution to enjoy the view.
 
-![Screenshot](screenShot.png)
-
-
-
