@@ -14,7 +14,7 @@ struct Control {
     vector_float3 camera;
     vector_float3 focus;
     
-    float sph1,sph2;
+    float sph1,sph2,sph3;
     float box1,box2;
     
     float colorR1,colorR2;

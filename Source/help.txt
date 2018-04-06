@@ -20,8 +20,9 @@ E. MandelBox parameter specified how accuratedly we determine the mandelbox surf
    Smaller values (on the left side) result in finer resolution.
 
 F. Mandelbox uses two parameters to determine spherical folding. Both are controlled here.
+   Sphere M controls the Sphere scaling factor.
 
-G. Mandelbox uses two parameters to determine box folding. Both are controlled here.
+G. Mandelbox uses two parameters to determine Box folding. Both are controlled here.
 
 H. Each widget controls two aspects of its assigned red, green or blue color.
 

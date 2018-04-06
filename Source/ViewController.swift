@@ -2,7 +2,7 @@ import UIKit
 import Metal
 
 //let scrnSz:[CGPoint] = [ CGPoint(x:768,y:1024), CGPoint(x:834,y:1112), CGPoint(x:1024,y:1366) ] // portrait
-//let scrnIndex = 2
+//let scrnIndex = 0
 //let scrnLandscape:Bool = true
 
 let IMAGESIZE_LOW:Int32 = 600
@@ -34,6 +34,7 @@ class ViewController: UIViewController {
     @IBOutlet var sScaleFactor: SliderView!
     @IBOutlet var sEpsilon: SliderView!
     @IBOutlet var dSphere: DeltaView!
+    @IBOutlet var sSphere: SliderView!
     @IBOutlet var dBox: DeltaView!
     @IBOutlet var dColorR: DeltaView!
     @IBOutlet var dColorG: DeltaView!
@@ -98,7 +99,7 @@ class ViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        sList = [ sCameraZ,sFocusZ,sZoom,sScaleFactor,sEpsilon,sJuliaZ,sLightZ]
+        sList = [ sCameraZ,sFocusZ,sZoom,sScaleFactor,sEpsilon,sJuliaZ,sLightZ,sSphere]
         dList = [ dCameraXY,dFocusXY,dSphere,dBox,dColorR,dColorG,dColorB,dJuliaXY,dLightXY ]
 
         let cameraRange:Float = 20
@@ -117,6 +118,8 @@ class ViewController: UIViewController {
         dSphere.initializeFloat1(&control.sph1, 0,3,0.1 , "Sphere")
         dSphere.initializeFloat2(&control.sph2)
         dSphere.highlight(0.25,1)
+        sSphere.initializeFloat(&control.sph3, .delta, 0.1,6.0,0.1, "Sphere M")
+        
         dBox.initializeFloat1(&control.box1, 0,3,0.1, "Box")
         dBox.initializeFloat2(&control.box2)
         dBox.highlight(1,2)
@@ -151,6 +154,7 @@ class ViewController: UIViewController {
         
         control.sph1 = 0.25
         control.sph2 = 1
+        control.sph3 = 4
         control.box1 = 1
         control.box2 = 2
         
@@ -251,7 +255,8 @@ class ViewController: UIViewController {
             sEpsilon.frame = frame(cxs,bys,cxs + gap,0)
             y = by
             dSphere.frame = frame(cxs,cxs,0,cxs + gap)
-            dBox.frame = frame(cxs,cxs,cxs + gap,0)
+            sSphere.frame  = frame(cxs,bys,0,bys + gap)
+            dBox.frame = frame(cxs2,cxs2,cxs + gap,0)
             y = by
             dColorR.frame = frame(cxs2,cxs2,0,cxs2 + gap)
             dColorG.frame = frame(cxs2,cxs2,0,cxs2 + gap)
@@ -288,7 +293,8 @@ class ViewController: UIViewController {
             x = left
             y = by + 260
             dSphere.frame = frame(cxs,cxs,0,cxs + gap)
-            dBox.frame = frame(cxs,cxs,cxs + gap,0)
+            sSphere.frame  = frame(cxs,bys,0,bys + gap)
+            dBox.frame = frame(cxs2,cxs2,cxs + gap,0)
             y = by + 260
             dColorR.frame = frame(cxs2,cxs2,0,cxs2 + gap)
             dColorG.frame = frame(cxs2,cxs2,0,cxs2 + gap)

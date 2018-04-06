@@ -57,8 +57,8 @@ float distanceEstimate(float3 rayPos, float constant1, float constant2,constant 
         float mag = dot(v, v);
         if (mag < control.sph1)
         {
-            v = v * 4.0;
-            dr = dr * 4.0;
+            v = v * control.sph3;
+            dr = dr * control.sph3;
         }
         else if (mag < control.sph2)
         {
