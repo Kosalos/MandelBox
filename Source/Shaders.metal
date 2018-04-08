@@ -103,18 +103,22 @@ float3 getBlinnShading(float3 normal, float3 view, float3 light)
 
 float getAmbientOcclusion(float3 pos, float3 normal,constant Control &control)
 {
-    return 0;
-    
     float ambientOcclusion = 1.0;
     float w = 0.1 / control.epsilon / 5.0;
     float distance = 2.0 * control.epsilon * 5.0;
     
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 5; i++) {
         ambientOcclusion -= (distance - distanceEstimate(pos + normal * distance,control)) * w;
-        w *= 0.5;
+        w *= 0.95;
         distance = distance * 2.0 - control.epsilon * 5.0;
     }
     
+//    for (int i = 0; i < 10; i++) {
+//        ambientOcclusion -= (distance - distanceEstimate(pos + normal * distance,control)) * w;
+//        w *= 0.5;
+//        distance = distance * 2.0 - control.epsilon * 5.0;
+//    }
+
     // Smaller value = Darker
     return clamp(ambientOcclusion, 0.0, 1.0);
 }
@@ -127,6 +131,7 @@ float4 rayMarch(float3 rayDir,constant Control &control) {
     float constant1 = abs(control.scaleFactor - 1.0);
     float constant2 = pow(float(abs(control.scaleFactor)), float(1 - MAX_ITERS));
     float distance = 0.0;
+    float ee = sin(control.epsilon);
     
     for (int i = 0; i < MAX_STEPS; i++) {
         float3 rayPos = control.camera + rayDir * distance;
@@ -135,7 +140,7 @@ float4 rayMarch(float3 rayDir,constant Control &control) {
         distance += de * 0.95;
         stepCount++;
         
-        if (de < control.epsilon || distance > MAX_DIST) break;
+        if (de < ee || distance > MAX_DIST) break;
     }
     
     ///////////////////
@@ -162,7 +167,7 @@ float4 rayMarch(float3 rayDir,constant Control &control) {
         if (stepCount < MAX_STEPS) {
             float3 normal = getNormal(finalRayPos,control);
             color = float4(mix(float3(0.0, 0.0, 0.0), color.xyz,
-                               getAmbientOcclusion(finalRayPos, normal,control) * 0.5 + 0.05),
+                               getAmbientOcclusion(finalRayPos, normal,control) * 5 + 0.05),
                            1.0);
             
             // Use two lights.

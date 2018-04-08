@@ -7,7 +7,7 @@ let scrnSz:[CGPoint] = [ CGPoint(x:768,y:1024), CGPoint(x:834,y:1112), CGPoint(x
 let scrnIndex = 2
 let scrnLandscape:Bool = true
 
-let IMAGESIZE_LOW:Int32 = 600
+let IMAGESIZE_LOW:Int32 = 760
 let IMAGESIZE_HIGH:Int32 = 2000
 
 var control = Control()
@@ -190,6 +190,7 @@ class ViewController: UIViewController {
         for s in sList { s.setNeedsDisplay() }
         for d in dList { d.setNeedsDisplay() }
         
+        alterAngle(0,0)
         updateImage()
     }
     
