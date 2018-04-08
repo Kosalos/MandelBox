@@ -1,9 +1,11 @@
 import UIKit
 import Metal
+import simd
 
-//let scrnSz:[CGPoint] = [ CGPoint(x:768,y:1024), CGPoint(x:834,y:1112), CGPoint(x:1024,y:1366) ] // portrait
-//let scrnIndex = 0
-//let scrnLandscape:Bool = true
+let kludgeAutoLayout:Bool = false
+let scrnSz:[CGPoint] = [ CGPoint(x:768,y:1024), CGPoint(x:834,y:1112), CGPoint(x:1024,y:1366) ] // portrait
+let scrnIndex = 2
+let scrnLandscape:Bool = true
 
 let IMAGESIZE_LOW:Int32 = 600
 let IMAGESIZE_HIGH:Int32 = 2000
@@ -16,6 +18,8 @@ class ViewController: UIViewController {
     
     var timer = Timer()
     var outTexture: MTLTexture!
+    var outTextureL: MTLTexture!
+    var outTextureH: MTLTexture!
     let bytesPerPixel: Int = 4
     var pipeline1: MTLComputePipelineState!
     let queue = DispatchQueue(label: "Queue")
@@ -25,11 +29,11 @@ class ViewController: UIViewController {
 
     let threadGroupCount = MTLSizeMake(20,20, 1)   // integer factor of SIZE
     var threadGroups = MTLSize()
+    var threadGroupsL = MTLSize()
+    var threadGroupsH = MTLSize()
 
-    @IBOutlet var dCameraXY: DeltaView!
-    @IBOutlet var sCameraZ: SliderView!
-    @IBOutlet var dFocusXY: DeltaView!
-    @IBOutlet var sFocusZ: SliderView!
+    @IBOutlet var cRotate: CRotate!
+    @IBOutlet var cTranslate: CTranslate!
     @IBOutlet var sZoom: SliderView!
     @IBOutlet var sScaleFactor: SliderView!
     @IBOutlet var sEpsilon: SliderView!
@@ -59,12 +63,8 @@ class ViewController: UIViewController {
         updateImage()
     }
 
-    var cameraX:Float = 0.0
-    var cameraY:Float = 0.0
-    var cameraZ:Float = 0.0
-    var focusX:Float = 0.0
-    var focusY:Float = 0.0
-    var focusZ:Float = 0.0
+    func updateResolutionButton() { resolutionButton.setTitle(control.size == IMAGESIZE_LOW ? " Res: Low" : " Res: High", for: UIControlState.normal) }
+
     var juliaX:Float = 0.0
     var juliaY:Float = 0.0
     var juliaZ:Float = 0.0
@@ -90,6 +90,27 @@ class ViewController: UIViewController {
         }
         catch { fatalError("error creating pipelines") }
 
+        let hk = cRotate.bounds
+        arcBall.initialize(Float(hk.size.width),Float(hk.size.height))
+
+        let szL = Int(IMAGESIZE_LOW)
+        let textureDescriptorL = MTLTextureDescriptor.texture2DDescriptor(
+            pixelFormat: .bgra8Unorm_srgb,
+            width: szL,
+            height: szL,
+            mipmapped: false)
+        outTextureL = self.device.makeTexture(descriptor: textureDescriptorL)!
+        threadGroupsL = MTLSizeMake(szL / threadGroupCount.width,szL / threadGroupCount.height,1)
+        
+        let szH = Int(IMAGESIZE_HIGH)
+        let textureDescriptorH = MTLTextureDescriptor.texture2DDescriptor(
+            pixelFormat: .bgra8Unorm_srgb,
+            width: szH,
+            height: szH,
+            mipmapped: false)
+        outTextureH = self.device.makeTexture(descriptor: textureDescriptorH)!
+        threadGroupsH = MTLSizeMake(szH / threadGroupCount.width,szH / threadGroupCount.height,1)
+
         cBuffer = device.makeBuffer(bytes: &control, length: MemoryLayout<Control>.stride, options: MTLResourceOptions.storageModeShared)
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.rotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
@@ -99,18 +120,9 @@ class ViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        sList = [ sCameraZ,sFocusZ,sZoom,sScaleFactor,sEpsilon,sJuliaZ,sLightZ,sSphere]
-        dList = [ dCameraXY,dFocusXY,dSphere,dBox,dColorR,dColorG,dColorB,dJuliaXY,dLightXY ]
+        sList = [ sZoom,sScaleFactor,sEpsilon,sJuliaZ,sLightZ,sSphere]
+        dList = [ dSphere,dBox,dColorR,dColorG,dColorB,dJuliaXY,dLightXY ]
 
-        let cameraRange:Float = 20
-        let cameraJog:Float = 0.25
-        dCameraXY.initializeFloat1(&cameraX, -cameraRange,cameraRange,cameraJog, "Camera XY")
-        dCameraXY.initializeFloat2(&cameraY)
-        sCameraZ.initializeFloat(&cameraZ, .delta, -cameraRange,cameraRange,cameraJog, "Camera Z")
-        dFocusXY.initializeFloat1(&focusX, -cameraRange,cameraRange,cameraJog, "Focus XY")
-        dFocusXY.initializeFloat2(&focusY)
-        sFocusZ.initializeFloat(&focusZ, .delta, -cameraRange,cameraRange,cameraJog, "Focus Z")
-        
         sZoom.initializeFloat(&control.zoom, .delta, 0.2,2, 0.03, "Zoom")
         sScaleFactor.initializeFloat(&control.scaleFactor, .delta, -5.0,5.0, 0.3, "Scale Factor")
         sEpsilon.initializeFloat(&control.epsilon, .delta, 0.00001, 0.005, 0.001, "epsilon")
@@ -136,7 +148,7 @@ class ViewController: UIViewController {
 
         reset()
         
-        timer = Timer.scheduledTimer(timeInterval: 1.0/30.0, target:self, selector: #selector(timerHandler), userInfo: nil, repeats:true)
+        timer = Timer.scheduledTimer(timeInterval: 1.0/60.0, target:self, selector: #selector(timerHandler), userInfo: nil, repeats:true)
     }
     
     
@@ -145,7 +157,7 @@ class ViewController: UIViewController {
     func reset() {
         control.size = IMAGESIZE_LOW
         setResolution()
-        
+
         control.camera = vector_float3(0.38135, 2.3424, -0.380833)
         control.focus = vector_float3(-0.52,-1.22,-0.31)
         control.zoom = 0.6141
@@ -212,10 +224,13 @@ class ViewController: UIViewController {
     var oldXS:CGFloat = 0
     
     @objc func rotated() {
-        let xs:CGFloat = view.bounds.width
-        let ys:CGFloat = view.bounds.height
-//        let xs = scrnLandscape ? scrnSz[scrnIndex].y : scrnSz[scrnIndex].x
-//        let ys = scrnLandscape ? scrnSz[scrnIndex].x : scrnSz[scrnIndex].y
+        var xs = view.bounds.width
+        var ys = view.bounds.height
+        
+        if kludgeAutoLayout {
+            xs = scrnLandscape ? scrnSz[scrnIndex].y : scrnSz[scrnIndex].x
+            ys = scrnLandscape ? scrnSz[scrnIndex].x : scrnSz[scrnIndex].y
+        }
 
         if xs == oldXS { return }
         oldXS = xs
@@ -239,20 +254,14 @@ class ViewController: UIViewController {
         if ys > xs {    // portrait
             sz = xs - 10
             by = sz + 10  // top of widgets
-            x = (xs - 750) / 2
+            x = (xs - 730) / 2
             y = by
 
             imageView.frame = CGRect(x:5, y:5, width:sz, height:sz)
 
-            dCameraXY.frame = frame(cxs,cxs,0,cxs + gap)
-            sCameraZ.frame  = frame(cxs,bys,0,bys + gap + 4)
             sZoom.frame = frame(cxs,bys,0,bys + gap)
-            sScaleFactor.frame = frame(cxs,bys,cxs + gap,0)
-            y = by
-            dFocusXY.frame = frame(cxs,cxs,0,cxs + gap)
-            sFocusZ.frame  = frame(cxs,bys,0,bys + gap + 4)
-            resolutionButton.frame = frame(80,bys,0,bys + gap)
-            sEpsilon.frame = frame(cxs,bys,cxs + gap,0)
+            sScaleFactor.frame = frame(cxs,bys,0,bys + gap)
+            cTranslate.frame = frame(cxs,cxs,cxs + gap,0)
             y = by
             dSphere.frame = frame(cxs,cxs,0,cxs + gap)
             sSphere.frame  = frame(cxs,bys,0,bys + gap)
@@ -267,40 +276,42 @@ class ViewController: UIViewController {
             juliaOnOff.frame = frame(50,30,0,bys + gap)
             resetButton.frame = frame(50,bys,cxs + gap,0)
             y = by
+            let x2 = x
             dLightXY.frame = frame(cxs,cxs,0,cxs + gap)
             sLightZ.frame  = frame(cxs,bys,0,bys + gap + 5)
             saveLoadButton.frame = frame(80,bys,0,bys + gap)
             helpButton.frame = frame(bys,bys,0,0)
+            x = x2 + cxs + gap
+            y = by
+            resolutionButton.frame = frame(80,bys,0,bys + gap)
+            sEpsilon.frame = frame(cxs,bys,0,bys + gap)
+            cRotate.frame = frame(cxs,cxs,0,0)
         }
         else {          // landscape
             sz = ys - 10
-            by = 5  // top of widgets
+            by = 50     // top of widgets
             let left = sz + 10
             x = left
             y = by
             
             imageView.frame = CGRect(x:5, y:5, width:sz, height:sz)
             
-            dCameraXY.frame = frame(cxs,cxs,0,cxs + gap)
-            sCameraZ.frame  = frame(cxs,bys,0,bys + gap + 4)
             sZoom.frame = frame(cxs,bys,0,bys + gap)
             sScaleFactor.frame = frame(cxs,bys,cxs + gap,0)
             y = by
-            dFocusXY.frame = frame(cxs,cxs,0,cxs + gap)
-            sFocusZ.frame  = frame(cxs,bys,0,bys + gap)
             resolutionButton.frame = frame(80,bys,0,bys + gap)
             sEpsilon.frame = frame(cxs,bys,0,0)
             x = left
-            y = by + 260
-            dSphere.frame = frame(cxs,cxs,0,cxs + gap)
-            sSphere.frame  = frame(cxs,bys,0,bys + gap)
-            dBox.frame = frame(cxs2,cxs2,cxs + gap,0)
-            y = by + 260
-            dColorR.frame = frame(cxs2,cxs2,0,cxs2 + gap)
-            dColorG.frame = frame(cxs2,cxs2,0,cxs2 + gap)
-            dColorB.frame = frame(cxs2,cxs2,0,0)
+            y = by + 90
+            dSphere.frame = frame(cxs,cxs,cxs + gap,0)
+            dBox.frame = frame(cxs,cxs,0,cxs + gap)
             x = left
-            y = by + 520
+            sSphere.frame  = frame(cxs,bys,0,bys + gap)
+            y = by + 260
+            dColorR.frame = frame(cxs2,cxs2,cxs2 + gap,0)
+            dColorG.frame = frame(cxs2,cxs2,cxs2 + gap,0)
+            dColorB.frame = frame(cxs2,cxs2,0,cxs2 + gap)
+            x = left
             dJuliaXY.frame = frame(cxs,cxs,cxs + gap,0)
             dLightXY.frame = frame(cxs,cxs,0,cxs + gap)
             x = left
@@ -308,22 +319,22 @@ class ViewController: UIViewController {
             sLightZ.frame  = frame(cxs,bys,0,bys + gap)
             x = left
             juliaOnOff.frame = frame(50,30,cxs + gap,0)
-            saveLoadButton.frame = frame(80,bys,0,bys+gap)
+            saveLoadButton.frame = frame(80,bys,0,bys+gap + 20)
             x = left
-            resetButton.frame = frame(50,bys,cxs + gap,-5)
-            helpButton.frame = frame(bys,bys,0,0)
+            resetButton.frame = frame(50,bys,0,bys + gap)
+            helpButton.frame = frame(bys,bys,0,30)
+            
+            x = 10
+            y = ys - cxs - 10
+            cTranslate.frame = frame(cxs,cxs,0,0)
+            x = xs - cxs - 10
+            cRotate.frame = frame(cxs,cxs,0,0)
         }
     }
     
     //MARK: -
     
     func unWrapFloat3() {
-        cameraX = control.camera.x
-        cameraY = control.camera.y
-        cameraZ = control.camera.z
-        focusX = control.focus.x
-        focusY = control.focus.y
-        focusZ = control.focus.z
         juliaX = control.julia.x
         juliaY = control.julia.y
         juliaZ = control.julia.z
@@ -333,12 +344,6 @@ class ViewController: UIViewController {
     }
     
     func wrapFloat3() {
-        control.camera.x = cameraX
-        control.camera.y = cameraY
-        control.camera.z = cameraZ
-        control.focus.x = focusX
-        control.focus.y = focusY
-        control.focus.z = focusZ
         control.julia.x = juliaX
         control.julia.y = juliaY
         control.julia.z = juliaZ
@@ -348,20 +353,51 @@ class ViewController: UIViewController {
     }
     
     //MARK: -
-
+    
     @objc func timerHandler() {
         var refresh:Bool = false
+        
+        if cTranslate.update() { refresh = true }
+        if cRotate.update() { refresh = true }
         for s in sList { if s.update() { refresh = true }}
         for d in dList { if d.update() { refresh = true }}
 
         if refresh { updateImage() }
     }
     
+    //MARK: -
+    
     func updateImage() {
         queue.async {
             self.calcRayMarch()
             DispatchQueue.main.async { self.imageView.image = self.image(from: self.outTexture) }
         }
+    }
+    
+    //MARK: -
+    
+    func alterAngle(_ dx:Float, _ dy:Float) {
+        let center:CGFloat = cRotate.bounds.width/2
+        arcBall.mouseDown(CGPoint(x: center, y: center))
+        arcBall.mouseMove(CGPoint(x: center + CGFloat(dx/10), y: center + CGFloat(dy/10)))
+        
+        let direction = simd_make_float4(0,0.1,0,0)
+        let rotatedDirection = simd_mul(arcBall.transformMatrix, direction)
+        
+        control.focus.x = rotatedDirection.x
+        control.focus.y = rotatedDirection.y
+        control.focus.z = rotatedDirection.z
+        control.focus += control.camera
+        
+        updateImage()
+    }
+    
+    func alterPosition(_ dx:Float, _ dy:Float) {
+        let diff = dy * (control.focus - control.camera) / 100.0
+        control.camera -= diff
+        control.focus -= diff
+        
+        updateImage()
     }
     
     //MARK: -

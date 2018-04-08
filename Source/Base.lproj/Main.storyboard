@@ -40,30 +40,6 @@
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                             </view>
-                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zBN-Ao-HjU" customClass="DeltaView" customModule="MandelBox" customModuleProvider="target">
-                                <rect key="frame" x="66.999999999999773" y="460" width="200" height="200"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <gestureRecognizers/>
-                            </view>
-                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wxv-GA-04r" customClass="SliderView" customModule="MandelBox" customModuleProvider="target">
-                                <rect key="frame" x="66.773820124665917" y="695" width="200" height="50.000000000000057"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <gestureRecognizers/>
-                            </view>
-                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FLx-Dh-uA9" customClass="DeltaView" customModule="MandelBox" customModuleProvider="target">
-                                <rect key="frame" x="352" y="457" width="200" height="200"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <gestureRecognizers/>
-                            </view>
-                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L4i-3o-zWc" customClass="SliderView" customModule="MandelBox" customModuleProvider="target">
-                                <rect key="frame" x="351.67943009795181" y="700" width="200" height="50.000000000000057"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <gestureRecognizers/>
-                            </view>
                             <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w4S-kB-HIs" customClass="SliderView" customModule="MandelBox" customModuleProvider="target">
                                 <rect key="frame" x="270.99999999999977" y="967" width="200" height="34.999999999999801"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -190,17 +166,29 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <gestureRecognizers/>
                             </view>
+                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fQr-Vt-l2n" userLabel="dColorB" customClass="CTranslate" customModule="MandelBox" customModuleProvider="target">
+                                <rect key="frame" x="20" y="1234" width="127" height="118"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
+                            </view>
+                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BxV-WD-Mvx" userLabel="dColorB" customClass="CRotate" customModule="MandelBox" customModuleProvider="target">
+                                <rect key="frame" x="877" y="1228" width="127" height="118"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.026657605508461555" green="0.077108541822286741" blue="0.15452622898527923" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <gestureRecognizers/>
                     </view>
                     <connections>
+                        <outlet property="cRotate" destination="BxV-WD-Mvx" id="3GL-WD-q79"/>
+                        <outlet property="cTranslate" destination="fQr-Vt-l2n" id="nQI-Gs-tq0"/>
                         <outlet property="dBox" destination="UmV-Sx-Npc" id="n46-MO-QRd"/>
-                        <outlet property="dCameraXY" destination="zBN-Ao-HjU" id="hIb-tx-Ygq"/>
                         <outlet property="dColorB" destination="oNU-8q-mDD" id="Suf-Vj-UEj"/>
                         <outlet property="dColorG" destination="sKd-ao-9Ev" id="mLd-cY-lYF"/>
                         <outlet property="dColorR" destination="mt0-3c-Kgm" id="4st-ZI-i3Q"/>
-                        <outlet property="dFocusXY" destination="FLx-Dh-uA9" id="Rto-2a-lW7"/>
                         <outlet property="dJuliaXY" destination="RDg-xR-1eU" id="A5F-4t-RmD"/>
                         <outlet property="dLightXY" destination="LiV-GR-noI" id="3Zw-5G-fO0"/>
                         <outlet property="dSphere" destination="skC-Xh-auf" id="r28-jK-ecv"/>
@@ -209,9 +197,7 @@
                         <outlet property="juliaOnOff" destination="fcb-ay-gsb" id="Bs4-pi-bhS"/>
                         <outlet property="resetButton" destination="yfK-it-LnG" id="RUC-au-Bdh"/>
                         <outlet property="resolutionButton" destination="GLu-c9-8ah" id="slJ-DK-uWs"/>
-                        <outlet property="sCameraZ" destination="wxv-GA-04r" id="osU-pR-7T2"/>
                         <outlet property="sEpsilon" destination="eUE-y4-Pwf" id="S6B-Ku-XLz"/>
-                        <outlet property="sFocusZ" destination="L4i-3o-zWc" id="D7u-SH-j1I"/>
                         <outlet property="sJuliaZ" destination="ycd-2w-FDg" id="gjw-K1-K2C"/>
                         <outlet property="sLightZ" destination="5dQ-KU-atc" id="UOM-66-tpp"/>
                         <outlet property="sScaleFactor" destination="WLa-71-fZs" id="jH5-N8-r7I"/>
@@ -362,6 +348,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="help" width="1481" height="508"/>
+        <image name="help" width="1499" height="534"/>
     </resources>
 </document>

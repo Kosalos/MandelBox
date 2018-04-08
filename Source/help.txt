@@ -6,13 +6,13 @@ http://digitalfreepen.com/mandelbox370/
 All the slider boxes work the same way:
 Press and hold to either side of center to affect the parameter in the specfied direction and speed.
 
-A.  Camera position
-The top widget controls the X,Y coordinates of the camera, the second widget controls the Z coordinate.
+A. Move Camera
+   Press above the center line to move forward, below to move backward.
 
-B. Focus position
-The X,Y,Z coordinates of the position the camera looks at.
+B. Rotate Camera
+   Press anywhere to rotate camera in semi-controllable fashion. (algorithm needs work)
 
-C. Changing the width of the field ov view affects a zoom effect.
+C. Changing the width of the field of view affects a zoom effect.
 
 D. MandelBox parameter controlling the degree of box and sphere folding.
 
@@ -27,9 +27,9 @@ G. Mandelbox uses two parameters to determine Box folding. Both are controlled h
 H. Each widget controls two aspects of its assigned red, green or blue color.
 
 I. Julia constant
-If enabled by toggle switch J,  this 3D coordinate is the Julia constant.
+   If enabled by toggle switch J, this 3D coordinate is the Julia constant.
 
-J. Toggle switch enables the Julia constant coord.
+J. Toggle switch enables the Julia constant coordinate.
 
 K. Reset all params.
 
@@ -38,5 +38,5 @@ L. Launch save/load dialog.
 M. Control the position of the light.
 
 N. Press this to toggle image resolution between Low and High.
-Use Low resolution to quickly navigate to region of interest, then switch to Hi res for viewing.
+   Use Low resolution to quickly navigate to region of interest, then switch to Hi res for viewing.
 
