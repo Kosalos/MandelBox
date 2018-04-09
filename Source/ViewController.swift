@@ -18,8 +18,6 @@ class ViewController: UIViewController {
     
     var timer = Timer()
     var outTexture: MTLTexture!
-    var outTextureL: MTLTexture!
-    var outTextureH: MTLTexture!
     let bytesPerPixel: Int = 4
     var pipeline1: MTLComputePipelineState!
     let queue = DispatchQueue(label: "Queue")
@@ -93,24 +91,6 @@ class ViewController: UIViewController {
         let hk = cRotate.bounds
         arcBall.initialize(Float(hk.size.width),Float(hk.size.height))
 
-        let szL = Int(IMAGESIZE_LOW)
-        let textureDescriptorL = MTLTextureDescriptor.texture2DDescriptor(
-            pixelFormat: .bgra8Unorm_srgb,
-            width: szL,
-            height: szL,
-            mipmapped: false)
-        outTextureL = self.device.makeTexture(descriptor: textureDescriptorL)!
-        threadGroupsL = MTLSizeMake(szL / threadGroupCount.width,szL / threadGroupCount.height,1)
-        
-        let szH = Int(IMAGESIZE_HIGH)
-        let textureDescriptorH = MTLTextureDescriptor.texture2DDescriptor(
-            pixelFormat: .bgra8Unorm_srgb,
-            width: szH,
-            height: szH,
-            mipmapped: false)
-        outTextureH = self.device.makeTexture(descriptor: textureDescriptorH)!
-        threadGroupsH = MTLSizeMake(szH / threadGroupCount.width,szH / threadGroupCount.height,1)
-
         cBuffer = device.makeBuffer(bytes: &control, length: MemoryLayout<Control>.stride, options: MTLResourceOptions.storageModeShared)
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.rotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
@@ -125,7 +105,7 @@ class ViewController: UIViewController {
 
         sZoom.initializeFloat(&control.zoom, .delta, 0.2,2, 0.03, "Zoom")
         sScaleFactor.initializeFloat(&control.scaleFactor, .delta, -5.0,5.0, 0.3, "Scale Factor")
-        sEpsilon.initializeFloat(&control.epsilon, .delta, 0.00001, 0.005, 0.001, "epsilon")
+        sEpsilon.initializeFloat(&control.epsilon, .delta, 0.00001, 0.0005, 0.001, "epsilon")
         
         dSphere.initializeFloat1(&control.sph1, 0,3,0.1 , "Sphere")
         dSphere.initializeFloat2(&control.sph2)
@@ -160,6 +140,7 @@ class ViewController: UIViewController {
 
         control.camera = vector_float3(0.38135, 2.3424, -0.380833)
         control.focus = vector_float3(-0.52,-1.22,-0.31)
+        control.transformMatrix = matrix_float4x4.init(diagonal: float4(1,1,1,1))
         control.zoom = 0.6141
         control.epsilon = 0.000074
         control.scaleFactor = 3
@@ -380,7 +361,7 @@ class ViewController: UIViewController {
     func alterAngle(_ dx:Float, _ dy:Float) {
         let center:CGFloat = cRotate.bounds.width/2
         arcBall.mouseDown(CGPoint(x: center, y: center))
-        arcBall.mouseMove(CGPoint(x: center + CGFloat(dx/10), y: center + CGFloat(dy/10)))
+        arcBall.mouseMove(CGPoint(x: center + CGFloat(dx/50), y: center + CGFloat(dy/50)))
         
         let direction = simd_make_float4(0,0.1,0,0)
         let rotatedDirection = simd_mul(arcBall.transformMatrix, direction)
@@ -394,7 +375,7 @@ class ViewController: UIViewController {
     }
     
     func alterPosition(_ dx:Float, _ dy:Float) {
-        let diff = dy * (control.focus - control.camera) / 100.0
+        let diff = dy * (control.focus - control.camera) / 300.0
         control.camera -= diff
         control.focus -= diff
         

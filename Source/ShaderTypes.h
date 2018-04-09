@@ -11,9 +11,12 @@
 #include <simd/simd.h>
 
 struct Control {
+    int version;
     vector_float3 camera;
     vector_float3 focus;
-    
+    matrix_float4x4 transformMatrix;
+    matrix_float3x3 endPosition;
+
     float sph1,sph2,sph3;
     float box1,box2;
     

@@ -12,6 +12,8 @@ class SaveLoadCell: UITableViewCell {
 
 //MARK:-
 
+let versionNumber:Int32 = 0x55aa
+
 class SaveLoadViewController: UIViewController,UITableViewDataSource, UITableViewDelegate,SLCellDelegate {
     var cc = Control()
     @IBOutlet var tableView: UITableView!
@@ -52,8 +54,19 @@ class SaveLoadViewController: UIViewController,UITableViewDataSource, UITableVie
         if let indexPath = getCurrentCellIndexPath(sender) {
             //Swift.print("Row ",indexPath.row, "        Tag ", sender.tag)
             
-            if sender.tag == 0 { loadAndDismissDialog(indexPath.row,&control) }
-            if sender.tag == 1 { saveAndDismissDialog(indexPath.row,control) }
+            if sender.tag == 0 {
+                loadAndDismissDialog(indexPath.row,&control)
+                if control.version != versionNumber { vc.reset() }
+                arcBall.transformMatrix = control.transformMatrix
+                arcBall.endPosition = control.endPosition
+            }
+            
+            if sender.tag == 1 {
+                control.version = versionNumber
+                control.transformMatrix = arcBall.transformMatrix
+                control.endPosition = arcBall.endPosition
+                saveAndDismissDialog(indexPath.row,control)
+            }
         }
     }
     
