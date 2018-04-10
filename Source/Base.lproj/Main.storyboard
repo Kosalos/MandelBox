@@ -178,6 +178,17 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <gestureRecognizers/>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qNH-Xz-lx6">
+                                <rect key="frame" x="818" y="575" width="78" height="36"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <state key="normal" title="Speed">
+                                    <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="speedButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="F0R-L0-JXQ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.026657605508461555" green="0.077108541822286741" blue="0.15452622898527923" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <gestureRecognizers/>
@@ -204,6 +215,7 @@
                         <outlet property="sSphere" destination="wrG-vr-fnh" id="vcH-Jr-8MV"/>
                         <outlet property="sZoom" destination="w4S-kB-HIs" id="RkW-rO-Mmn"/>
                         <outlet property="saveLoadButton" destination="HeO-5k-4ZX" id="2lA-b6-kMi"/>
+                        <outlet property="speedButton" destination="qNH-Xz-lx6" id="Sxj-Ur-aeb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>

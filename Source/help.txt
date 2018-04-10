@@ -40,3 +40,5 @@ M. Control the position of the light.
 N. Press this to toggle image resolution between Low and High.
    Use Low resolution to quickly navigate to region of interest, then switch to Hi res for viewing.
 
+P. Speed of Movement
+   Cycle through slow, medium and fast widget controls. Good for fine-tuning the box and sphere folds.

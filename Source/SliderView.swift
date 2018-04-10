@@ -9,7 +9,8 @@ class SliderView: UIView {
     var swidth:Float = 0
     var ident:Int = 0
     var active = true
-    
+    var highLightValue = Float()
+
     var valuePointer:UnsafeMutableRawPointer! = nil
     var valuetype:ValueType = .float
     var slidertype:SliderType = .delta
@@ -47,6 +48,10 @@ class SliderView: UIView {
         swidth = Float(bounds.width)
         scenter = swidth / 2
         setNeedsDisplay()
+    }
+
+    func highlight(_ v:Float) {
+        highLightValue = v
     }
 
     func setActive(_ v:Bool) {
@@ -141,6 +146,17 @@ class SliderView: UIView {
         path.addLine(to: CGPoint(x:x, y:bounds.height))
         context!.addPath(path.cgPath)
         context!.strokePath()
+        
+        // highlight --------------------------------------
+        
+        if highLightValue != 0 {
+            let den = CGFloat(mRange.y - mRange.x)
+            if den != 0 {
+                let x:CGFloat = bounds.width * CGFloat(highLightValue - mRange.x) / den
+                drawFilledCircle(CGPoint(x:x,y:5),4,UIColor.lightGray.cgColor)
+            }
+        }
+
     }
     
     func fClamp2(_ v:Float, _ range:float2) -> Float {
@@ -192,14 +208,15 @@ class SliderView: UIView {
         if valuePointer == nil || !active || !touched { return false }
 
         var value = getValue()
-
+        let scale = speedMult[speedIndex]
+        
         if slidertype == .loop {
-            value += delta * deltaValue
+            value += delta * deltaValue * scale
             if value < mRange.x { value += (mRange.y - mRange.x) } else
                 if value > mRange.y { value -= (mRange.y - mRange.x) }
         }
         else {
-            value = fClamp2(value + delta * deltaValue, mRange)
+            value = fClamp2(value + delta * deltaValue * scale, mRange)
         }
         
         switch valuetype {
@@ -250,7 +267,14 @@ class SliderView: UIView {
     
     func drawVLine(_ x:CGFloat, _ y1:CGFloat, _ y2:CGFloat) { drawLine(CGPoint(x:x,y:y1),CGPoint(x:x,y:y2)) }
     func drawHLine(_ x1:CGFloat, _ x2:CGFloat, _ y:CGFloat) { drawLine(CGPoint(x:x1, y:y),CGPoint(x: x2, y:y)) }
-    
+
+    func drawFilledCircle(_ center:CGPoint, _ diameter:CGFloat, _ color:CGColor) {
+        context?.beginPath()
+        context?.addEllipse(in: CGRect(x:CGFloat(center.x - diameter/2), y:CGFloat(center.y - diameter/2), width:CGFloat(diameter), height:CGFloat(diameter)))
+        context?.setFillColor(color)
+        context?.fillPath()
+    }
+
     func drawText(_ x:CGFloat, _ y:CGFloat, _ color:UIColor, _ sz:CGFloat, _ str:String) {
         let paraStyle = NSMutableParagraphStyle()
         paraStyle.alignment = NSTextAlignment.left

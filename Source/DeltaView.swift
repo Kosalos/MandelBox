@@ -219,11 +219,9 @@ class DeltaView: UIView {
     func update() -> Bool {
         if valuePointerX == nil || valuePointerY == nil || !active || !touched { return false }
         
-        var valueX = getValue(0)
-        var valueY = getValue(1)
-
-        valueX = fClamp2(valueX + deltaX * deltaValue, mRange)
-        valueY = fClamp2(valueY + deltaY * deltaValue, mRange)
+        let scale = speedMult[speedIndex]
+        let valueX = fClamp2(getValue(0) + deltaX * deltaValue * scale, mRange)
+        let valueY = fClamp2(getValue(1) + deltaY * deltaValue * scale, mRange)
 
         if let valuePointerX = valuePointerX { valuePointerX.storeBytes(of:valueX, as:Float.self) }
         if let valuePointerY = valuePointerY { valuePointerY.storeBytes(of:valueY, as:Float.self) }

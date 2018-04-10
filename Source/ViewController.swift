@@ -4,14 +4,17 @@ import simd
 
 let kludgeAutoLayout:Bool = false
 let scrnSz:[CGPoint] = [ CGPoint(x:768,y:1024), CGPoint(x:834,y:1112), CGPoint(x:1024,y:1366) ] // portrait
-let scrnIndex = 2
-let scrnLandscape:Bool = true
+let scrnIndex = 0
+let scrnLandscape:Bool = false
 
 let IMAGESIZE_LOW:Int32 = 760
 let IMAGESIZE_HIGH:Int32 = 2000
 
 var control = Control()
 var vc:ViewController! = nil
+
+let speedMult:[Float] = [ 0.02,0.1,1 ]
+var speedIndex:Int = 0
 
 class ViewController: UIViewController {
     var cBuffer:MTLBuffer! = nil
@@ -23,13 +26,10 @@ class ViewController: UIViewController {
     let queue = DispatchQueue(label: "Queue")
     lazy var device: MTLDevice! = MTLCreateSystemDefaultDevice()
     lazy var commandQueue: MTLCommandQueue! = { return self.device.makeCommandQueue() }()
-    var circleMove:Bool = false
 
     let threadGroupCount = MTLSizeMake(20,20, 1)   // integer factor of SIZE
     var threadGroups = MTLSize()
-    var threadGroupsL = MTLSize()
-    var threadGroupsH = MTLSize()
-
+    
     @IBOutlet var cRotate: CRotate!
     @IBOutlet var cTranslate: CTranslate!
     @IBOutlet var sZoom: SliderView!
@@ -49,6 +49,7 @@ class ViewController: UIViewController {
     @IBOutlet var resetButton: UIButton!
     @IBOutlet var saveLoadButton: UIButton!
     @IBOutlet var helpButton: UIButton!
+    @IBOutlet var speedButton: UIButton!
     @IBOutlet var resolutionButton: UIButton!
     @IBOutlet var juliaOnOff: UISwitch!
     
@@ -59,6 +60,14 @@ class ViewController: UIViewController {
         control.size = (control.size == IMAGESIZE_LOW) ? IMAGESIZE_HIGH : IMAGESIZE_LOW
         setResolution()
         updateImage()
+    }
+
+    @IBAction func speedButtonPressed(_ sender: UIButton) {
+        speedIndex += 1
+        if speedIndex >= speedMult.count { speedIndex = 0 }
+        
+        let sName:[String] = ["Slow", "Med", "Fast" ]
+        speedButton.setTitle("   Speed:" + sName[speedIndex], for: UIControlState.normal)
     }
 
     func updateResolutionButton() { resolutionButton.setTitle(control.size == IMAGESIZE_LOW ? " Res: Low" : " Res: High", for: UIControlState.normal) }
@@ -104,14 +113,17 @@ class ViewController: UIViewController {
         dList = [ dSphere,dBox,dColorR,dColorG,dColorB,dJuliaXY,dLightXY ]
 
         sZoom.initializeFloat(&control.zoom, .delta, 0.2,2, 0.03, "Zoom")
-        sScaleFactor.initializeFloat(&control.scaleFactor, .delta, -5.0,5.0, 0.3, "Scale Factor")
+        sScaleFactor.initializeFloat(&control.scaleFactor, .delta, -5.0,5.0, 0.1, "Scale Factor")
+        sScaleFactor.highlight(3)
+        
         sEpsilon.initializeFloat(&control.epsilon, .delta, 0.00001, 0.0005, 0.001, "epsilon")
         
         dSphere.initializeFloat1(&control.sph1, 0,3,0.1 , "Sphere")
         dSphere.initializeFloat2(&control.sph2)
         dSphere.highlight(0.25,1)
         sSphere.initializeFloat(&control.sph3, .delta, 0.1,6.0,0.1, "Sphere M")
-        
+        sSphere.highlight(4)
+
         dBox.initializeFloat1(&control.box1, 0,3,0.1, "Box")
         dBox.initializeFloat2(&control.box2)
         dBox.highlight(1,2)
@@ -138,6 +150,9 @@ class ViewController: UIViewController {
         control.size = IMAGESIZE_LOW
         setResolution()
 
+        speedIndex = speedMult.count - 2
+        speedButtonPressed(speedButton) // will bump it to 'fast'
+        
         control.camera = vector_float3(0.38135, 2.3424, -0.380833)
         control.focus = vector_float3(-0.52,-1.22,-0.31)
         control.transformMatrix = matrix_float4x4.init(diagonal: float4(1,1,1,1))
@@ -267,7 +282,8 @@ class ViewController: UIViewController {
             y = by
             resolutionButton.frame = frame(80,bys,0,bys + gap)
             sEpsilon.frame = frame(cxs,bys,0,bys + gap)
-            cRotate.frame = frame(cxs,cxs,0,0)
+            cRotate.frame = frame(cxs,cxs,0,cxs+gap)
+            speedButton.frame = frame(cxs,bys,0,0)
         }
         else {          // landscape
             sz = ys - 10
@@ -288,8 +304,9 @@ class ViewController: UIViewController {
             dSphere.frame = frame(cxs,cxs,cxs + gap,0)
             dBox.frame = frame(cxs,cxs,0,cxs + gap)
             x = left
-            sSphere.frame  = frame(cxs,bys,0,bys + gap)
-            y = by + 260
+            sSphere.frame  = frame(cxs,bys,cxs + gap,0)
+            speedButton.frame = frame(cxs,bys,0,bys+gap)
+            x = left
             dColorR.frame = frame(cxs2,cxs2,cxs2 + gap,0)
             dColorG.frame = frame(cxs2,cxs2,cxs2 + gap,0)
             dColorB.frame = frame(cxs2,cxs2,0,cxs2 + gap)
@@ -306,10 +323,10 @@ class ViewController: UIViewController {
             resetButton.frame = frame(50,bys,0,bys + gap)
             helpButton.frame = frame(bys,bys,0,30)
             
-            x = 10
-            y = ys - cxs - 10
+            x = 40
+            y = ys - cxs - 40
             cTranslate.frame = frame(cxs,cxs,0,0)
-            x = xs - cxs - 10
+            x = xs - cxs - 40
             cRotate.frame = frame(cxs,cxs,0,0)
         }
     }
