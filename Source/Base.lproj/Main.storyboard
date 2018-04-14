@@ -35,7 +35,7 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SKK-Rp-etB" customClass="UIImageView">
-                                <rect key="frame" x="63" y="67" width="473" height="328"/>
+                                <rect key="frame" x="63" y="67" width="317" height="219"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
@@ -189,6 +189,30 @@
                                     <action selector="speedButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="F0R-L0-JXQ"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EjD-bU-DCn" customClass="UIImageView">
+                                <rect key="frame" x="63" y="309" width="317" height="219"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <gestureRecognizers/>
+                            </view>
+                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fYb-lO-fub" customClass="SliderView" customModule="MandelBox" customModuleProvider="target">
+                                <rect key="frame" x="818" y="324" width="119" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3I7-x8-5cJ">
+                                <rect key="frame" x="813" y="745" width="78" height="36"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <state key="normal" title="S">
+                                    <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="stereoButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="fem-G1-JNP"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.026657605508461555" green="0.077108541822286741" blue="0.15452622898527923" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <gestureRecognizers/>
@@ -204,7 +228,8 @@
                         <outlet property="dLightXY" destination="LiV-GR-noI" id="3Zw-5G-fO0"/>
                         <outlet property="dSphere" destination="skC-Xh-auf" id="r28-jK-ecv"/>
                         <outlet property="helpButton" destination="gUW-2t-ZIx" id="MIj-05-rc9"/>
-                        <outlet property="imageView" destination="SKK-Rp-etB" id="7YQ-Bm-Qam"/>
+                        <outlet property="imageViewL" destination="SKK-Rp-etB" id="7YQ-Bm-Qam"/>
+                        <outlet property="imageViewR" destination="EjD-bU-DCn" id="5cO-g5-DCM"/>
                         <outlet property="juliaOnOff" destination="fcb-ay-gsb" id="Bs4-pi-bhS"/>
                         <outlet property="resetButton" destination="yfK-it-LnG" id="RUC-au-Bdh"/>
                         <outlet property="resolutionButton" destination="GLu-c9-8ah" id="slJ-DK-uWs"/>
@@ -213,9 +238,11 @@
                         <outlet property="sLightZ" destination="5dQ-KU-atc" id="UOM-66-tpp"/>
                         <outlet property="sScaleFactor" destination="WLa-71-fZs" id="jH5-N8-r7I"/>
                         <outlet property="sSphere" destination="wrG-vr-fnh" id="vcH-Jr-8MV"/>
+                        <outlet property="sToeIn" destination="fYb-lO-fub" id="fea-Nj-RC2"/>
                         <outlet property="sZoom" destination="w4S-kB-HIs" id="RkW-rO-Mmn"/>
                         <outlet property="saveLoadButton" destination="HeO-5k-4ZX" id="2lA-b6-kMi"/>
                         <outlet property="speedButton" destination="qNH-Xz-lx6" id="Sxj-Ur-aeb"/>
+                        <outlet property="stereoButton" destination="3I7-x8-5cJ" id="Dw7-Sn-Yfa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
@@ -360,6 +387,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="help" width="1499" height="534"/>
+        <image name="help" width="1499" height="532"/>
     </resources>
 </document>

@@ -4,7 +4,7 @@ import simd
 
 let kludgeAutoLayout:Bool = false
 let scrnSz:[CGPoint] = [ CGPoint(x:768,y:1024), CGPoint(x:834,y:1112), CGPoint(x:1024,y:1366) ] // portrait
-let scrnIndex = 0
+let scrnIndex = 1
 let scrnLandscape:Bool = false
 
 let IMAGESIZE_LOW:Int32 = 760
@@ -18,9 +18,11 @@ var speedIndex:Int = 0
 
 class ViewController: UIViewController {
     var cBuffer:MTLBuffer! = nil
+    var isStereo:Bool = false
     
     var timer = Timer()
-    var outTexture: MTLTexture!
+    var outTextureL: MTLTexture!
+    var outTextureR: MTLTexture!
     let bytesPerPixel: Int = 4
     var pipeline1: MTLComputePipelineState!
     let queue = DispatchQueue(label: "Queue")
@@ -45,12 +47,15 @@ class ViewController: UIViewController {
     @IBOutlet var sJuliaZ: SliderView!
     @IBOutlet var dLightXY: DeltaView!
     @IBOutlet var sLightZ: SliderView!
-    @IBOutlet var imageView: UIImageView!
+    @IBOutlet var sToeIn: SliderView!
+    @IBOutlet var imageViewL: UIImageView!
+    @IBOutlet var imageViewR: UIImageView!
     @IBOutlet var resetButton: UIButton!
     @IBOutlet var saveLoadButton: UIButton!
     @IBOutlet var helpButton: UIButton!
     @IBOutlet var speedButton: UIButton!
     @IBOutlet var resolutionButton: UIButton!
+    @IBOutlet var stereoButton: UIButton!
     @IBOutlet var juliaOnOff: UISwitch!
     
     @IBAction func resetButtonPressed(_ sender: UIButton) { reset() }
@@ -72,6 +77,13 @@ class ViewController: UIViewController {
 
     func updateResolutionButton() { resolutionButton.setTitle(control.size == IMAGESIZE_LOW ? " Res: Low" : " Res: High", for: UIControlState.normal) }
 
+    @IBAction func stereoButtonPressed(_ sender: UIButton) {
+        isStereo = !isStereo
+        oldXS = 0   // force rotated() to redraw
+        rotated()
+        updateImage()
+    }
+    
     var juliaX:Float = 0.0
     var juliaY:Float = 0.0
     var juliaZ:Float = 0.0
@@ -109,7 +121,7 @@ class ViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        sList = [ sZoom,sScaleFactor,sEpsilon,sJuliaZ,sLightZ,sSphere]
+        sList = [ sZoom,sScaleFactor,sEpsilon,sJuliaZ,sLightZ,sSphere,sToeIn ]
         dList = [ dSphere,dBox,dColorR,dColorG,dColorB,dJuliaXY,dLightXY ]
 
         sZoom.initializeFloat(&control.zoom, .delta, 0.2,2, 0.03, "Zoom")
@@ -137,6 +149,10 @@ class ViewController: UIViewController {
 
         dLightXY.initializeFloat1(&lightX, -1,1, 1, "Light XY"); dLightXY.initializeFloat2(&lightY)
         sLightZ.initializeFloat(&lightZ, .delta, -1,1,1, "Light Z")
+
+        let toeInRange:Float = 0.008
+        sToeIn.initializeFloat(&control.toeIn, .delta, -toeInRange,+toeInRange,0.0002, "Parallax")
+        sToeIn.highlight(0.000001)
 
         reset()
         
@@ -181,6 +197,8 @@ class ViewController: UIViewController {
         control.light.y = 0.66
         control.light.z = 1.0
 
+        control.toeIn = 0.0011
+        
         unWrapFloat3()
         
         for s in sList { s.setNeedsDisplay() }
@@ -207,8 +225,9 @@ class ViewController: UIViewController {
             width: sz,
             height: sz,
             mipmapped: false)
-        outTexture = self.device.makeTexture(descriptor: textureDescriptor)!
-        
+        outTextureL = self.device.makeTexture(descriptor: textureDescriptor)!
+        outTextureR = self.device.makeTexture(descriptor: textureDescriptor)!
+
         threadGroups = MTLSizeMake(
             sz / threadGroupCount.width,
             sz / threadGroupCount.height,1)
@@ -219,7 +238,7 @@ class ViewController: UIViewController {
     //MARK: -
     
     var oldXS:CGFloat = 0
-    
+
     @objc func rotated() {
         var xs = view.bounds.width
         var ys = view.bounds.height
@@ -247,18 +266,27 @@ class ViewController: UIViewController {
             x += dx; y += dy
             return r
         }
-        
-        if ys > xs {    // portrait
+
+        func portraitMono() {
             sz = xs - 10
             by = sz + 10  // top of widgets
             x = (xs - 730) / 2
             y = by
+            
+            imageViewR.isHidden = true
+            sToeIn.isHidden = true
 
-            imageView.frame = CGRect(x:5, y:5, width:sz, height:sz)
-
+            imageViewL.frame = CGRect(x:5, y:5, width:sz, height:sz)
+            
             sZoom.frame = frame(cxs,bys,0,bys + gap)
             sScaleFactor.frame = frame(cxs,bys,0,bys + gap)
-            cTranslate.frame = frame(cxs,cxs,cxs + gap,0)
+            cTranslate.frame = frame(cxs,cxs,0,cxs + gap)
+            
+            var x2 = x
+            stereoButton.frame = frame(bys,bys,bys + gap,0)
+            sToeIn.frame = frame(cxs - bys - gap,bys,0,0)
+            x = x2 + cxs + gap
+            
             y = by
             dSphere.frame = frame(cxs,cxs,0,cxs + gap)
             sSphere.frame  = frame(cxs,bys,0,bys + gap)
@@ -272,8 +300,8 @@ class ViewController: UIViewController {
             sJuliaZ.frame  = frame(cxs,bys,0,bys + gap + 5)
             juliaOnOff.frame = frame(50,30,0,bys + gap)
             resetButton.frame = frame(50,bys,cxs + gap,0)
+            x2 = x
             y = by
-            let x2 = x
             dLightXY.frame = frame(cxs,cxs,0,cxs + gap)
             sLightZ.frame  = frame(cxs,bys,0,bys + gap + 5)
             saveLoadButton.frame = frame(80,bys,0,bys + gap)
@@ -285,14 +313,67 @@ class ViewController: UIViewController {
             cRotate.frame = frame(cxs,cxs,0,cxs+gap)
             speedButton.frame = frame(cxs,bys,0,0)
         }
-        else {          // landscape
+
+        func portraitStereo() {
+            sz = xs - 10
+            let sz2 = sz / 2
+            by = sz2 + 10  // top of widgets
+            x = (xs - 730) / 2
+            y = by
+            
+            imageViewR.isHidden = false
+            sToeIn.isHidden = false
+            
+            imageViewL.frame = CGRect(x:5, y:5, width:sz2, height:sz2)
+            imageViewR.frame = CGRect(x:5+sz2+2, y:5, width:sz2, height:sz2)
+
+            sZoom.frame = frame(cxs,bys,0,bys + gap)
+            sScaleFactor.frame = frame(cxs,bys,0,bys + gap)
+            cTranslate.frame = frame(cxs,cxs,0,cxs + gap)
+            
+            var x2 = x
+            stereoButton.frame = frame(bys,bys,bys + gap,0)
+            sToeIn.frame = frame(cxs - bys - gap,bys,0,0)
+            x = x2 + cxs + gap
+
+            y = by
+            dSphere.frame = frame(cxs,cxs,0,cxs + gap)
+            sSphere.frame  = frame(cxs,bys,0,bys + gap)
+            dBox.frame = frame(cxs2,cxs2,cxs + gap,0)
+            y = by
+            dColorR.frame = frame(cxs2,cxs2,0,cxs2 + gap)
+            dColorG.frame = frame(cxs2,cxs2,0,cxs2 + gap)
+            dColorB.frame = frame(cxs2,cxs2,cxs2 + gap,0)
+            y = by
+            dJuliaXY.frame = frame(cxs,cxs,0,cxs + gap)
+            sJuliaZ.frame  = frame(cxs,bys,0,bys + gap + 5)
+            juliaOnOff.frame = frame(50,30,0,bys + gap)
+            resetButton.frame = frame(50,bys,cxs + gap,0)
+            x2 = x
+            y = by
+            dLightXY.frame = frame(cxs,cxs,0,cxs + gap)
+            sLightZ.frame  = frame(cxs,bys,0,bys + gap + 5)
+            saveLoadButton.frame = frame(80,bys,0,bys + gap)
+            helpButton.frame = frame(bys,bys,0,0)
+            x = x2 + cxs + gap
+            y = by
+            resolutionButton.frame = frame(80,bys,0,bys + gap)
+            sEpsilon.frame = frame(cxs,bys,0,bys + gap)
+            cRotate.frame = frame(cxs,cxs,0,cxs+gap)
+            speedButton.frame = frame(cxs,bys,0,0)
+        }
+        
+        func landScapeMono() {
             sz = ys - 10
             by = 50     // top of widgets
             let left = sz + 10
             x = left
             y = by
             
-            imageView.frame = CGRect(x:5, y:5, width:sz, height:sz)
+            imageViewR.isHidden = true
+            sToeIn.isHidden = true
+            
+            imageViewL.frame = CGRect(x:5, y:5, width:sz, height:sz)
             
             sZoom.frame = frame(cxs,bys,0,bys + gap)
             sScaleFactor.frame = frame(cxs,bys,cxs + gap,0)
@@ -318,16 +399,72 @@ class ViewController: UIViewController {
             sLightZ.frame  = frame(cxs,bys,0,bys + gap)
             x = left
             juliaOnOff.frame = frame(50,30,cxs + gap,0)
-            saveLoadButton.frame = frame(80,bys,0,bys+gap + 20)
+            saveLoadButton.frame = frame(80,bys,0,bys+gap + 10)
             x = left
-            resetButton.frame = frame(50,bys,0,bys + gap)
-            helpButton.frame = frame(bys,bys,0,30)
+            resetButton.frame = frame(50,bys,0,bys+gap)
+            stereoButton.frame = frame(bys,bys,0,bys+gap)
+            helpButton.frame = frame(bys,bys,0,0)
             
             x = 40
             y = ys - cxs - 40
             cTranslate.frame = frame(cxs,cxs,0,0)
             x = xs - cxs - 40
             cRotate.frame = frame(cxs,cxs,0,0)
+        }
+
+        func landScapeStereo() {
+            sz = xs - 10
+            let sz2 = sz / 2
+            by = sz2 + 10  // top of widgets
+            x = (xs - 730) / 2
+            y = by
+            
+            imageViewR.isHidden = false
+            sToeIn.isHidden = false
+            
+            imageViewL.frame = CGRect(x:5, y:5, width:sz2, height:sz2)
+            imageViewR.frame = CGRect(x:5+sz2+2, y:5, width:sz2, height:sz2)
+
+            sZoom.frame = frame(cxs,bys,0,bys + gap)
+            sScaleFactor.frame = frame(cxs,bys,0,bys + gap)
+            cTranslate.frame = frame(cxs,cxs,0,cxs+gap)
+            
+            var x2 = x
+            stereoButton.frame = frame(bys,bys,bys + gap,0)
+            sToeIn.frame = frame(cxs - bys - gap,bys,0,0)
+            x = x2 + cxs + gap
+            y = by
+            dSphere.frame = frame(cxs,cxs,0,cxs + gap)
+            sSphere.frame  = frame(cxs,bys,0,bys + gap)
+            dBox.frame = frame(cxs2,cxs2,cxs + gap,0)
+            y = by
+            dColorR.frame = frame(cxs2,cxs2,0,cxs2 + gap)
+            dColorG.frame = frame(cxs2,cxs2,0,cxs2 + gap)
+            dColorB.frame = frame(cxs2,cxs2,cxs2 + gap,0)
+            y = by
+            dJuliaXY.frame = frame(cxs,cxs,0,cxs + gap)
+            sJuliaZ.frame  = frame(cxs,bys,0,bys + gap + 5)
+            juliaOnOff.frame = frame(50,30,0,bys + gap)
+            resetButton.frame = frame(50,bys,cxs + gap,0)
+            y = by
+            x2 = x
+            dLightXY.frame = frame(cxs,cxs,0,cxs + gap)
+            sLightZ.frame  = frame(cxs,bys,0,bys + gap + 5)
+            saveLoadButton.frame = frame(80,bys,0,bys + gap)
+            helpButton.frame = frame(bys,bys,0,0)
+            x = x2 + cxs + gap
+            y = by
+            resolutionButton.frame = frame(80,bys,0,bys + gap)
+            sEpsilon.frame = frame(cxs,bys,0,bys + gap)
+            cRotate.frame = frame(cxs,cxs,0,cxs+gap)
+            speedButton.frame = frame(cxs,bys,0,0)
+        }
+
+        if ys > xs {    // portrait
+            if isStereo { portraitStereo() } else { portraitMono() }
+        }
+        else {          // landscape
+            if isStereo { landScapeStereo() } else { landScapeMono() }
         }
     }
     
@@ -366,15 +503,6 @@ class ViewController: UIViewController {
     
     //MARK: -
     
-    func updateImage() {
-        queue.async {
-            self.calcRayMarch()
-            DispatchQueue.main.async { self.imageView.image = self.image(from: self.outTexture) }
-        }
-    }
-    
-    //MARK: -
-    
     func alterAngle(_ dx:Float, _ dy:Float) {
         let center:CGFloat = cRotate.bounds.width/2
         arcBall.mouseDown(CGPoint(x: center, y: center))
@@ -400,17 +528,39 @@ class ViewController: UIViewController {
     }
     
     //MARK: -
+    
+    var isBusy:Bool = false
+    
+    func updateImage() {
+        queue.async {
+            if self.isBusy { return }
+            self.isBusy = true
 
-    func calcRayMarch() {
+            self.calcRayMarch(0)
+            DispatchQueue.main.async { self.imageViewL.image = self.image(from: self.outTextureL) }
+            self.calcRayMarch(1)
+            DispatchQueue.main.async { self.imageViewR.image = self.image(from: self.outTextureR) }
+
+            self.isBusy = false
+        }
+    }
+    
+    //MARK: -
+
+    func calcRayMarch(_ who:Int) {
         wrapFloat3()
 
-        cBuffer.contents().copyMemory(from: &control, byteCount:MemoryLayout<Control>.stride)
+        var c = control
+        if who == 0 { c.camera.x -= control.toeIn }
+        if who == 1 { c.camera.x += control.toeIn }
+
+        cBuffer.contents().copyMemory(from: &c, byteCount:MemoryLayout<Control>.stride)
         
         let commandBuffer = commandQueue.makeCommandBuffer()!
         let commandEncoder = commandBuffer.makeComputeCommandEncoder()!
         
         commandEncoder.setComputePipelineState(pipeline1)
-        commandEncoder.setTexture(outTexture, index: 0)
+        commandEncoder.setTexture(who == 0 ? outTextureL : outTextureR, index: 0)
         commandEncoder.setBuffer(cBuffer, offset: 0, index: 0)
         commandEncoder.dispatchThreadgroups(threadGroups, threadsPerThreadgroup: threadGroupCount)
         commandEncoder.endEncoding()

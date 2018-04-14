@@ -42,3 +42,17 @@ N. Press this to toggle image resolution between Low and High.
 
 P. Speed of Movement
    Cycle through slow, medium and fast widget controls. Good for fine-tuning the box and sphere folds.
+
+Q. Stereo
+   Toggle stereo mode on/off.
+   Image is rendered twice, for 'cross-eyed' 3D viewing.
+   With the iPad held two feet away,
+   slightly cross your eyes so that there is a third image in the middle.
+   Relax your gaze, and concentrate only on that middle image, which is in 3D.
+
+   The companion 'Parallax' widget controls the amount of stereo effect.
+   Not all vistas work well in stereo,
+   and each may need parallax adjustment for best effect.
+   When it Does work, the results are fantastic!
+
+

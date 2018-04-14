@@ -34,7 +34,8 @@ struct Control {
     
     vector_float3 light;
     
-    vector_float3 future1;
+    float toeIn;
+    vector_float2 future1;
     vector_float3 future2;
     vector_float3 future3;
 };
