@@ -538,8 +538,11 @@ class ViewController: UIViewController {
 
             self.calcRayMarch(0)
             DispatchQueue.main.async { self.imageViewL.image = self.image(from: self.outTextureL) }
-            self.calcRayMarch(1)
-            DispatchQueue.main.async { self.imageViewR.image = self.image(from: self.outTextureR) }
+            
+            if self.isStereo {
+                self.calcRayMarch(1)
+                DispatchQueue.main.async { self.imageViewR.image = self.image(from: self.outTextureR) }
+            }
 
             self.isBusy = false
         }
