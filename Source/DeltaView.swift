@@ -18,9 +18,7 @@ class DeltaView: UIView {
     
     func initialize(_ iname:String) { 
         name = iname
-        swidth = Float(bounds.width)
-        scenter = swidth / 2
-        setNeedsDisplay()
+        boundsChanged()
     }
     
     func initializeFloat1(_ v: inout Float,  _ min:Float, _ max:Float,  _ delta:Float, _ iname:String) {
@@ -30,9 +28,8 @@ class DeltaView: UIView {
         mRange.x = min
         mRange.y = max
         deltaValue = delta
-        name = iname        
-        swidth = Float(bounds.width)
-        scenter = swidth / 2
+        name = iname
+        boundsChanged()
     }
     
     func initializeFloat2(_ v: inout Float) {
@@ -52,6 +49,12 @@ class DeltaView: UIView {
     }
     
     func percentX(_ percent:CGFloat) -> CGFloat { return CGFloat(bounds.size.width) * percent }
+  
+    func boundsChanged() {
+        swidth = Float(bounds.width)
+        scenter = swidth / 2
+        setNeedsDisplay()
+    }
     
     //MARK: ==================================
     

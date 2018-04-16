@@ -115,7 +115,6 @@ class ViewController: UIViewController {
         cBuffer = device.makeBuffer(bytes: &control, length: MemoryLayout<Control>.stride, options: MTLResourceOptions.storageModeShared)
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.rotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
-        rotated()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -152,10 +151,9 @@ class ViewController: UIViewController {
 
         let toeInRange:Float = 0.008
         sToeIn.initializeFloat(&control.toeIn, .delta, -toeInRange,+toeInRange,0.0002, "Parallax")
-        sToeIn.highlight(0.000001)
-
-        reset()
+        sToeIn.highlight(0)
         
+        reset()        
         timer = Timer.scheduledTimer(timeInterval: 1.0/60.0, target:self, selector: #selector(timerHandler), userInfo: nil, repeats:true)
     }
     
@@ -427,7 +425,6 @@ class ViewController: UIViewController {
 
             sZoom.frame = frame(cxs,bys,0,bys + gap)
             sScaleFactor.frame = frame(cxs,bys,0,bys + gap)
-            cTranslate.frame = frame(cxs,cxs,0,cxs+gap)
             
             var x2 = x
             stereoButton.frame = frame(bys,bys,bys + gap,0)
@@ -456,8 +453,14 @@ class ViewController: UIViewController {
             y = by
             resolutionButton.frame = frame(80,bys,0,bys + gap)
             sEpsilon.frame = frame(cxs,bys,0,bys + gap)
-            cRotate.frame = frame(cxs,cxs,0,cxs+gap)
             speedButton.frame = frame(cxs,bys,0,0)
+            
+            x = 40
+            y = ys - cxs - 40
+            cTranslate.frame = frame(cxs,cxs,0,0)
+            x = xs - cxs - 40
+            cRotate.frame = frame(cxs,cxs,0,0)
+
         }
 
         if ys > xs {    // portrait
@@ -465,6 +468,11 @@ class ViewController: UIViewController {
         }
         else {          // landscape
             if isStereo { landScapeStereo() } else { landScapeMono() }
+        }
+        
+        if sList != nil {
+            for s in sList { s.boundsChanged() }
+            for d in dList { d.boundsChanged() }
         }
     }
     
@@ -549,7 +557,7 @@ class ViewController: UIViewController {
     }
     
     //MARK: -
-
+    
     func calcRayMarch(_ who:Int) {
         wrapFloat3()
 

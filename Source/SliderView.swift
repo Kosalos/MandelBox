@@ -3,13 +3,16 @@ import UIKit
 enum ValueType { case int32,float }
 enum SliderType { case delta,direct,loop }
 
+let highLightUnused:Float = 999
+
 class SliderView: UIView {
     var context : CGContext?
     var scenter:Float = 0
     var swidth:Float = 0
     var ident:Int = 0
     var active = true
-    var highLightValue = Float()
+    
+    var highLightValue = highLightUnused
 
     var valuePointer:UnsafeMutableRawPointer! = nil
     var valuetype:ValueType = .float
@@ -31,9 +34,7 @@ class SliderView: UIView {
         mRange.y = max
         deltaValue = delta
         name = iname
-        swidth = Float(bounds.width)
-        scenter = swidth / 2
-        setNeedsDisplay()
+        boundsChanged()
     }
 
     func initializeFloat(_ v: inout Float, _ sType:SliderType, _ min:Float, _ max:Float,  _ delta:Float, _ iname:String) {
@@ -44,10 +45,8 @@ class SliderView: UIView {
         mRange.x = min
         mRange.y = max
         deltaValue = delta
-        name = iname        
-        swidth = Float(bounds.width)
-        scenter = swidth / 2
-        setNeedsDisplay()
+        name = iname
+        boundsChanged()
     }
 
     func highlight(_ v:Float) {
@@ -60,6 +59,12 @@ class SliderView: UIView {
     }
     
     func percentX(_ percent:CGFloat) -> CGFloat { return CGFloat(bounds.size.width) * percent }
+    
+    func boundsChanged() {
+        swidth = Float(bounds.width)
+        scenter = swidth / 2
+        setNeedsDisplay()
+    }
     
     //MARK: ==================================
 
@@ -139,7 +144,7 @@ class SliderView: UIView {
         
         // cursor -------------------------------------------------
         let x = valueRatio() * bounds.width
-        context!.setStrokeColor(UIColor.black.cgColor)
+        context!.setStrokeColor(UIColor.darkGray.cgColor)
         context!.setLineWidth(4)
         path.removeAllPoints()
         path.move(to: CGPoint(x:x, y:0))
@@ -149,7 +154,7 @@ class SliderView: UIView {
         
         // highlight --------------------------------------
         
-        if highLightValue != 0 {
+        if highLightValue != highLightUnused {
             let den = CGFloat(mRange.y - mRange.x)
             if den != 0 {
                 let x:CGFloat = bounds.width * CGFloat(highLightValue - mRange.x) / den
