@@ -23,7 +23,7 @@ float3 getColor(float3 pos,constant Control &control)
         // Sphere fold.
         float mag = dot(v, v);
         if (mag < control.sph1)
-            v = v * 4.0;
+            v = v * control.sph1 * 2;
         else if (mag < control.sph2)
             v = v / mag;
         

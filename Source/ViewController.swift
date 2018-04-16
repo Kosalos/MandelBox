@@ -127,7 +127,7 @@ class ViewController: UIViewController {
         sScaleFactor.initializeFloat(&control.scaleFactor, .delta, -5.0,5.0, 0.1, "Scale Factor")
         sScaleFactor.highlight(3)
         
-        sEpsilon.initializeFloat(&control.epsilon, .delta, 0.00001, 0.0005, 0.001, "epsilon")
+        sEpsilon.initializeFloat(&control.epsilon, .delta, 0.00001, 0.0005, 0.0002, "epsilon")
         
         dSphere.initializeFloat1(&control.sph1, 0,3,0.1 , "Sphere")
         dSphere.initializeFloat2(&control.sph2)
@@ -265,17 +265,7 @@ class ViewController: UIViewController {
             return r
         }
 
-        func portraitMono() {
-            sz = xs - 10
-            by = sz + 10  // top of widgets
-            x = (xs - 730) / 2
-            y = by
-            
-            imageViewR.isHidden = true
-            sToeIn.isHidden = true
-
-            imageViewL.frame = CGRect(x:5, y:5, width:sz, height:sz)
-            
+        func portraitCommon() {
             sZoom.frame = frame(cxs,bys,0,bys + gap)
             sScaleFactor.frame = frame(cxs,bys,0,bys + gap)
             cTranslate.frame = frame(cxs,cxs,0,cxs + gap)
@@ -311,6 +301,19 @@ class ViewController: UIViewController {
             cRotate.frame = frame(cxs,cxs,0,cxs+gap)
             speedButton.frame = frame(cxs,bys,0,0)
         }
+        
+        func portraitMono() {
+            sz = xs - 10
+            by = sz + 10  // top of widgets
+            x = (xs - 730) / 2
+            y = by
+            
+            imageViewR.isHidden = true
+            sToeIn.isHidden = true
+
+            imageViewL.frame = CGRect(x:5, y:5, width:sz, height:sz)
+            portraitCommon()
+        }
 
         func portraitStereo() {
             sz = xs - 10
@@ -324,41 +327,15 @@ class ViewController: UIViewController {
             
             imageViewL.frame = CGRect(x:5, y:5, width:sz2, height:sz2)
             imageViewR.frame = CGRect(x:5+sz2+2, y:5, width:sz2, height:sz2)
+            portraitCommon()
+        }
 
-            sZoom.frame = frame(cxs,bys,0,bys + gap)
-            sScaleFactor.frame = frame(cxs,bys,0,bys + gap)
-            cTranslate.frame = frame(cxs,cxs,0,cxs + gap)
-            
-            var x2 = x
-            stereoButton.frame = frame(bys,bys,bys + gap,0)
-            sToeIn.frame = frame(cxs - bys - gap,bys,0,0)
-            x = x2 + cxs + gap
-
-            y = by
-            dSphere.frame = frame(cxs,cxs,0,cxs + gap)
-            sSphere.frame  = frame(cxs,bys,0,bys + gap)
-            dBox.frame = frame(cxs2,cxs2,cxs + gap,0)
-            y = by
-            dColorR.frame = frame(cxs2,cxs2,0,cxs2 + gap)
-            dColorG.frame = frame(cxs2,cxs2,0,cxs2 + gap)
-            dColorB.frame = frame(cxs2,cxs2,cxs2 + gap,0)
-            y = by
-            dJuliaXY.frame = frame(cxs,cxs,0,cxs + gap)
-            sJuliaZ.frame  = frame(cxs,bys,0,bys + gap + 5)
-            juliaOnOff.frame = frame(50,30,0,bys + gap)
-            resetButton.frame = frame(50,bys,cxs + gap,0)
-            x2 = x
-            y = by
-            dLightXY.frame = frame(cxs,cxs,0,cxs + gap)
-            sLightZ.frame  = frame(cxs,bys,0,bys + gap + 5)
-            saveLoadButton.frame = frame(80,bys,0,bys + gap)
-            helpButton.frame = frame(bys,bys,0,0)
-            x = x2 + cxs + gap
-            y = by
-            resolutionButton.frame = frame(80,bys,0,bys + gap)
-            sEpsilon.frame = frame(cxs,bys,0,bys + gap)
-            cRotate.frame = frame(cxs,cxs,0,cxs+gap)
-            speedButton.frame = frame(cxs,bys,0,0)
+        func landScapeCommon() {
+            x = 40
+            y = ys - cxs - 40
+            cTranslate.frame = frame(cxs,cxs,0,0)
+            x = xs - cxs - 40
+            cRotate.frame = frame(cxs,cxs,0,0)
         }
         
         func landScapeMono() {
@@ -403,11 +380,7 @@ class ViewController: UIViewController {
             stereoButton.frame = frame(bys,bys,0,bys+gap)
             helpButton.frame = frame(bys,bys,0,0)
             
-            x = 40
-            y = ys - cxs - 40
-            cTranslate.frame = frame(cxs,cxs,0,0)
-            x = xs - cxs - 40
-            cRotate.frame = frame(cxs,cxs,0,0)
+            landScapeCommon()
         }
 
         func landScapeStereo() {
@@ -455,12 +428,7 @@ class ViewController: UIViewController {
             sEpsilon.frame = frame(cxs,bys,0,bys + gap)
             speedButton.frame = frame(cxs,bys,0,0)
             
-            x = 40
-            y = ys - cxs - 40
-            cTranslate.frame = frame(cxs,cxs,0,0)
-            x = xs - cxs - 40
-            cRotate.frame = frame(cxs,cxs,0,0)
-
+            landScapeCommon()
         }
 
         if ys > xs {    // portrait
