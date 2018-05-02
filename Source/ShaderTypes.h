@@ -24,7 +24,7 @@ struct Control {
     float colorG1,colorG2;
     float colorB1,colorB2;
 
-    int size;
+    int xSize,ySize;
     float zoom;
     float scaleFactor;
     float epsilon;

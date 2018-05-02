@@ -19,7 +19,11 @@ var speedIndex:Int = 0
 class ViewController: UIViewController {
     var cBuffer:MTLBuffer! = nil
     var isStereo:Bool = false
-    
+    var isFullScreen:Bool = false
+    var isHighRes:Bool = false
+    var viewXS = Int32()
+    var viewYS = Int32()
+
     var timer = Timer()
     var outTextureL: MTLTexture!
     var outTextureR: MTLTexture!
@@ -62,8 +66,8 @@ class ViewController: UIViewController {
     @IBAction func juliaOnOffChanged(_ sender: UISwitch) { control.juliaboxMode = sender.isOn;  updateImage() }
     
     @IBAction func resolutionButtonPressed(_ sender: UIButton) {
-        control.size = (control.size == IMAGESIZE_LOW) ? IMAGESIZE_HIGH : IMAGESIZE_LOW
-        setResolution()
+        isHighRes = !isHighRes
+        setImageViewResolution()
         updateImage()
     }
 
@@ -75,11 +79,16 @@ class ViewController: UIViewController {
         speedButton.setTitle("   Speed:" + sName[speedIndex], for: UIControlState.normal)
     }
 
-    func updateResolutionButton() { resolutionButton.setTitle(control.size == IMAGESIZE_LOW ? " Res: Low" : " Res: High", for: UIControlState.normal) }
+    func updateResolutionButton() { resolutionButton.setTitle(isHighRes ? " Res: High" : " Res: Low", for: UIControlState.normal) }
 
     @IBAction func stereoButtonPressed(_ sender: UIButton) {
         isStereo = !isStereo
-        oldXS = 0   // force rotated() to redraw
+        rotated()
+        updateImage()
+    }
+    
+    @IBAction func tapGesture(_ sender: UITapGestureRecognizer) {
+        isFullScreen = !isFullScreen
         rotated()
         updateImage()
     }
@@ -93,6 +102,7 @@ class ViewController: UIViewController {
 
     var sList:[SliderView]! = nil
     var dList:[DeltaView]! = nil
+    var bList:[UIView]! = nil
 
     override var prefersStatusBarHidden: Bool { return true }
     
@@ -122,6 +132,7 @@ class ViewController: UIViewController {
         
         sList = [ sZoom,sScaleFactor,sEpsilon,sJuliaZ,sLightZ,sSphere,sToeIn ]
         dList = [ dSphere,dBox,dColorR,dColorG,dColorB,dJuliaXY,dLightXY ]
+        bList = [ resetButton,saveLoadButton,helpButton,speedButton,resolutionButton,stereoButton,juliaOnOff ]
 
         sZoom.initializeFloat(&control.zoom, .delta, 0.2,2, 0.03, "Zoom")
         sScaleFactor.initializeFloat(&control.scaleFactor, .delta, -5.0,5.0, 0.1, "Scale Factor")
@@ -135,7 +146,7 @@ class ViewController: UIViewController {
         sSphere.initializeFloat(&control.sph3, .delta, 0.1,6.0,0.1, "Sphere M")
         sSphere.highlight(4)
 
-        dBox.initializeFloat1(&control.box1, 0,3,0.1, "Box")
+        dBox.initializeFloat1(&control.box1, 0,3,0.05, "Box")
         dBox.initializeFloat2(&control.box2)
         dBox.highlight(1,2)
 
@@ -161,8 +172,8 @@ class ViewController: UIViewController {
     //MARK: -
 
     func reset() {
-        control.size = IMAGESIZE_LOW
-        setResolution()
+        isHighRes = false
+        updateResolutionButton()
 
         speedIndex = speedMult.count - 2
         speedButtonPressed(speedButton) // will bump it to 'fast'
@@ -216,39 +227,46 @@ class ViewController: UIViewController {
         updateImage()
     }
     
-    func setResolution() {
-        let sz = Int(control.size)
+    func setImageViewResolution() {
+        control.xSize = viewXS
+        control.ySize = viewYS
+        if !isHighRes {
+            control.xSize /= 2
+            control.ySize /= 2
+        }
+        
+        let xsz = Int(control.xSize)
+        let ysz = Int(control.ySize)
+        
         let textureDescriptor = MTLTextureDescriptor.texture2DDescriptor(
             pixelFormat: .bgra8Unorm_srgb,
-            width: sz,
-            height: sz,
+            width: xsz,
+            height: ysz,
             mipmapped: false)
         outTextureL = self.device.makeTexture(descriptor: textureDescriptor)!
         outTextureR = self.device.makeTexture(descriptor: textureDescriptor)!
 
+        let maxsz = max(xsz,ysz) + Int(threadGroupCount.width-1)
         threadGroups = MTLSizeMake(
-            sz / threadGroupCount.width,
-            sz / threadGroupCount.height,1)
+            maxsz / threadGroupCount.width,
+            maxsz / threadGroupCount.height,1)
         
-        resolutionButton.setTitle(control.size == IMAGESIZE_LOW ? " Res: Low" : " Res: High", for: UIControlState.normal)
+        updateResolutionButton()
     }
     
     //MARK: -
-    
-    var oldXS:CGFloat = 0
+    var xs = CGFloat()
+    var ys = CGFloat()
 
     @objc func rotated() {
-        var xs = view.bounds.width
-        var ys = view.bounds.height
+        xs = view.bounds.width
+        ys = view.bounds.height
         
         if kludgeAutoLayout {
             xs = scrnLandscape ? scrnSz[scrnIndex].y : scrnSz[scrnIndex].x
             ys = scrnLandscape ? scrnSz[scrnIndex].x : scrnSz[scrnIndex].y
         }
 
-        if xs == oldXS { return }
-        oldXS = xs
-        
         let bys:CGFloat = 32    // slider height
         let gap:CGFloat = 10
         let cxs:CGFloat = 120
@@ -303,30 +321,36 @@ class ViewController: UIViewController {
         }
         
         func portraitMono() {
-            sz = xs - 10
+            sz = xs
             by = sz + 10  // top of widgets
             x = (xs - 730) / 2
             y = by
             
+            viewXS = Int32(sz)
+            viewYS = Int32(sz)
+
             imageViewR.isHidden = true
             sToeIn.isHidden = true
 
-            imageViewL.frame = CGRect(x:5, y:5, width:sz, height:sz)
+            imageViewL.frame = CGRect(x:0, y:0, width:sz, height:sz)
             portraitCommon()
         }
 
         func portraitStereo() {
-            sz = xs - 10
-            let sz2 = sz / 2
-            by = sz2 + 10  // top of widgets
+            sz = xs
+            by = sz + 10  // top of widgets
             x = (xs - 730) / 2
             y = by
-            
+
+            viewXS = Int32(sz/2)
+            viewYS = Int32(sz)
+
             imageViewR.isHidden = false
             sToeIn.isHidden = false
             
-            imageViewL.frame = CGRect(x:5, y:5, width:sz2, height:sz2)
-            imageViewR.frame = CGRect(x:5+sz2+2, y:5, width:sz2, height:sz2)
+            imageViewL.frame = CGRect(x:0, y:0, width:CGFloat(viewXS), height:CGFloat(viewYS))
+            imageViewR.frame = CGRect(x:CGFloat(viewXS), y:0, width:CGFloat(viewXS), height:CGFloat(viewYS))
+
             portraitCommon()
         }
 
@@ -344,6 +368,9 @@ class ViewController: UIViewController {
             let left = sz + 10
             x = left
             y = by
+            
+            viewXS = Int32(sz)
+            viewYS = Int32(sz)
             
             imageViewR.isHidden = true
             sToeIn.isHidden = true
@@ -381,6 +408,9 @@ class ViewController: UIViewController {
             helpButton.frame = frame(bys,bys,0,0)
             
             landScapeCommon()
+            
+            sZoom.active = !isFullScreen
+            sZoom.setNeedsDisplay()
         }
 
         func landScapeStereo() {
@@ -389,6 +419,9 @@ class ViewController: UIViewController {
             by = sz2 + 10  // top of widgets
             x = (xs - 730) / 2
             y = by
+            
+            viewXS = Int32(sz)
+            viewYS = Int32(sz)
             
             imageViewR.isHidden = false
             sToeIn.isHidden = false
@@ -430,18 +463,67 @@ class ViewController: UIViewController {
             
             landScapeCommon()
         }
-
-        if ys > xs {    // portrait
-            if isStereo { portraitStereo() } else { portraitMono() }
+        
+        // ------------------------------------------------------------------
+        
+        func fullScreenStereo() {
+            viewXS = Int32(xs/2)
+            viewYS = Int32(ys)
+            
+            imageViewR.isHidden = false
+            
+            imageViewL.frame = CGRect(x:0, y:0, width:CGFloat(viewXS), height:CGFloat(viewYS))
+            imageViewR.frame = CGRect(x:CGFloat(viewXS), y:0, width:CGFloat(viewXS), height:CGFloat(viewYS))
+            
+            landScapeCommon()
+            
+            view.bringSubview(toFront: cRotate)
+            
+            sToeIn.isHidden = false
+            x = 40 + cxs + 30
+            y = ys - 40 - bys
+            sToeIn.frame = CGRect(x:x, y:y, width:100, height:bys)
         }
-        else {          // landscape
-            if isStereo { landScapeStereo() } else { landScapeMono() }
+
+        func fullScreenMono() {
+            viewXS = Int32(xs)
+            viewYS = Int32(ys)
+
+            imageViewR.isHidden = true
+            sToeIn.isHidden = true
+            
+            imageViewL.frame = CGRect(x:0, y:0, width:xs, height:ys)
+            landScapeCommon()
+        }
+        
+        // ------------------------------------------------------------------
+
+        if sList != nil {
+            for s in sList { s.isHidden = isFullScreen }
+            for d in dList { d.isHidden = isFullScreen }
+            for b in bList { b.isHidden = isFullScreen }
+        }
+
+        if isFullScreen {
+            if isStereo { fullScreenStereo() } else { fullScreenMono() }
+        }
+        else {
+            let isPortrait:Bool = ys > xs
+            
+            if isPortrait {
+                if isStereo { portraitStereo() } else { portraitMono() }
+            }
+            else {
+                if isStereo { landScapeStereo() } else { landScapeMono() }
+            }
         }
         
         if sList != nil {
             for s in sList { s.boundsChanged() }
             for d in dList { d.boundsChanged() }
         }
+        
+        setImageViewResolution()
     }
     
     //MARK: -

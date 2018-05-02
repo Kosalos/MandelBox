@@ -46,7 +46,7 @@ float distanceEstimate(float3 rayPos, float constant1, float constant2,constant 
     // For the Juliabox, c is a constant. For the Mandelbox, c is variable.
     float3 c = control.juliaboxMode ? control.julia : rayPos;
     float3 v = rayPos;
-    float dr = 1.0;
+    float dr = 1.5;
     
     for (int i = 0; i < MAX_ITERS; i++) {
         
@@ -96,7 +96,7 @@ float3 getBlinnShading(float3 normal, float3 view, float3 light)
 {
     // boxplorer's method
     float3 halfLV = normalize(light + view);
-    float spe = pow(max( dot(normal, halfLV), 0.0 ), 32.0);
+    float spe = pow(max( dot(normal, halfLV), 0.420 ), 32);
     float dif = dot(normal, light) * 0.5 + 0.75;
     return dif + spe; // * specularColor;
 }
@@ -205,7 +205,11 @@ kernel void mandelBoxShader
  constant Control &control [[buffer(0)]],
  uint2 p [[thread_position_in_grid]])
 {
-    float2 uv = float2(float(p.x) / float(control.size), float(p.y) / float(control.size));     // map pixel to 0..1
+    if(p.x > uint(control.xSize)) return;
+    if(p.y > uint(control.ySize)) return;
+    
+    float minSz = float(min(control.xSize,control.ySize));
+    float2 uv = float2(float(p.x) / minSz, float(p.y) / minSz);     // map pixel to 0..1
     float3 viewVector = control.focus - control.camera;
     float3 topVector = toSpherical(viewVector);
     topVector.z += 1.5708;

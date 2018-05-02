@@ -6,6 +6,8 @@ http://digitalfreepen.com/mandelbox370/
 All the slider boxes work the same way:
 Press and hold to either side of center to affect the parameter in the specfied direction and speed.
 
+Tap on image to toggle full screen mode.
+
 A. Move Camera
    Press above the center line to move forward, below to move backward.
 
@@ -16,7 +18,7 @@ C. Changing the width of the field of view affects a zoom effect.
 
 D. MandelBox parameter controlling the degree of box and sphere folding.
 
-E. MandelBox parameter specified how accuratedly we determine the mandelbox surface.
+E. MandelBox parameter specifies how accuratedly we determine the mandelbox surface.
    Smaller values (on the left side) result in finer resolution.
 
 F. Mandelbox uses two parameters to determine spherical folding. Both are controlled here.
