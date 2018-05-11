@@ -4,9 +4,13 @@ Algorithm copied from this excellent app:
 http://digitalfreepen.com/mandelbox370/
 
 All the slider boxes work the same way:
-Press and hold to either side of center to affect the parameter in the specfied direction and speed.
+* Press and hold to either side of center to affect
+  parameter(s) in specified direction and speed.
+* Double Tap to toggle Fast versus Slow editing.
+  (Red vs Green background color)
+* Triple tap to reset parameter(s).
 
-Tap on image to toggle full screen mode.
+Double Tap on image to toggle full screen mode.
 
 A. Move Camera
    Press above the center line to move forward, below to move backward.
@@ -44,6 +48,7 @@ N. Press this to toggle image resolution between Low and High.
 
 P. Speed of Movement
    Cycle through slow, medium and fast widget controls. Good for fine-tuning the box and sphere folds.
+   Note: combines with Fast vs. Slow editing setting,  so Slow + Slow == really slow
 
 Q. Stereo
    Toggle stereo mode on/off.

@@ -1,5 +1,9 @@
 import UIKit
 
+let limColor = UIColor(red:0.25, green:0.25, blue:0.2, alpha: 1)
+let nrmColorFast = UIColor(red:0.25, green:0.2, blue:0.2, alpha: 1)
+let nrmColorSlow = UIColor(red:0.2, green:0.25, blue:0.2, alpha: 1)
+
 enum ValueType { case int32,float }
 enum SliderType { case delta,direct,loop }
 
@@ -11,7 +15,8 @@ class SliderView: UIView {
     var swidth:Float = 0
     var ident:Int = 0
     var active = true
-    
+    var fastEdit = true
+
     var highLightValue = highLightUnused
 
     var valuePointer:UnsafeMutableRawPointer! = nil
@@ -25,6 +30,20 @@ class SliderView: UIView {
     
     func address<T>(of: UnsafePointer<T>) -> UInt { return UInt(bitPattern: of) }
     
+    func initializeCommon() {
+        boundsChanged()
+        
+        let tap2 = UITapGestureRecognizer(target: self, action: #selector(self.handleTap2(_:)))
+        tap2.numberOfTapsRequired = 2
+        addGestureRecognizer(tap2)
+        
+        let tap3 = UITapGestureRecognizer(target: self, action: #selector(self.handleTap3(_:)))
+        tap3.numberOfTapsRequired = 3
+        addGestureRecognizer(tap3)
+        
+        isUserInteractionEnabled = true
+    }
+    
     func initializeInt32(_ v: inout Int32, _ sType:SliderType, _ min:Float, _ max:Float,  _ delta:Float, _ iname:String) {
         let valueAddress = address(of:&v)
         valuePointer = UnsafeMutableRawPointer(bitPattern:valueAddress)!
@@ -34,7 +53,7 @@ class SliderView: UIView {
         mRange.y = max
         deltaValue = delta
         name = iname
-        boundsChanged()
+        initializeCommon()
     }
 
     func initializeFloat(_ v: inout Float, _ sType:SliderType, _ min:Float, _ max:Float,  _ delta:Float, _ iname:String) {
@@ -46,7 +65,7 @@ class SliderView: UIView {
         mRange.y = max
         deltaValue = delta
         name = iname
-        boundsChanged()
+        initializeCommon()
     }
 
     func highlight(_ v:Float) {
@@ -67,6 +86,28 @@ class SliderView: UIView {
     }
     
     //MARK: ==================================
+    
+    @objc func handleTap2(_ sender: UITapGestureRecognizer) {
+        fastEdit = !fastEdit
+        
+        delta = 0
+        setNeedsDisplay()
+    }
+    
+    @objc func handleTap3(_ sender: UITapGestureRecognizer) {
+        if valuePointer == nil { return }
+        
+        let value:Float = highLightValue != highLightUnused ? highLightValue : 0
+
+        switch valuetype {
+        case .int32 : valuePointer.storeBytes(of:Int32(value), as:Int32.self)
+        case .float : valuePointer.storeBytes(of:value, as:Float.self)
+        }
+        
+        handleTap2(sender) // undo the double tap that was also recognized
+    }
+    
+    //MARK: ==================================
 
     override func draw(_ rect: CGRect) {
         context = UIGraphicsGetCurrentContext()
@@ -78,10 +119,7 @@ class SliderView: UIView {
             return
         }
         
-        let limColor = UIColor(red:0.3, green:0.2, blue:0.2, alpha: 1)
-        let nrmColor = UIColor(red:0.2, green:0.2, blue:0.2, alpha: 1)
-
-        nrmColor.set()
+        if fastEdit { nrmColorFast.set() } else { nrmColorSlow.set() }
         UIBezierPath(rect:bounds).fill()
         
         if isMinValue() {
@@ -253,6 +291,10 @@ class SliderView: UIView {
             }
             else {
                 delta = (Float(pt.x) - scenter) / swidth / 10
+                
+                if !fastEdit {
+                    delta /= 100
+                }
             }
             
             setNeedsDisplay()

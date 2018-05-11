@@ -4,7 +4,8 @@ class CRotate: UIView {
     let viewSize:Float = 4  // -2 ... +2
     var scale:Float = 0
     var xc:CGFloat = 0
-    
+    var fastEdit = true
+
     func mapPoint(_ pt:CGPoint) -> float3 {
         var v = float3()
         v.x = Float(pt.x) * scale - viewSize/2 // centered on origin
@@ -24,10 +25,16 @@ class CRotate: UIView {
         if scale == 0 {
             scale = viewSize / Float(bounds.width)
             xc = bounds.width / 2
+
+            let tap2 = UITapGestureRecognizer(target: self, action: #selector(self.handleTap2(_:)))
+            tap2.numberOfTapsRequired = 2
+            addGestureRecognizer(tap2)
+            
+            isUserInteractionEnabled = true
         }
         
         let context = UIGraphicsGetCurrentContext()
-        context?.setFillColor(UIColor.black.cgColor)
+        context?.setFillColor(fastEdit ? nrmColorFast.cgColor : nrmColorSlow.cgColor)
         context?.addRect(bounds)
         context?.fillPath()
 
@@ -41,6 +48,16 @@ class CRotate: UIView {
         context?.strokePath()
         
         drawText(10,8,.lightGray,16,"Rotate")
+    }
+    
+    //MARK: ==================================
+    
+    @objc func handleTap2(_ sender: UITapGestureRecognizer) {
+        fastEdit = !fastEdit
+        
+        dx = 0
+        dy = 0
+        setNeedsDisplay()
     }
     
     // MARK: Touch --------------------------
@@ -62,6 +79,11 @@ class CRotate: UIView {
             dx = Float(pt.x - bounds.size.width/2) * 0.05
             dy = Float(pt.y - bounds.size.height/2) * 0.05
             touched = true
+            
+            if !fastEdit {
+                dx /= 10
+                dy /= 10
+            }
         }
     }
     

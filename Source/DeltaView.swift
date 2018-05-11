@@ -8,6 +8,7 @@ class DeltaView: UIView {
     var swidth:Float = 0
     var ident:Int = 0
     var active = true
+    var fastEdit = true
     var highLightPoint = CGPoint()
     var valuePointerX:UnsafeMutableRawPointer! = nil
     var valuePointerY:UnsafeMutableRawPointer! = nil
@@ -32,6 +33,16 @@ class DeltaView: UIView {
         deltaValue = delta
         name = iname
         boundsChanged()
+        
+        let tap2 = UITapGestureRecognizer(target: self, action: #selector(self.handleTap2(_:)))
+        tap2.numberOfTapsRequired = 2
+        addGestureRecognizer(tap2)
+        
+        let tap3 = UITapGestureRecognizer(target: self, action: #selector(self.handleTap3(_:)))
+        tap3.numberOfTapsRequired = 3
+        addGestureRecognizer(tap3)
+        
+        isUserInteractionEnabled = true
     }
     
     func initializeFloat2(_ v: inout Float) {
@@ -40,6 +51,29 @@ class DeltaView: UIView {
         setNeedsDisplay()
     }
     
+    //MARK: ==================================
+
+    @objc func handleTap2(_ sender: UITapGestureRecognizer) {
+        fastEdit = !fastEdit
+        
+        deltaX = 0
+        deltaY = 0
+        setNeedsDisplay()
+    }
+    
+    @objc func handleTap3(_ sender: UITapGestureRecognizer) {
+        if valuePointerX == nil || valuePointerY == nil { return }
+        
+        let valueX:Float = Float(highLightPoint.x)
+        let valueY:Float = Float(highLightPoint.y)
+        if let valuePointerX = valuePointerX { valuePointerX.storeBytes(of:valueX, as:Float.self) }
+        if let valuePointerY = valuePointerY { valuePointerY.storeBytes(of:valueY, as:Float.self) }
+        
+        handleTap2(sender) // undo the double tap that was also recognized
+    }
+
+    //MARK: ==================================
+
     func highlight(_ x:CGFloat, _ y:CGFloat) {
         highLightPoint.x = x
         highLightPoint.y = y
@@ -70,10 +104,7 @@ class DeltaView: UIView {
             return
         }
 
-        let limColor = UIColor(red:0.3, green:0.2, blue:0.2, alpha: 1)
-        let nrmColor = UIColor(red:0.2, green:0.2, blue:0.2, alpha: 1)
-        
-        nrmColor.set()
+        if fastEdit { nrmColorFast.set() } else { nrmColorSlow.set() }
         UIBezierPath(rect:bounds).fill()
         
         if isMinValue(0) {  // X coord
@@ -185,7 +216,6 @@ class DeltaView: UIView {
     
     var deltaX:Float = 0
     var deltaY:Float = 0
-    var deltaZ:Float = 0
     var touched = false
     
     //MARK: ==================================
@@ -248,13 +278,14 @@ class DeltaView: UIView {
         for t in touches {
             let pt = t.location(in: self)
 
-            if numberTouches == 1 {
-                deltaX = (Float(pt.x) - scenter) / swidth / 10
-                deltaY = -(Float(pt.y) - scenter) / swidth / 10
+            deltaX = (Float(pt.x) - scenter) / swidth / 10
+            deltaY = -(Float(pt.y) - scenter) / swidth / 10
+            
+            if !fastEdit {
+                deltaX /= 100
+                deltaY /= 100
             }
-            else {
-                deltaZ = (Float(pt.y) - scenter) / swidth / 10
-            }
+            
             touched = true
             setNeedsDisplay()
         }
@@ -265,7 +296,6 @@ class DeltaView: UIView {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         touched = false
         numberTouches = 0
-        deltaZ = 0
     }
     
     func drawLine(_ p1:CGPoint, _ p2:CGPoint) {

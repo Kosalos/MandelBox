@@ -252,12 +252,12 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="dBU-Ph-gbE">
+                <tapGestureRecognizer numberOfTapsRequired="2" id="dBU-Ph-gbE">
                     <connections>
                         <action selector="tapGesture:" destination="BV1-FR-VrT" id="9df-xL-jJd"/>
                     </connections>
                 </tapGestureRecognizer>
-                <tapGestureRecognizer id="T02-UA-o1I">
+                <tapGestureRecognizer numberOfTapsRequired="2" id="T02-UA-o1I">
                     <connections>
                         <action selector="tapGesture:" destination="BV1-FR-VrT" id="vBy-eU-23J"/>
                     </connections>
