@@ -62,4 +62,17 @@ Q. Stereo
    and each may need parallax adjustment for best effect.
    When it Does work, the results are fantastic!
 
+R. BurningShip
+   I have no mathematical abilities,
+   but I was reading about the burning ship algorithm,
+   and how it is just like the Mandelbrot algorithm
+   except for using the absolute value of a function term.
+
+   So, in the shader I added the following :
+        v = clamp(v, -control.box1, control.box1) * control.box2 - v;
+        if(control.burningShip) v = -abs(v);   <<---- added this
+
+   Has a dramtic effect,
+   including resemblance to the burning ship fractal in some regions.
+
 

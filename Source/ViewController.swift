@@ -60,6 +60,7 @@ class ViewController: UIViewController {
     @IBOutlet var speedButton: UIButton!
     @IBOutlet var resolutionButton: UIButton!
     @IBOutlet var stereoButton: UIButton!
+    @IBOutlet var burningShipButton: UIButton!
     @IBOutlet var juliaOnOff: UISwitch!
     
     @IBAction func resetButtonPressed(_ sender: UIButton) { reset() }
@@ -86,7 +87,16 @@ class ViewController: UIViewController {
         rotated()
         updateImage()
     }
-    
+
+    @IBAction func burningShipButtonPressed(_ sender: UIButton) {
+        control.burningShip = !control.burningShip
+        updateImage()
+        
+        let bsOff = UIColor(red:0.25, green:0.25, blue:0.25, alpha: 1)
+        let bsOn  = UIColor(red:0.1, green:0.3, blue:0.1, alpha: 1)
+        burningShipButton.backgroundColor = control.burningShip ? bsOn : bsOff
+    }
+
     @IBAction func tapGesture(_ sender: UITapGestureRecognizer) {
         isFullScreen = !isFullScreen
         rotated()
@@ -132,7 +142,7 @@ class ViewController: UIViewController {
         
         sList = [ sZoom,sScaleFactor,sEpsilon,sJuliaZ,sLightZ,sSphere,sToeIn ]
         dList = [ dSphere,dBox,dColorR,dColorG,dColorB,dJuliaXY,dLightXY ]
-        bList = [ resetButton,saveLoadButton,helpButton,speedButton,resolutionButton,stereoButton,juliaOnOff ]
+        bList = [ resetButton,saveLoadButton,helpButton,speedButton,resolutionButton,stereoButton,juliaOnOff,burningShipButton ]
 
         sZoom.initializeFloat(&control.zoom, .delta, 0.2,2, 0.03, "Zoom")
         sScaleFactor.initializeFloat(&control.scaleFactor, .delta, -5.0,5.0, 0.1, "Scale Factor")
@@ -311,7 +321,8 @@ class ViewController: UIViewController {
             dLightXY.frame = frame(cxs,cxs,0,cxs + gap)
             sLightZ.frame  = frame(cxs,bys,0,bys + gap + 5)
             saveLoadButton.frame = frame(80,bys,0,bys + gap)
-            helpButton.frame = frame(bys,bys,0,0)
+            helpButton.frame = frame(bys,bys,bys + 20,0)
+            burningShipButton.frame = frame(bys,bys,0,0)
             x = x2 + cxs + gap
             y = by
             resolutionButton.frame = frame(80,bys,0,bys + gap)
@@ -405,8 +416,9 @@ class ViewController: UIViewController {
             x = left
             resetButton.frame = frame(50,bys,0,bys+gap)
             stereoButton.frame = frame(bys,bys,0,bys+gap)
-            helpButton.frame = frame(bys,bys,0,0)
-            
+            helpButton.frame = frame(bys,bys,bys + 20,0)
+            burningShipButton.frame = frame(bys,bys,0,0)
+
             landScapeCommon()
             
             sZoom.active = !isFullScreen
@@ -454,7 +466,9 @@ class ViewController: UIViewController {
             dLightXY.frame = frame(cxs,cxs,0,cxs + gap)
             sLightZ.frame  = frame(cxs,bys,0,bys + gap + 5)
             saveLoadButton.frame = frame(80,bys,0,bys + gap)
-            helpButton.frame = frame(bys,bys,0,0)
+            helpButton.frame = frame(bys,bys,bys + 20,0)
+            burningShipButton.frame = frame(bys,bys,0,0)
+
             x = x2 + cxs + gap
             y = by
             resolutionButton.frame = frame(80,bys,0,bys + gap)

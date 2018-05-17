@@ -35,7 +35,9 @@ struct Control {
     vector_float3 light;
     
     float toeIn;
-    vector_float2 future1;
+    bool burningShip;
+    bool bfuture1;
+    int ifuture2;
     vector_float3 future2;
     vector_float3 future3;
 };

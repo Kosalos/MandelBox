@@ -19,6 +19,7 @@ float3 getColor(float3 pos,constant Control &control)
     for (int i = 0; i < MAX_ITERS; i++) {
         
         v = clamp(v, -control.box1, control.box1) * control.box2 - v;
+        if(control.burningShip) v = -abs(v);
 
         // Sphere fold.
         float mag = dot(v, v);
@@ -52,6 +53,7 @@ float distanceEstimate(float3 rayPos, float constant1, float constant2,constant 
         
         // Box fold
         v = clamp(v, -control.box1, control.box1) * control.box2 - v;
+        if(control.burningShip) v = -abs(v);
 
         // Sphere fold.
         float mag = dot(v, v);
@@ -132,15 +134,17 @@ float4 rayMarch(float3 rayDir,constant Control &control) {
     float constant2 = pow(float(abs(control.scaleFactor)), float(1 - MAX_ITERS));
     float distance = 0.0;
     float ee = sin(control.epsilon);
+    float de = 1;
+    float3 rayPos;
     
-    for (int i = 0; i < MAX_STEPS; i++) {
-        float3 rayPos = control.camera + rayDir * distance;
-        float de = distanceEstimate(rayPos, constant1, constant2, control);
+    for (int i = 0; i < MAX_STEPS && de >= ee && distance <= MAX_DIST; i++) {
+        rayPos = control.camera + rayDir * distance;
+        de = distanceEstimate(rayPos, constant1, constant2, control);
         
         distance += de * 0.95;
         stepCount++;
         
-        if (de < ee || distance > MAX_DIST) break;
+//        if (de < ee || distance > MAX_DIST) break;
     }
     
     ///////////////////
