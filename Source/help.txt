@@ -10,7 +10,12 @@ All the slider boxes work the same way:
   (Red vs Green background color)
 * Triple tap to reset parameter(s).
 
-Double Tap on image to toggle full screen mode.
+Note: Single tap on any widget to give it the FOCUS.
+      It will gain a red colored border.
+      Click and drag on the image to apply the movement to the widget.
+      The widgets' Fast vs Slow edit style affects the movements.
+
+Double Tap on the image to toggle FULL SCREEN mode.
 
 A. Move Camera
    Press above the center line to move forward, below to move backward.
@@ -22,7 +27,7 @@ C. Changing the width of the field of view affects a zoom effect.
 
 D. MandelBox parameter controlling the degree of box and sphere folding.
 
-E. MandelBox parameter specifies how accuratedly we determine the mandelbox surface.
+E. MandelBox parameter specifies how accurately we determine the mandelbox surface.
    Smaller values (on the left side) result in finer resolution.
 
 F. Mandelbox uses two parameters to determine spherical folding. Both are controlled here.
@@ -72,7 +77,7 @@ R. BurningShip
         v = clamp(v, -control.box1, control.box1) * control.box2 - v;
         if(control.burningShip) v = -abs(v);   <<---- added this
 
-   Has a dramtic effect,
+   Has a dramatic effect,
    including resemblance to the burning ship fractal in some regions.
 
 

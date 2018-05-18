@@ -9,6 +9,7 @@ class DeltaView: UIView {
     var ident:Int = 0
     var active = true
     var fastEdit = true
+    var hasFocus = false
     var highLightPoint = CGPoint()
     var valuePointerX:UnsafeMutableRawPointer! = nil
     var valuePointerY:UnsafeMutableRawPointer! = nil
@@ -33,7 +34,11 @@ class DeltaView: UIView {
         deltaValue = delta
         name = iname
         boundsChanged()
-        
+
+        let tap1 = UITapGestureRecognizer(target: self, action: #selector(self.handleTap1(_:)))
+        tap1.numberOfTapsRequired = 1
+        addGestureRecognizer(tap1)
+
         let tap2 = UITapGestureRecognizer(target: self, action: #selector(self.handleTap2(_:)))
         tap2.numberOfTapsRequired = 2
         addGestureRecognizer(tap2)
@@ -53,6 +58,15 @@ class DeltaView: UIView {
     
     //MARK: ==================================
 
+    @objc func handleTap1(_ sender: UITapGestureRecognizer) {
+        vc.removeAllFocus()
+        hasFocus = true
+
+        deltaX = 0
+        deltaY = 0
+        setNeedsDisplay()
+    }
+    
     @objc func handleTap2(_ sender: UITapGestureRecognizer) {
         fastEdit = !fastEdit
         
@@ -206,6 +220,10 @@ class DeltaView: UIView {
             }
         }
         
+        if hasFocus {
+            UIColor.red.setStroke()
+            UIBezierPath(rect:bounds).stroke()
+        }
     }
     
     func fClamp2(_ v:Float, _ range:float2) -> Float {
@@ -263,6 +281,23 @@ class DeltaView: UIView {
 
         setNeedsDisplay()
         return true
+    }
+    
+    //MARK: ==================================
+
+    func focusMovement(_ pt:CGPoint) {
+        if pt.x == 0 { touched = false; numberTouches = 0; return }
+        
+        deltaX =  Float(pt.x) / 1000
+        deltaY = -Float(pt.y) / 1000
+        
+        if !fastEdit {
+            deltaX /= 100
+            deltaY /= 100
+        }
+        
+        touched = true
+        setNeedsDisplay()
     }
     
     //MARK: ==================================

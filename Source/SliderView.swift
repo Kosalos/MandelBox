@@ -16,6 +16,7 @@ class SliderView: UIView {
     var ident:Int = 0
     var active = true
     var fastEdit = true
+    var hasFocus = false
 
     var highLightValue = highLightUnused
 
@@ -32,6 +33,10 @@ class SliderView: UIView {
     
     func initializeCommon() {
         boundsChanged()
+        
+        let tap1 = UITapGestureRecognizer(target: self, action: #selector(self.handleTap1(_:)))
+        tap1.numberOfTapsRequired = 1
+        addGestureRecognizer(tap1)
         
         let tap2 = UITapGestureRecognizer(target: self, action: #selector(self.handleTap2(_:)))
         tap2.numberOfTapsRequired = 2
@@ -86,6 +91,14 @@ class SliderView: UIView {
     }
     
     //MARK: ==================================
+    
+    @objc func handleTap1(_ sender: UITapGestureRecognizer) {
+        vc.removeAllFocus()
+        hasFocus = true
+        
+        delta = 0
+        setNeedsDisplay()
+    }
     
     @objc func handleTap2(_ sender: UITapGestureRecognizer) {
         fastEdit = !fastEdit
@@ -200,6 +213,10 @@ class SliderView: UIView {
             }
         }
 
+        if hasFocus {
+            UIColor.red.setStroke()
+            UIBezierPath(rect:bounds).stroke()
+        }
     }
     
     func fClamp2(_ v:Float, _ range:float2) -> Float {
@@ -269,6 +286,21 @@ class SliderView: UIView {
         
         setNeedsDisplay()
         return true
+    }
+    
+    //MARK: ==================================
+
+    func focusMovement(_ pt:CGPoint) {
+        if pt.x == 0 { touched = false; return }
+        
+        delta = Float(pt.x) / 1000
+        
+        if !fastEdit {
+            delta /= 100
+        }
+        
+        touched = true
+        setNeedsDisplay()
     }
     
     //MARK: ==================================

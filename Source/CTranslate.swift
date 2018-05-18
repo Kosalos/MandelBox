@@ -5,6 +5,7 @@ class CTranslate: UIView {
     var scale:Float = 0
     var xc:CGFloat = 0
     var fastEdit = true
+    var hasFocus = false
 
     func mapPoint(_ pt:CGPoint) -> float3 {
         var v = float3()
@@ -26,6 +27,10 @@ class CTranslate: UIView {
             scale = viewSize / Float(bounds.width)
             xc = bounds.width / 2
             
+            let tap1 = UITapGestureRecognizer(target: self, action: #selector(self.handleTap1(_:)))
+            tap1.numberOfTapsRequired = 1
+            addGestureRecognizer(tap1)
+            
             let tap2 = UITapGestureRecognizer(target: self, action: #selector(self.handleTap2(_:)))
             tap2.numberOfTapsRequired = 2
             addGestureRecognizer(tap2)
@@ -46,9 +51,23 @@ class CTranslate: UIView {
         context?.strokePath()
         
         drawText(10,8,.lightGray,16,"Move")
+        
+        if hasFocus {
+            UIColor.red.setStroke()
+            UIBezierPath(rect:bounds).stroke()
+        }
     }
     
-    //MARK: ==================================
+    //MARK:-
+
+    @objc func handleTap1(_ sender: UITapGestureRecognizer) {
+        vc.removeAllFocus()
+        hasFocus = true
+        
+        dx = 0
+        dy = 0
+        setNeedsDisplay()
+    }
     
     @objc func handleTap2(_ sender: UITapGestureRecognizer) {
         fastEdit = !fastEdit
@@ -58,6 +77,23 @@ class CTranslate: UIView {
         setNeedsDisplay()
     }
 
+    //MARK:-
+    
+    func focusMovement(_ pt:CGPoint) {
+        if pt.x == 0 { touched = false; return }
+        
+        dx = Float(pt.x) / 500
+        dy = Float(pt.y) / 500
+        
+        if !fastEdit {
+            dx /= 10
+            dy /= 10
+        }
+        
+        touched = true
+        setNeedsDisplay()
+    }
+    
     // MARK: Touch --------------------------
     
     var touched:Bool = false

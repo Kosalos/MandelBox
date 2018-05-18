@@ -52,8 +52,8 @@ class ViewController: UIViewController {
     @IBOutlet var dLightXY: DeltaView!
     @IBOutlet var sLightZ: SliderView!
     @IBOutlet var sToeIn: SliderView!
-    @IBOutlet var imageViewL: UIImageView!
-    @IBOutlet var imageViewR: UIImageView!
+    @IBOutlet var imageViewL: ImageView!
+    @IBOutlet var imageViewR: ImageView!
     @IBOutlet var resetButton: UIButton!
     @IBOutlet var saveLoadButton: UIButton!
     @IBOutlet var helpButton: UIButton!
@@ -148,7 +148,7 @@ class ViewController: UIViewController {
         sScaleFactor.initializeFloat(&control.scaleFactor, .delta, -5.0,5.0, 0.1, "Scale Factor")
         sScaleFactor.highlight(3)
         
-        sEpsilon.initializeFloat(&control.epsilon, .delta, 0.00001, 0.0005, 0.0002, "epsilon")
+        sEpsilon.initializeFloat(&control.epsilon, .delta, 0.00001, 0.0005, 0.0001, "epsilon")
         
         dSphere.initializeFloat1(&control.sph1, 0,3,0.1 , "Sphere")
         dSphere.initializeFloat2(&control.sph2)
@@ -167,8 +167,8 @@ class ViewController: UIViewController {
         dJuliaXY.initializeFloat1(&juliaX, -10,10, 1, "Julia XY"); dJuliaXY.initializeFloat2(&juliaY)
         sJuliaZ.initializeFloat(&juliaZ, .delta, -10,10,1, "Julia Z")
 
-        dLightXY.initializeFloat1(&lightX, -1,1, 1, "Light XY"); dLightXY.initializeFloat2(&lightY)
-        sLightZ.initializeFloat(&lightZ, .delta, -1,1,1, "Light Z")
+        dLightXY.initializeFloat1(&lightX, -1,1, 0.1, "Light XY"); dLightXY.initializeFloat2(&lightY)
+        sLightZ.initializeFloat(&lightZ, .delta, -1,1, 0.1, "Light Z")
 
         let toeInRange:Float = 0.008
         sToeIn.initializeFloat(&control.toeIn, .delta, -toeInRange,+toeInRange,0.0002, "Parallax")
@@ -265,6 +265,23 @@ class ViewController: UIViewController {
     }
     
     //MARK: -
+
+    func removeAllFocus() {
+        for s in sList { if s.hasFocus { s.hasFocus = false; s.setNeedsDisplay() }}
+        for d in dList { if d.hasFocus { d.hasFocus = false; d.setNeedsDisplay() }}
+        if cTranslate.hasFocus { cTranslate.hasFocus = false; cTranslate.setNeedsDisplay() }
+        if cRotate.hasFocus { cRotate.hasFocus = false; cRotate.setNeedsDisplay() }
+    }
+    
+    func focusMovement(_ pt:CGPoint) {
+        for s in sList { if s.hasFocus { s.focusMovement(pt); return }}
+        for d in dList { if d.hasFocus { d.focusMovement(pt); return }}
+        if cTranslate.hasFocus { cTranslate.focusMovement(pt); return }
+        if cRotate.hasFocus { cRotate.focusMovement(pt); return }
+    }
+    
+    //MARK: -
+    
     var xs = CGFloat()
     var ys = CGFloat()
 
