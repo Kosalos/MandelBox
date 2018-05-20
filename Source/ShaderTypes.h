@@ -36,9 +36,10 @@ struct Control {
     
     float toeIn;
     bool burningShip;
+    float maxDist;
     bool bfuture1;
     int ifuture2;
-    vector_float3 future2;
+    vector_float2 future2;
     vector_float3 future3;
 };
 

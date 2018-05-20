@@ -5,7 +5,6 @@ using namespace metal;
 
 constant int MAX_ITERS = 16;
 constant int MAX_STEPS = 100;
-constant float MAX_DIST = 75.0;
 
 //MARK: -
 
@@ -115,14 +114,8 @@ float getAmbientOcclusion(float3 pos, float3 normal,constant Control &control)
         distance = distance * 2.0 - control.epsilon * 5.0;
     }
     
-//    for (int i = 0; i < 10; i++) {
-//        ambientOcclusion -= (distance - distanceEstimate(pos + normal * distance,control)) * w;
-//        w *= 0.5;
-//        distance = distance * 2.0 - control.epsilon * 5.0;
-//    }
-
     // Smaller value = Darker
-    return clamp(ambientOcclusion, 0.0, 1.0);
+    return clamp(ambientOcclusion, 0.0,1.0);
 }
 
 //MARK: -
@@ -137,14 +130,12 @@ float4 rayMarch(float3 rayDir,constant Control &control) {
     float de = 1;
     float3 rayPos;
     
-    for (int i = 0; i < MAX_STEPS && de >= ee && distance <= MAX_DIST; i++) {
+    for (int i = 0; i < MAX_STEPS && de >= ee && distance <= control.maxDist; i++) {
         rayPos = control.camera + rayDir * distance;
         de = distanceEstimate(rayPos, constant1, constant2, control);
         
         distance += de * 0.95;
         stepCount++;
-        
-//        if (de < ee || distance > MAX_DIST) break;
     }
     
     ///////////////////
@@ -155,11 +146,12 @@ float4 rayMarch(float3 rayDir,constant Control &control) {
     float4 bgColor = float4(0,0,0,1);
     float4 color = bgColor;
     
-    if (distance < MAX_DIST) {
+    if (distance < control.maxDist) {
         // The (log(epsilon) * 2.0) offset is to compensate for the fact
         // that more steps are taken when epsilon is small.
-        float adjusted = max(0.0, float(stepCount) + log(control.epsilon) * 2.0);
-        float adjustedMax = float(MAX_STEPS) + log(control.epsilon) * 2.0;
+        float lee = log(control.epsilon) * 2.0;
+        float adjusted = max(0.0, float(stepCount) + lee);
+        float adjustedMax = float(MAX_STEPS) + lee;
         
         // Sqrt increases contrast.
         float distRatio = sqrt(adjusted / adjustedMax) * 6;
@@ -180,9 +172,13 @@ float4 rayMarch(float3 rayDir,constant Control &control) {
 //                               getBlinnShading(normal, rayDir, normalize(float3(-1.0, 1.5, 2.5))),
 //                               0.5);
 
-            float3 light = getBlinnShading(normal, rayDir, normalize(control.light));
+            float3 light = getBlinnShading(normal, rayDir, control.light);
 
             color = float4(mix(light, color.xyz, 0.8), 1.0);
+            
+            float dd = length(finalRayPos - control.camera);    // fog effect
+            float hk = float(1 - dd * 2 / control.maxDist);
+            color *= float4(hk,hk,hk,1);
         }
     }
     

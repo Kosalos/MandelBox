@@ -52,6 +52,7 @@ class ViewController: UIViewController {
     @IBOutlet var dLightXY: DeltaView!
     @IBOutlet var sLightZ: SliderView!
     @IBOutlet var sToeIn: SliderView!
+    @IBOutlet var sMaxDist: SliderView!
     @IBOutlet var imageViewL: ImageView!
     @IBOutlet var imageViewR: ImageView!
     @IBOutlet var resetButton: UIButton!
@@ -87,14 +88,17 @@ class ViewController: UIViewController {
         rotated()
         updateImage()
     }
-
-    @IBAction func burningShipButtonPressed(_ sender: UIButton) {
-        control.burningShip = !control.burningShip
-        updateImage()
-        
+    
+    func updateBurningShipButtonBackground() {
         let bsOff = UIColor(red:0.25, green:0.25, blue:0.25, alpha: 1)
         let bsOn  = UIColor(red:0.1, green:0.3, blue:0.1, alpha: 1)
         burningShipButton.backgroundColor = control.burningShip ? bsOn : bsOff
+    }
+
+    @IBAction func burningShipButtonPressed(_ sender: UIButton) {
+        control.burningShip = !control.burningShip
+        updateBurningShipButtonBackground()
+        updateImage()
     }
 
     @IBAction func tapGesture(_ sender: UITapGestureRecognizer) {
@@ -140,7 +144,7 @@ class ViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        sList = [ sZoom,sScaleFactor,sEpsilon,sJuliaZ,sLightZ,sSphere,sToeIn ]
+        sList = [ sZoom,sScaleFactor,sEpsilon,sJuliaZ,sLightZ,sSphere,sToeIn,sMaxDist ]
         dList = [ dSphere,dBox,dColorR,dColorG,dColorB,dJuliaXY,dLightXY ]
         bList = [ resetButton,saveLoadButton,helpButton,speedButton,resolutionButton,stereoButton,juliaOnOff,burningShipButton ]
 
@@ -173,7 +177,9 @@ class ViewController: UIViewController {
         let toeInRange:Float = 0.008
         sToeIn.initializeFloat(&control.toeIn, .delta, -toeInRange,+toeInRange,0.0002, "Parallax")
         sToeIn.highlight(0)
-        
+
+        sMaxDist.initializeFloat(&control.maxDist, .delta, 0.1,3,0.1, "Fog")
+
         reset()        
         timer = Timer.scheduledTimer(timeInterval: 1.0/60.0, target:self, selector: #selector(timerHandler), userInfo: nil, repeats:true)
     }
@@ -217,6 +223,7 @@ class ViewController: UIViewController {
         control.light.z = 1.0
 
         control.toeIn = 0.0011
+        control.maxDist = 1
         
         unWrapFloat3()
         
@@ -228,6 +235,9 @@ class ViewController: UIViewController {
     }
     
     func updateWidgets() {
+        if control.maxDist < 0.1 { control.maxDist = 1 }  // so older saves have a initialized fog value
+      
+        updateBurningShipButtonBackground()
         juliaOnOff.isOn = control.juliaboxMode
         unWrapFloat3()
 
@@ -298,6 +308,9 @@ class ViewController: UIViewController {
         let gap:CGFloat = 10
         let cxs:CGFloat = 120
         let cxs2:CGFloat = (cxs * 2 - gap) / 3
+        let yHop = bys + gap
+        let xHop = cxs + gap
+        let xHop2 = cxs2 + gap
 
         var sz:CGFloat = xs - 10
         var by:CGFloat = sz + 10  // top of widgets
@@ -311,39 +324,44 @@ class ViewController: UIViewController {
         }
 
         func portraitCommon() {
-            sZoom.frame = frame(cxs,bys,0,bys + gap)
-            sScaleFactor.frame = frame(cxs,bys,0,bys + gap)
-            cTranslate.frame = frame(cxs,cxs,0,cxs + gap)
+            sZoom.frame = frame(cxs,bys,0,yHop)
+            sScaleFactor.frame = frame(cxs,bys,0,yHop)
+            cTranslate.frame = frame(cxs,cxs,0,xHop)
             
             var x2 = x
-            stereoButton.frame = frame(bys,bys,bys + gap,0)
+            stereoButton.frame = frame(bys,bys,yHop,0)
             sToeIn.frame = frame(cxs - bys - gap,bys,0,0)
-            x = x2 + cxs + gap
+            x = x2 + xHop
             
             y = by
-            dSphere.frame = frame(cxs,cxs,0,cxs + gap)
-            sSphere.frame  = frame(cxs,bys,0,bys + gap)
-            dBox.frame = frame(cxs2,cxs2,cxs + gap,0)
+            dSphere.frame = frame(cxs,cxs,0,xHop)
+            sSphere.frame = frame(cxs,bys,0,yHop)
+            dBox.frame = frame(cxs2,cxs2,xHop,0)
             y = by
-            dColorR.frame = frame(cxs2,cxs2,0,cxs2 + gap)
-            dColorG.frame = frame(cxs2,cxs2,0,cxs2 + gap)
-            dColorB.frame = frame(cxs2,cxs2,cxs2 + gap,0)
+            dColorR.frame = frame(cxs2,cxs2,0,xHop2)
+            dColorG.frame = frame(cxs2,cxs2,0,xHop2)
+            dColorB.frame = frame(cxs2,cxs2,xHop2,0)
             y = by
-            dJuliaXY.frame = frame(cxs,cxs,0,cxs + gap)
-            sJuliaZ.frame  = frame(cxs,bys,0,bys + gap + 5)
-            juliaOnOff.frame = frame(50,30,0,bys + gap)
-            resetButton.frame = frame(50,bys,cxs + gap,0)
+            dJuliaXY.frame = frame(cxs,cxs,0,xHop)
+            sJuliaZ.frame  = frame(cxs,bys,0,yHop + 5)
+            
+            x2 = x
+            juliaOnOff.frame = frame(50,30,60,0)
+            resetButton.frame = frame(50,bys,0,yHop)
+            x = x2
+            sMaxDist.frame = frame(cxs,bys,xHop,0)
+            
             x2 = x
             y = by
-            dLightXY.frame = frame(cxs,cxs,0,cxs + gap)
-            sLightZ.frame  = frame(cxs,bys,0,bys + gap + 5)
-            saveLoadButton.frame = frame(80,bys,0,bys + gap)
+            dLightXY.frame = frame(cxs,cxs,0,xHop)
+            sLightZ.frame  = frame(cxs,bys,0,yHop + 5)
+            saveLoadButton.frame = frame(80,bys,0,yHop)
             helpButton.frame = frame(bys,bys,bys + 20,0)
             burningShipButton.frame = frame(bys,bys,0,0)
-            x = x2 + cxs + gap
+            x = x2 + xHop
             y = by
-            resolutionButton.frame = frame(80,bys,0,bys + gap)
-            sEpsilon.frame = frame(cxs,bys,0,bys + gap)
+            resolutionButton.frame = frame(80,bys,0,yHop)
+            sEpsilon.frame = frame(cxs,bys,0,yHop)
             cRotate.frame = frame(cxs,cxs,0,cxs+gap)
             speedButton.frame = frame(cxs,bys,0,0)
         }
@@ -405,32 +423,33 @@ class ViewController: UIViewController {
             
             imageViewL.frame = CGRect(x:5, y:5, width:sz, height:sz)
             
-            sZoom.frame = frame(cxs,bys,0,bys + gap)
-            sScaleFactor.frame = frame(cxs,bys,cxs + gap,0)
+            sZoom.frame = frame(cxs,bys,0,yHop)
+            sScaleFactor.frame = frame(cxs,bys,xHop,0)
             y = by
-            resolutionButton.frame = frame(80,bys,0,bys + gap)
+            resolutionButton.frame = frame(80,bys,0,yHop)
             sEpsilon.frame = frame(cxs,bys,0,0)
             x = left
             y = by + 90
-            dSphere.frame = frame(cxs,cxs,cxs + gap,0)
-            dBox.frame = frame(cxs,cxs,0,cxs + gap)
+            dSphere.frame = frame(cxs,cxs,xHop,0)
+            dBox.frame = frame(cxs,cxs,0,xHop)
             x = left
-            sSphere.frame  = frame(cxs,bys,cxs + gap,0)
+            sSphere.frame  = frame(cxs,bys,xHop,0)
             speedButton.frame = frame(cxs,bys,0,bys+gap)
             x = left
-            dColorR.frame = frame(cxs2,cxs2,cxs2 + gap,0)
-            dColorG.frame = frame(cxs2,cxs2,cxs2 + gap,0)
-            dColorB.frame = frame(cxs2,cxs2,0,cxs2 + gap)
+            dColorR.frame = frame(cxs2,cxs2,xHop2,0)
+            dColorG.frame = frame(cxs2,cxs2,xHop2,0)
+            dColorB.frame = frame(cxs2,cxs2,0,xHop2)
             x = left
-            dJuliaXY.frame = frame(cxs,cxs,cxs + gap,0)
-            dLightXY.frame = frame(cxs,cxs,0,cxs + gap)
+            dJuliaXY.frame = frame(cxs,cxs,xHop,0)
+            dLightXY.frame = frame(cxs,cxs,0,xHop)
             x = left
             sJuliaZ.frame  = frame(cxs,bys,cxs+gap,0)
-            sLightZ.frame  = frame(cxs,bys,0,bys + gap)
+            sLightZ.frame  = frame(cxs,bys,0,yHop)
             x = left
-            juliaOnOff.frame = frame(50,30,cxs + gap,0)
+            juliaOnOff.frame = frame(50,30,xHop,0)
             saveLoadButton.frame = frame(80,bys,0,bys+gap + 10)
             x = left
+            sMaxDist.frame = frame(cxs,bys,0,bys+gap)
             resetButton.frame = frame(50,bys,0,bys+gap)
             stereoButton.frame = frame(bys,bys,0,bys+gap)
             helpButton.frame = frame(bys,bys,bys + 20,0)
@@ -458,38 +477,42 @@ class ViewController: UIViewController {
             imageViewL.frame = CGRect(x:5, y:5, width:sz2, height:sz2)
             imageViewR.frame = CGRect(x:5+sz2+2, y:5, width:sz2, height:sz2)
 
-            sZoom.frame = frame(cxs,bys,0,bys + gap)
-            sScaleFactor.frame = frame(cxs,bys,0,bys + gap)
+            sZoom.frame = frame(cxs,bys,0,yHop)
+            sScaleFactor.frame = frame(cxs,bys,0,yHop)
             
             var x2 = x
-            stereoButton.frame = frame(bys,bys,bys + gap,0)
-            sToeIn.frame = frame(cxs - bys - gap,bys,0,0)
-            x = x2 + cxs + gap
+            stereoButton.frame = frame(bys,bys,yHop,0)
+            sToeIn.frame = frame(cxs - bys - gap,bys,0,yHop + 4)
+            
+            x = x2
+            sMaxDist.frame = frame(cxs,bys,0,0)
+
+            x = x2 + xHop
             y = by
-            dSphere.frame = frame(cxs,cxs,0,cxs + gap)
-            sSphere.frame  = frame(cxs,bys,0,bys + gap)
-            dBox.frame = frame(cxs2,cxs2,cxs + gap,0)
+            dSphere.frame = frame(cxs,cxs,0,xHop)
+            sSphere.frame  = frame(cxs,bys,0,yHop)
+            dBox.frame = frame(cxs2,cxs2,xHop,0)
             y = by
-            dColorR.frame = frame(cxs2,cxs2,0,cxs2 + gap)
-            dColorG.frame = frame(cxs2,cxs2,0,cxs2 + gap)
-            dColorB.frame = frame(cxs2,cxs2,cxs2 + gap,0)
+            dColorR.frame = frame(cxs2,cxs2,0,xHop2)
+            dColorG.frame = frame(cxs2,cxs2,0,xHop2)
+            dColorB.frame = frame(cxs2,cxs2,xHop2,0)
             y = by
-            dJuliaXY.frame = frame(cxs,cxs,0,cxs + gap)
-            sJuliaZ.frame  = frame(cxs,bys,0,bys + gap + 5)
-            juliaOnOff.frame = frame(50,30,0,bys + gap)
-            resetButton.frame = frame(50,bys,cxs + gap,0)
+            dJuliaXY.frame = frame(cxs,cxs,0,xHop)
+            sJuliaZ.frame  = frame(cxs,bys,0,yHop + 5)
+            juliaOnOff.frame = frame(50,30,0,yHop)
+            resetButton.frame = frame(50,bys,xHop,0)
             y = by
             x2 = x
-            dLightXY.frame = frame(cxs,cxs,0,cxs + gap)
-            sLightZ.frame  = frame(cxs,bys,0,bys + gap + 5)
-            saveLoadButton.frame = frame(80,bys,0,bys + gap)
+            dLightXY.frame = frame(cxs,cxs,0,xHop)
+            sLightZ.frame  = frame(cxs,bys,0,yHop + 5)
+            saveLoadButton.frame = frame(80,bys,0,yHop)
             helpButton.frame = frame(bys,bys,bys + 20,0)
             burningShipButton.frame = frame(bys,bys,0,0)
 
-            x = x2 + cxs + gap
+            x = x2 + xHop
             y = by
-            resolutionButton.frame = frame(80,bys,0,bys + gap)
-            sEpsilon.frame = frame(cxs,bys,0,bys + gap)
+            resolutionButton.frame = frame(80,bys,0,yHop)
+            sEpsilon.frame = frame(cxs,bys,0,yHop)
             speedButton.frame = frame(cxs,bys,0,0)
             
             landScapeCommon()
@@ -645,7 +668,8 @@ class ViewController: UIViewController {
         var c = control
         if who == 0 { c.camera.x -= control.toeIn }
         if who == 1 { c.camera.x += control.toeIn }
-
+        c.light = normalize(c.light)
+        
         cBuffer.contents().copyMemory(from: &c, byteCount:MemoryLayout<Control>.stride)
         
         let commandBuffer = commandQueue.makeCommandBuffer()!
