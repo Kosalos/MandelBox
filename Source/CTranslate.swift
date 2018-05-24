@@ -42,12 +42,14 @@ class CTranslate: UIView {
         context?.setFillColor(fastEdit ? nrmColorFast.cgColor : nrmColorSlow.cgColor)
         context?.addRect(bounds)
         context?.fillPath()
-
+        
         context?.setLineWidth(1)
         context?.setStrokeColor(UIColor.darkGray.cgColor)
         context?.addRect(bounds)
         context?.move(to: CGPoint(x:0, y:bounds.height/2))
         context?.addLine(to: CGPoint(x:bounds.width, y:bounds.height/2))
+        context?.move(to: CGPoint(x:bounds.width/2, y:0))
+        context?.addLine(to: CGPoint(x:bounds.width/2, y:bounds.height))
         context?.strokePath()
         
         drawText(10,8,.lightGray,16,"Move")
@@ -59,22 +61,22 @@ class CTranslate: UIView {
     }
     
     //MARK:-
-
-    @objc func handleTap1(_ sender: UITapGestureRecognizer) {
-        vc.removeAllFocus()
-        hasFocus = true
-        
+    
+    func tapCommon() {
         dx = 0
         dy = 0
         setNeedsDisplay()
     }
+
+    @objc func handleTap1(_ sender: UITapGestureRecognizer) {
+        vc.removeAllFocus()
+        hasFocus = true
+        tapCommon()
+    }
     
     @objc func handleTap2(_ sender: UITapGestureRecognizer) {
         fastEdit = !fastEdit
-        
-        dx = 0
-        dy = 0
-        setNeedsDisplay()
+        tapCommon()
     }
 
     //MARK:-
@@ -101,7 +103,7 @@ class CTranslate: UIView {
     var dy:Float = 0
 
     func update() -> Bool {
-        if touched { vc.alterPosition(dx * speedMult[speedIndex],dy * speedMult[speedIndex]) }
+        if touched { vc.alterPosition(dx * speedMult[speedIndex],dy * speedMult[speedIndex],0) }
         return touched
     }
 
@@ -125,23 +127,6 @@ class CTranslate: UIView {
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         touched = false
-    }
-
-    // MARK:
-
-    func drawText(_ x:CGFloat, _ y:CGFloat, _ color:UIColor, _ sz:CGFloat, _ str:String) {
-        let paraStyle = NSMutableParagraphStyle()
-        paraStyle.alignment = NSTextAlignment.left
-        
-        let font = UIFont.init(name: "Helvetica", size:sz)!
-        
-        let textFontAttributes = [
-            NSAttributedStringKey.font: font,
-            NSAttributedStringKey.foregroundColor: color,
-            NSAttributedStringKey.paragraphStyle: paraStyle,
-            ]
-        
-        str.draw(in: CGRect(x:x, y:y, width:800, height:100), withAttributes: textFontAttributes)
     }
 }
 

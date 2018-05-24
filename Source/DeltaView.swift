@@ -162,8 +162,8 @@ class DeltaView: UIView {
         UIColor.black.set()
         context?.setLineWidth(2)
         
-        drawVLine(CGFloat(scenter),0,bounds.height)
-        drawHLine(0,bounds.width,CGFloat(scenter))
+        drawVLine(context!,CGFloat(scenter),0,bounds.height)
+        drawHLine(context!,0,bounds.width,CGFloat(scenter))
         
         // value ------------------------------------------
         func formatted(_ v:Float) -> String { return String(format:"%6.4f",v) }
@@ -204,7 +204,7 @@ class DeltaView: UIView {
         
         let x = valueRatio(0) * bounds.width
         let y = (CGFloat(1) - valueRatio(1)) * bounds.height
-        drawFilledCircle(CGPoint(x:x,y:y),15,UIColor.black.cgColor)
+        drawFilledCircle(context!,CGPoint(x:x,y:y),15,UIColor.black.cgColor)
         
         // highlight --------------------------------------
         
@@ -216,7 +216,7 @@ class DeltaView: UIView {
                 let x = CGFloat(vx) * bounds.width
                 let y = (CGFloat(1) - vy) * bounds.height
                 
-                drawFilledCircle(CGPoint(x:x,y:y),4,UIColor.lightGray.cgColor)
+                drawFilledCircle(context!,CGPoint(x:x,y:y),4,UIColor.lightGray.cgColor)
             }
         }
         
@@ -286,7 +286,7 @@ class DeltaView: UIView {
     //MARK: ==================================
 
     func focusMovement(_ pt:CGPoint) {
-        if pt.x == 0 { touched = false; numberTouches = 0; return }
+        if pt.x == 0 { touched = false; return }
         
         deltaX =  Float(pt.x) / 1000
         deltaY = -Float(pt.y) / 1000
@@ -302,13 +302,9 @@ class DeltaView: UIView {
     
     //MARK: ==================================
     
-    var numberTouches:Int = 0
-    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if !active { return }
         if valuePointerX == nil || valuePointerY == nil { return }
-        
-        if touches.count > numberTouches { numberTouches = touches.count }
         
         for t in touches {
             let pt = t.location(in: self)
@@ -330,40 +326,6 @@ class DeltaView: UIView {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         touched = false
-        numberTouches = 0
     }
-    
-    func drawLine(_ p1:CGPoint, _ p2:CGPoint) {
-        context?.beginPath()
-        context?.move(to:p1)
-        context?.addLine(to:p2)
-        context?.strokePath()
-    }
-    
-    func drawVLine(_ x:CGFloat, _ y1:CGFloat, _ y2:CGFloat) { drawLine(CGPoint(x:x,y:y1),CGPoint(x:x,y:y2)) }
-    func drawHLine(_ x1:CGFloat, _ x2:CGFloat, _ y:CGFloat) { drawLine(CGPoint(x:x1, y:y),CGPoint(x: x2, y:y)) }
-    
-    func drawFilledCircle(_ center:CGPoint, _ diameter:CGFloat, _ color:CGColor) {
-        context?.beginPath()
-        context?.addEllipse(in: CGRect(x:CGFloat(center.x - diameter/2), y:CGFloat(center.y - diameter/2), width:CGFloat(diameter), height:CGFloat(diameter)))
-        context?.setFillColor(color)
-        context?.fillPath()
-    }
-    
-    func drawText(_ x:CGFloat, _ y:CGFloat, _ color:UIColor, _ sz:CGFloat, _ str:String) {
-        let paraStyle = NSMutableParagraphStyle()
-        paraStyle.alignment = NSTextAlignment.left
-        
-        let font = UIFont.init(name: "Helvetica", size:sz)!
-        
-        let textFontAttributes = [
-            NSAttributedStringKey.font: font,
-            NSAttributedStringKey.foregroundColor: color,
-            NSAttributedStringKey.paragraphStyle: paraStyle,
-            ]
-        
-        str.draw(in: CGRect(x:x, y:y, width:800, height:100), withAttributes: textFontAttributes)
-    }
-    
-    func drawText(_ pt:CGPoint, _ color:UIColor, _ sz:CGFloat, _ str:String) { drawText(pt.x,pt.y,color,sz,str) }
 }
+

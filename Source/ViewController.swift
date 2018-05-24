@@ -38,6 +38,7 @@ class ViewController: UIViewController {
     
     @IBOutlet var cRotate: CRotate!
     @IBOutlet var cTranslate: CTranslate!
+    @IBOutlet var cTranslateZ: CTranslateZ!
     @IBOutlet var sZoom: SliderView!
     @IBOutlet var sScaleFactor: SliderView!
     @IBOutlet var sEpsilon: SliderView!
@@ -178,7 +179,7 @@ class ViewController: UIViewController {
         sToeIn.initializeFloat(&control.toeIn, .delta, -toeInRange,+toeInRange,0.0002, "Parallax")
         sToeIn.highlight(0)
 
-        sMaxDist.initializeFloat(&control.maxDist, .delta, 0.1,3,0.1, "Fog")
+        sMaxDist.initializeFloat(&control.maxDist, .delta, 0.01,4,0.1, "Fog")
 
         reset()        
         timer = Timer.scheduledTimer(timeInterval: 1.0/60.0, target:self, selector: #selector(timerHandler), userInfo: nil, repeats:true)
@@ -244,6 +245,7 @@ class ViewController: UIViewController {
         for s in sList { s.setNeedsDisplay() }
         for d in dList { d.setNeedsDisplay() }
         
+        setImageViewResolution()
         updateImage()
     }
     
@@ -280,6 +282,7 @@ class ViewController: UIViewController {
         for s in sList { if s.hasFocus { s.hasFocus = false; s.setNeedsDisplay() }}
         for d in dList { if d.hasFocus { d.hasFocus = false; d.setNeedsDisplay() }}
         if cTranslate.hasFocus { cTranslate.hasFocus = false; cTranslate.setNeedsDisplay() }
+        if cTranslateZ.hasFocus { cTranslateZ.hasFocus = false; cTranslateZ.setNeedsDisplay() }
         if cRotate.hasFocus { cRotate.hasFocus = false; cRotate.setNeedsDisplay() }
     }
     
@@ -287,6 +290,7 @@ class ViewController: UIViewController {
         for s in sList { if s.hasFocus { s.focusMovement(pt); return }}
         for d in dList { if d.hasFocus { d.focusMovement(pt); return }}
         if cTranslate.hasFocus { cTranslate.focusMovement(pt); return }
+        if cTranslateZ.hasFocus { cTranslateZ.focusMovement(pt); return }
         if cRotate.hasFocus { cRotate.focusMovement(pt); return }
     }
     
@@ -326,9 +330,14 @@ class ViewController: UIViewController {
         func portraitCommon() {
             sZoom.frame = frame(cxs,bys,0,yHop)
             sScaleFactor.frame = frame(cxs,bys,0,yHop)
-            cTranslate.frame = frame(cxs,cxs,0,xHop)
             
+            let xx = cxs - bys - 5
+            cTranslate.frame = frame(xx,cxs,0,0)
             var x2 = x
+            x += xx + 5
+            cTranslateZ.frame = frame(bys,cxs,0,xHop)
+
+            x = x2
             stereoButton.frame = frame(bys,bys,yHop,0)
             sToeIn.frame = frame(cxs - bys - gap,bys,0,0)
             x = x2 + xHop
@@ -403,7 +412,11 @@ class ViewController: UIViewController {
         func landScapeCommon() {
             x = 40
             y = ys - cxs - 40
-            cTranslate.frame = frame(cxs,cxs,0,0)
+            let xx = cxs - bys - 5
+            cTranslate.frame = frame(xx,cxs,0,0)
+            x += xx + 5
+            cTranslateZ.frame = frame(bys,cxs,0,0)
+            
             x = xs - cxs - 40
             cRotate.frame = frame(cxs,cxs,0,0)
         }
@@ -606,6 +619,7 @@ class ViewController: UIViewController {
         var refresh:Bool = false
         
         if cTranslate.update() { refresh = true }
+        if cTranslateZ.update() { refresh = true }
         if cRotate.update() { refresh = true }
         for s in sList { if s.update() { refresh = true }}
         for d in dList { if d.update() { refresh = true }}
@@ -631,11 +645,13 @@ class ViewController: UIViewController {
         updateImage()
     }
     
-    func alterPosition(_ dx:Float, _ dy:Float) {
-        let diff = dy * (control.focus - control.camera) / 300.0
+    func alterPosition(_ dx:Float, _ dy:Float, _ dz:Float) {
+        let scale = length(control.focus - control.camera) / 300.0
+        let diff = float3(-dx * scale,dz * scale,dy * scale)
+
         control.camera -= diff
         control.focus -= diff
-        
+
         updateImage()
     }
     

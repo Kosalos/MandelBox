@@ -18,7 +18,8 @@ Note: Single tap on any widget to give it the FOCUS.
 Double Tap on the image to toggle FULL SCREEN mode.
 
 A. Move Camera
-   Press above the center line to move forward, below to move backward.
+   The left widget controls left/right, up/down movement.
+   The right widget controls forward/back movement.
 
 B. Rotate Camera
    Press anywhere to rotate camera in semi-controllable fashion. (algorithm needs work)

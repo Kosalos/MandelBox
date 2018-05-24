@@ -130,22 +130,40 @@ class CRotate: UIView {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         touched = false
     }
-    // MARK:
+}
+
+// MARK:
+
+func drawLine(_ context:CGContext, _ p1:CGPoint, _ p2:CGPoint) {
+    context.beginPath()
+    context.move(to:p1)
+    context.addLine(to:p2)
+    context.strokePath()
+}
+
+func drawVLine(_ context:CGContext, _ x:CGFloat, _ y1:CGFloat, _ y2:CGFloat) { drawLine(context,CGPoint(x:x,y:y1),CGPoint(x:x,y:y2)) }
+func drawHLine(_ context:CGContext, _ x1:CGFloat, _ x2:CGFloat, _ y:CGFloat) { drawLine(context,CGPoint(x:x1, y:y),CGPoint(x: x2, y:y)) }
+
+func drawFilledCircle(_ context:CGContext, _ center:CGPoint, _ diameter:CGFloat, _ color:CGColor) {
+    context.beginPath()
+    context.addEllipse(in: CGRect(x:CGFloat(center.x - diameter/2), y:CGFloat(center.y - diameter/2), width:CGFloat(diameter), height:CGFloat(diameter)))
+    context.setFillColor(color)
+    context.fillPath()
+}
+
+func drawText(_ x:CGFloat, _ y:CGFloat, _ color:UIColor, _ sz:CGFloat, _ str:String) {
+    let paraStyle = NSMutableParagraphStyle()
+    paraStyle.alignment = NSTextAlignment.left
     
-    func drawText(_ x:CGFloat, _ y:CGFloat, _ color:UIColor, _ sz:CGFloat, _ str:String) {
-        let paraStyle = NSMutableParagraphStyle()
-        paraStyle.alignment = NSTextAlignment.left
-        
-        let font = UIFont.init(name: "Helvetica", size:sz)!
-        
-        let textFontAttributes = [
-            NSAttributedStringKey.font: font,
-            NSAttributedStringKey.foregroundColor: color,
-            NSAttributedStringKey.paragraphStyle: paraStyle,
-            ]
-        
-        str.draw(in: CGRect(x:x, y:y, width:800, height:100), withAttributes: textFontAttributes)
-    }
+    let font = UIFont.init(name: "Helvetica", size:sz)!
+    
+    let textFontAttributes = [
+        NSAttributedStringKey.font: font,
+        NSAttributedStringKey.foregroundColor: color,
+        NSAttributedStringKey.paragraphStyle: paraStyle,
+        ]
+    
+    str.draw(in: CGRect(x:x, y:y, width:800, height:100), withAttributes: textFontAttributes)
 }
 
 
