@@ -646,11 +646,23 @@ class ViewController: UIViewController {
     }
     
     func alterPosition(_ dx:Float, _ dy:Float, _ dz:Float) {
-        let scale = length(control.focus - control.camera) / 300.0
-        let diff = float3(-dx * scale,dz * scale,dy * scale)
+        func axisAlter(_ dir:float4, _ amt:Float) {
+            let diff = simd_mul(arcBall.transformMatrix, dir) * amt / 300.0
+            
+            func alter(_ value: inout float3) {
+                value.x -= diff.x
+                value.y -= diff.y
+                value.z -= diff.z
+            }
+            
+            alter(&control.camera)
+            alter(&control.focus)
+        }
 
-        control.camera -= diff
-        control.focus -= diff
+        let q:Float = 0.1
+        axisAlter(simd_make_float4(q,0,0,0),dx)
+        axisAlter(simd_make_float4(0,0,q,0),dy)
+        axisAlter(simd_make_float4(0,q,0,0),dz)
 
         updateImage()
     }
