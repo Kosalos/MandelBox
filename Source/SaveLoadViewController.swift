@@ -31,7 +31,7 @@ class SaveLoadViewController: UIViewController,UITableViewDataSource, UITableVie
         
         if dateString == "**" {
             str = "** unused **"
-            cell.loadCell.backgroundColor = UIColor.darkGray
+            cell.loadCell.backgroundColor = widgetEdgeColor
         }
         else {
             str = String(format:"%2d    %@", indexPath.row+1,dateString)
@@ -57,8 +57,9 @@ class SaveLoadViewController: UIViewController,UITableViewDataSource, UITableVie
             if sender.tag == 0 {
                 loadAndDismissDialog(indexPath.row,&control)
                 if control.version != versionNumber { vc.reset() }
-                arcBall.transformMatrix = control.transformMatrix
-                arcBall.endPosition = control.endPosition
+                
+                arcBall.startPosition = control.endPosition
+                arcBall.calcTransFormMatrix()
             }
             
             if sender.tag == 1 {

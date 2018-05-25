@@ -48,6 +48,7 @@ class DeltaView: UIView {
         addGestureRecognizer(tap3)
         
         isUserInteractionEnabled = true
+        self.backgroundColor = .clear
     }
     
     func initializeFloat2(_ v: inout Float) {
@@ -182,7 +183,7 @@ class DeltaView: UIView {
         func coloredValue(_ v:Float, _ y:CGFloat) { drawText(vx,y,valueColor(v),16, formatted(v)) }
   
         
-        drawText(10,8,.lightGray,16,name)
+        drawText(10,8,textColor,16,name)
         
 //        if valuePointerX != nil {
 //            let xx:Float = valuePointerX.load(as: Float.self)
@@ -216,7 +217,7 @@ class DeltaView: UIView {
                 let x = CGFloat(vx) * bounds.width
                 let y = (CGFloat(1) - vy) * bounds.height
                 
-                drawFilledCircle(context!,CGPoint(x:x,y:y),4,UIColor.lightGray.cgColor)
+                drawFilledCircle(context!,CGPoint(x:x,y:y),4,textColor.cgColor)
             }
         }
         

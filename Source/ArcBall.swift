@@ -86,6 +86,12 @@ class ArcBall {
         return ans
     }
     
+    func calcTransFormMatrix() {
+        let center:CGFloat = vc.cRotate.bounds.width/2
+        mouseDown(CGPoint(x: center, y: center))
+        mouseMove(CGPoint(x: center + 0.001, y: center + 0.001))
+    }
+    
     func vector3fCross(_ v1 :float3, _ v2:float3) -> float3 {
         var ans = float3()
         ans.x = (v1.y * v2.z) - (v1.z * v2.y)

@@ -44,7 +44,7 @@ class CTranslate: UIView {
         context?.fillPath()
         
         context?.setLineWidth(1)
-        context?.setStrokeColor(UIColor.darkGray.cgColor)
+        context?.setStrokeColor(widgetEdgeColor.cgColor)
         context?.addRect(bounds)
         context?.move(to: CGPoint(x:0, y:bounds.height/2))
         context?.addLine(to: CGPoint(x:bounds.width, y:bounds.height/2))
@@ -52,7 +52,7 @@ class CTranslate: UIView {
         context?.addLine(to: CGPoint(x:bounds.width/2, y:bounds.height))
         context?.strokePath()
         
-        drawText(10,8,.lightGray,16,"Move")
+        drawText(10,8,textColor,16,"Move")
         
         if hasFocus {
             UIColor.red.setStroke()

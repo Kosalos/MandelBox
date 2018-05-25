@@ -377,64 +377,62 @@ class ViewController: UIViewController {
         
         func portraitMono() {
             sz = xs
-            by = sz + 10  // top of widgets
+            by = ys - 260  // top of widgets
             x = (xs - 730) / 2
             y = by
             
             viewXS = Int32(sz)
-            viewYS = Int32(sz)
+            viewYS = Int32(by-10)
 
             imageViewR.isHidden = true
             sToeIn.isHidden = true
 
-            imageViewL.frame = CGRect(x:0, y:0, width:sz, height:sz)
+            imageViewL.frame = CGRect(x:0, y:0, width:CGFloat(viewXS), height:CGFloat(viewYS))
             portraitCommon()
         }
 
         func portraitStereo() {
             sz = xs
-            by = sz + 10  // top of widgets
+            by = ys - 260  // top of widgets
             x = (xs - 730) / 2
             y = by
 
             viewXS = Int32(sz/2)
-            viewYS = Int32(sz)
+            viewYS = Int32(by-10)
 
             imageViewR.isHidden = false
             sToeIn.isHidden = false
             
             imageViewL.frame = CGRect(x:0, y:0, width:CGFloat(viewXS), height:CGFloat(viewYS))
             imageViewR.frame = CGRect(x:CGFloat(viewXS), y:0, width:CGFloat(viewXS), height:CGFloat(viewYS))
-
             portraitCommon()
         }
 
         func landScapeCommon() {
-            x = 40
+            x = 30
             y = ys - cxs - 40
             let xx = cxs - bys - 5
             cTranslate.frame = frame(xx,cxs,0,0)
             x += xx + 5
             cTranslateZ.frame = frame(bys,cxs,0,0)
             
-            x = xs - cxs - 40
+            x = xs - cxs - 30
             cRotate.frame = frame(cxs,cxs,0,0)
         }
         
         func landScapeMono() {
-            sz = ys - 10
-            by = 50     // top of widgets
-            let left = sz + 10
+            by = 10     // top of widgets
+            let left = xs - 260
             x = left
             y = by
             
-            viewXS = Int32(sz)
-            viewYS = Int32(sz)
+            viewXS = Int32(left-10)
+            viewYS = Int32(ys)
             
             imageViewR.isHidden = true
             sToeIn.isHidden = true
             
-            imageViewL.frame = CGRect(x:5, y:5, width:sz, height:sz)
+            imageViewL.frame = CGRect(x:CGFloat(), y:CGFloat(), width:CGFloat(viewXS), height:CGFloat(viewYS))
             
             sZoom.frame = frame(cxs,bys,0,yHop)
             sScaleFactor.frame = frame(cxs,bys,xHop,0)
@@ -460,7 +458,7 @@ class ViewController: UIViewController {
             sLightZ.frame  = frame(cxs,bys,0,yHop)
             x = left
             juliaOnOff.frame = frame(50,30,xHop,0)
-            saveLoadButton.frame = frame(80,bys,0,bys+gap + 10)
+            saveLoadButton.frame = frame(80,bys,0,bys+gap)
             x = left
             sMaxDist.frame = frame(cxs,bys,0,bys+gap)
             resetButton.frame = frame(50,bys,0,bys+gap)
@@ -475,20 +473,19 @@ class ViewController: UIViewController {
         }
 
         func landScapeStereo() {
-            sz = xs - 10
-            let sz2 = sz / 2
-            by = sz2 + 10  // top of widgets
-            x = (xs - 730) / 2
+            let sz2 = xs / 2
+            by = ys - 270  // top of widgets
+            x = (xs - 700) / 2
             y = by
             
-            viewXS = Int32(sz)
-            viewYS = Int32(sz)
+            viewXS = Int32(sz2)
+            viewYS = Int32(by-10)
             
             imageViewR.isHidden = false
             sToeIn.isHidden = false
             
-            imageViewL.frame = CGRect(x:5, y:5, width:sz2, height:sz2)
-            imageViewR.frame = CGRect(x:5+sz2+2, y:5, width:sz2, height:sz2)
+            imageViewL.frame = CGRect(x:CGFloat(), y:CGFloat(), width:CGFloat(viewXS), height:CGFloat(viewYS))
+            imageViewR.frame = CGRect(x:sz2+2, y:CGFloat(), width:CGFloat(viewXS), height:CGFloat(viewYS))
 
             sZoom.frame = frame(cxs,bys,0,yHop)
             sScaleFactor.frame = frame(cxs,bys,0,yHop)

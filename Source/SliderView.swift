@@ -1,8 +1,10 @@
 import UIKit
 
-let limColor = UIColor(red:0.25, green:0.25, blue:0.2, alpha: 1)
-let nrmColorFast = UIColor(red:0.25, green:0.2, blue:0.2, alpha: 1)
-let nrmColorSlow = UIColor(red:0.2, green:0.25, blue:0.2, alpha: 1)
+let limColor = UIColor(red:0.25, green:0.25, blue:0.2, alpha: 0.4)
+let nrmColorFast = UIColor(red:0.35, green:0.2, blue:0.2, alpha: 0.4)
+let nrmColorSlow = UIColor(red:0.2, green:0.25, blue:0.2, alpha: 0.4)
+let widgetEdgeColor = UIColor(red:0.2, green:0.2, blue:0.2, alpha: 0.6)
+let textColor = UIColor(red:0.4, green:0.4, blue:0.4, alpha:1)
 
 enum ValueType { case int32,float }
 enum SliderType { case delta,direct,loop }
@@ -47,6 +49,7 @@ class SliderView: UIView {
         addGestureRecognizer(tap3)
         
         isUserInteractionEnabled = true
+        self.backgroundColor = .clear
     }
     
     func initializeInt32(_ v: inout Int32, _ sType:SliderType, _ min:Float, _ max:Float,  _ delta:Float, _ iname:String) {
@@ -175,7 +178,7 @@ class SliderView: UIView {
         func coloredValue(_ v:Float) { drawText(vx,8,valueColor(v),16, formatted(v)) }
         
         if valuePointer != nil {
-            drawText(10,8,.lightGray,16,name)
+            drawText(10,8,textColor,16,name)
             
 //            switch valuetype {
 //            case .int32 :
@@ -195,7 +198,7 @@ class SliderView: UIView {
         
         // cursor -------------------------------------------------
         let x = valueRatio() * bounds.width
-        context!.setStrokeColor(UIColor.darkGray.cgColor)
+        context!.setStrokeColor(widgetEdgeColor.cgColor)
         context!.setLineWidth(4)
         path.removeAllPoints()
         path.move(to: CGPoint(x:x, y:0))
@@ -209,7 +212,7 @@ class SliderView: UIView {
             let den = CGFloat(mRange.y - mRange.x)
             if den != 0 {
                 let x:CGFloat = bounds.width * CGFloat(highLightValue - mRange.x) / den
-                drawFilledCircle(context!,CGPoint(x:x,y:5),4,UIColor.lightGray.cgColor)
+                drawFilledCircle(context!,CGPoint(x:x,y:5),4,textColor.cgColor)
             }
         }
 
