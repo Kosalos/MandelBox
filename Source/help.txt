@@ -15,6 +15,17 @@ Note: Single tap on any widget to give it the FOCUS.
       Click and drag on the image to apply the movement to the widget.
       The widgets' Fast vs Slow edit style affects the movements.
 
+Note: discovered a bug that is so useful I am calling it a feature:
+  Give any widget the focus, then drag and hold on the image
+  to command that widget to continually update.
+  While still holding down on the image, tap any other widget to give it the focus,
+  then release the hold.
+  Because the focus was changed, the first widget never
+  receives the 'mouse release message', and so will continue to auto
+  update until you press the widget itself at a later time.
+  I like to use this bug to get the forward motion widget to auto update,
+  while I navigate around with 'rotate'.
+
 Double Tap on the image to toggle FULL SCREEN mode.
 
 A. Move Camera

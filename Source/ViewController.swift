@@ -179,7 +179,7 @@ class ViewController: UIViewController {
         sToeIn.initializeFloat(&control.toeIn, .delta, -toeInRange,+toeInRange,0.0002, "Parallax")
         sToeIn.highlight(0)
 
-        sMaxDist.initializeFloat(&control.maxDist, .delta, 0.01,4,0.1, "Fog")
+        sMaxDist.initializeFloat(&control.maxDist, .delta, 0.01,6,0.1, "Fog")
 
         reset()        
         timer = Timer.scheduledTimer(timeInterval: 1.0/60.0, target:self, selector: #selector(timerHandler), userInfo: nil, repeats:true)

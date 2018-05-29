@@ -44,8 +44,8 @@ class CRotate: UIView {
         context?.addRect(bounds)
         context?.fillPath()
 
-        context?.setLineWidth(1)
-        context?.setStrokeColor(widgetEdgeColor.cgColor)
+        context?.setLineWidth(2)
+        context?.setStrokeColor(UIColor.black.cgColor)
         context?.addRect(bounds)
         context?.move(to: CGPoint(x:0, y:bounds.height/2))
         context?.addLine(to: CGPoint(x:bounds.width, y:bounds.height/2))
