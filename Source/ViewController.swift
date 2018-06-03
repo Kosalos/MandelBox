@@ -54,6 +54,7 @@ class ViewController: UIViewController {
     @IBOutlet var sLightZ: SliderView!
     @IBOutlet var sToeIn: SliderView!
     @IBOutlet var sMaxDist: SliderView!
+    @IBOutlet var sContrast: SliderView!
     @IBOutlet var imageViewL: ImageView!
     @IBOutlet var imageViewR: ImageView!
     @IBOutlet var resetButton: UIButton!
@@ -145,7 +146,7 @@ class ViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        sList = [ sZoom,sScaleFactor,sEpsilon,sJuliaZ,sLightZ,sSphere,sToeIn,sMaxDist ]
+        sList = [ sZoom,sScaleFactor,sEpsilon,sJuliaZ,sLightZ,sSphere,sToeIn,sMaxDist,sContrast ]
         dList = [ dSphere,dBox,dColorR,dColorG,dColorB,dJuliaXY,dLightXY ]
         bList = [ resetButton,saveLoadButton,helpButton,speedButton,resolutionButton,stereoButton,juliaOnOff,burningShipButton ]
 
@@ -180,7 +181,8 @@ class ViewController: UIViewController {
         sToeIn.highlight(0)
 
         sMaxDist.initializeFloat(&control.maxDist, .delta, 0.01,6,0.1, "Fog")
-
+        sContrast.initializeFloat(&control.contrast, .delta,0.1,5,0.1, "Cont")
+        
         reset()        
         timer = Timer.scheduledTimer(timeInterval: 1.0/60.0, target:self, selector: #selector(timerHandler), userInfo: nil, repeats:true)
     }
@@ -225,6 +227,7 @@ class ViewController: UIViewController {
 
         control.toeIn = 0.0011
         control.maxDist = 1
+        control.contrast = 1
         
         unWrapFloat3()
         
@@ -237,7 +240,7 @@ class ViewController: UIViewController {
     
     func updateWidgets() {
         if control.maxDist < 0.1 { control.maxDist = 1 }  // so older saves have a initialized fog value
-      
+        if control.contrast < 0.1 { control.contrast = 1 }
         updateBurningShipButtonBackground()
         juliaOnOff.isOn = control.juliaboxMode
         unWrapFloat3()
@@ -358,7 +361,10 @@ class ViewController: UIViewController {
             juliaOnOff.frame = frame(50,30,60,0)
             resetButton.frame = frame(50,bys,0,yHop)
             x = x2
-            sMaxDist.frame = frame(cxs,bys,xHop,0)
+            let xHop2 = xHop/2 - 10
+            sMaxDist.frame = frame(xHop2,bys,xHop2+2,0)
+            sContrast.frame = frame(xHop2,bys,xHop2,0)
+            x += 18
             
             x2 = x
             y = by
@@ -459,8 +465,13 @@ class ViewController: UIViewController {
             x = left
             juliaOnOff.frame = frame(50,30,xHop,0)
             saveLoadButton.frame = frame(80,bys,0,bys+gap)
+
             x = left
-            sMaxDist.frame = frame(cxs,bys,0,bys+gap)
+            let xHop3 = xHop/2 - 6
+            sMaxDist.frame = frame(xHop3,bys,xHop3+2,0)
+            sContrast.frame = frame(xHop3,bys,xHop3,0)
+            x += 10
+            
             resetButton.frame = frame(50,bys,0,bys+gap)
             stereoButton.frame = frame(bys,bys,0,bys+gap)
             helpButton.frame = frame(bys,bys,bys + 20,0)
@@ -495,13 +506,16 @@ class ViewController: UIViewController {
             sToeIn.frame = frame(cxs - bys - gap,bys,0,yHop + 4)
             
             x = x2
-            sMaxDist.frame = frame(cxs,bys,0,0)
+            let xHop3 = xHop/2 - 6
+            sMaxDist.frame = frame(xHop3,bys,xHop3+2,0)
+            sContrast.frame = frame(xHop3,bys,xHop3,0)
 
             x = x2 + xHop
             y = by
             dSphere.frame = frame(cxs,cxs,0,xHop)
             sSphere.frame  = frame(cxs,bys,0,yHop)
             dBox.frame = frame(cxs2,cxs2,xHop,0)
+            
             y = by
             dColorR.frame = frame(cxs2,cxs2,0,xHop2)
             dColorG.frame = frame(cxs2,cxs2,0,xHop2)

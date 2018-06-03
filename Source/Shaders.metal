@@ -142,9 +142,7 @@ float4 rayMarch(float3 rayDir,constant Control &control) {
     
     float3 finalRayPos = control.camera + distance * rayDir;
     
-    // Base background color.
-    float4 bgColor = float4(0,0,0,1);
-    float4 color = bgColor;
+    float4 color = float4(0,0,0,1);
     
     if (distance < control.maxDist) {
         // The (log(epsilon) * 2.0) offset is to compensate for the fact
@@ -179,6 +177,10 @@ float4 rayMarch(float3 rayDir,constant Control &control) {
             float dd = length(finalRayPos - control.camera);    // fog effect
             float hk = float(1 - dd * 2 / control.maxDist);
             color *= float4(hk,hk,hk,1);
+            
+            color.x = 0.5 + (color.x - 0.45) * control.contrast;
+            color.y = 0.5 + (color.y - 0.45) * control.contrast;
+            color.z = 0.5 + (color.z - 0.45) * control.contrast;
         }
     }
     

@@ -37,10 +37,11 @@ struct Control {
     float toeIn;
     bool burningShip;
     float maxDist;
+    float contrast;
     bool bfuture1;
     int ifuture2;
     vector_float2 future2;
-    vector_float3 future3;
+    vector_float2 future3;
 };
 
 #endif /* ShaderTypes_h */

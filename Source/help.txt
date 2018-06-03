@@ -96,3 +96,5 @@ S. Fog
    Not really fog, but a way to darken objects according to distance.
    Lower values should render faster as well.
 
+   Cont
+   Adjust contrast
