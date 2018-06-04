@@ -3,8 +3,8 @@
 
 using namespace metal;
 
-constant int MAX_ITERS = 16;
-constant int MAX_STEPS = 100;
+constant int MAX_ITERS = 10; // adjust this higher for better/slower rendering
+constant int MAX_STEPS = 70; // adjust this higher for better/slower rendering
 
 //MARK: -
 
@@ -32,10 +32,12 @@ float3 getColor(float3 pos,constant Control &control)
     }
     
     float fractionalIterationCount = log(dot(v, v));
-    return float3(
+    float3 cc = float3(
                   control.colorB1 + control.colorB2 * sin(fractionalIterationCount * 0.52 + 0.7),
                   control.colorG1 + control.colorG2 * sin(fractionalIterationCount * 0.73 + 1.8),
                   control.colorR1 + control.colorR2 * sin(fractionalIterationCount * 0.31 + 1.1));
+    
+    return saturate(cc);
 }
 
 
@@ -115,7 +117,7 @@ float getAmbientOcclusion(float3 pos, float3 normal,constant Control &control)
     }
     
     // Smaller value = Darker
-    return clamp(ambientOcclusion, 0.0,1.0);
+    return saturate(ambientOcclusion);
 }
 
 //MARK: -
@@ -184,7 +186,7 @@ float4 rayMarch(float3 rayDir,constant Control &control) {
         }
     }
     
-    return color;
+    return saturate(color);
 }
 
 //MARK: -
