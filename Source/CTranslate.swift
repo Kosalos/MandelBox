@@ -84,8 +84,8 @@ class CTranslate: UIView {
     func focusMovement(_ pt:CGPoint) {
         if pt.x == 0 { touched = false; return }
         
-        dx = Float(pt.x) / 500
-        dy = Float(pt.y) / 500
+        dx = Float(pt.x) / 50
+        dy = Float(pt.y) / 50
         
         if !fastEdit {
             dx /= 10

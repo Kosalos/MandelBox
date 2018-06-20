@@ -96,8 +96,8 @@ class CRotate: UIView {
     func focusMovement(_ pt:CGPoint) {
         if pt.x == 0 { touched = false; return }
         
-        dx = Float(pt.x) / 30
-        dy = Float(pt.y) / 30
+        dx = Float(pt.x) / 10
+        dy = Float(pt.y) / 10
         
         if !fastEdit {
             dx /= 10

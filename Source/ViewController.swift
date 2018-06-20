@@ -228,8 +228,8 @@ class ViewController: UIViewController {
         control.light.z = 1.0
 
         control.toeIn = 0.0011
-        control.maxDist = 1
-        control.contrast = 1
+        control.maxDist = 3
+        control.contrast = 0.8
         
         unWrapFloat3()
         
