@@ -55,8 +55,10 @@ class ViewController: UIViewController {
     @IBOutlet var sToeIn: SliderView!
     @IBOutlet var sMaxDist: SliderView!
     @IBOutlet var sContrast: SliderView!
-    @IBOutlet var imageViewL: ImageView!
-    @IBOutlet var imageViewR: ImageView!
+    @IBOutlet var metalTextureViewL: MetalTextureView!
+    @IBOutlet var metalTextureViewR: MetalTextureView!
+    
+    
     @IBOutlet var resetButton: UIButton!
     @IBOutlet var saveLoadButton: UIButton!
     @IBOutlet var helpButton: UIButton!
@@ -271,6 +273,9 @@ class ViewController: UIViewController {
         outTextureL = self.device.makeTexture(descriptor: textureDescriptor)!
         outTextureR = self.device.makeTexture(descriptor: textureDescriptor)!
 
+        metalTextureViewL.initialize(outTextureL)
+        metalTextureViewR.initialize(outTextureR)
+        
         let maxsz = max(xsz,ysz) + Int(threadGroupCount.width-1)
         threadGroups = MTLSizeMake(
             maxsz / threadGroupCount.width,
@@ -390,10 +395,10 @@ class ViewController: UIViewController {
             viewXS = Int32(sz)
             viewYS = Int32(by-10)
 
-            imageViewR.isHidden = true
+            metalTextureViewR.isHidden = true
             sToeIn.isHidden = true
 
-            imageViewL.frame = CGRect(x:0, y:0, width:CGFloat(viewXS), height:CGFloat(viewYS))
+            metalTextureViewL.frame = CGRect(x:0, y:0, width:CGFloat(viewXS), height:CGFloat(viewYS))
             portraitCommon()
         }
 
@@ -406,11 +411,11 @@ class ViewController: UIViewController {
             viewXS = Int32(sz/2)
             viewYS = Int32(by-10)
 
-            imageViewR.isHidden = false
+            metalTextureViewR.isHidden = false
             sToeIn.isHidden = false
             
-            imageViewL.frame = CGRect(x:0, y:0, width:CGFloat(viewXS), height:CGFloat(viewYS))
-            imageViewR.frame = CGRect(x:CGFloat(viewXS), y:0, width:CGFloat(viewXS), height:CGFloat(viewYS))
+            metalTextureViewL.frame = CGRect(x:0, y:0, width:CGFloat(viewXS), height:CGFloat(viewYS))
+            metalTextureViewR.frame = CGRect(x:CGFloat(viewXS), y:0, width:CGFloat(viewXS), height:CGFloat(viewYS))
             portraitCommon()
         }
 
@@ -435,10 +440,10 @@ class ViewController: UIViewController {
             viewXS = Int32(left-10)
             viewYS = Int32(ys)
             
-            imageViewR.isHidden = true
+            metalTextureViewR.isHidden = true
             sToeIn.isHidden = true
             
-            imageViewL.frame = CGRect(x:CGFloat(), y:CGFloat(), width:CGFloat(viewXS), height:CGFloat(viewYS))
+            metalTextureViewL.frame = CGRect(x:CGFloat(), y:CGFloat(), width:CGFloat(viewXS), height:CGFloat(viewYS))
             
             sZoom.frame = frame(cxs,bys,0,yHop)
             sScaleFactor.frame = frame(cxs,bys,xHop,0)
@@ -492,11 +497,11 @@ class ViewController: UIViewController {
             viewXS = Int32(sz2)
             viewYS = Int32(by-10)
             
-            imageViewR.isHidden = false
+            metalTextureViewR.isHidden = false
             sToeIn.isHidden = false
             
-            imageViewL.frame = CGRect(x:CGFloat(), y:CGFloat(), width:CGFloat(viewXS), height:CGFloat(viewYS))
-            imageViewR.frame = CGRect(x:sz2+2, y:CGFloat(), width:CGFloat(viewXS), height:CGFloat(viewYS))
+            metalTextureViewL.frame = CGRect(x:CGFloat(), y:CGFloat(), width:CGFloat(viewXS), height:CGFloat(viewYS))
+            metalTextureViewR.frame = CGRect(x:sz2+2, y:CGFloat(), width:CGFloat(viewXS), height:CGFloat(viewYS))
 
             sZoom.frame = frame(cxs,bys,0,yHop)
             sScaleFactor.frame = frame(cxs,bys,0,yHop)
@@ -548,10 +553,10 @@ class ViewController: UIViewController {
             viewXS = Int32(xs/2)
             viewYS = Int32(ys)
             
-            imageViewR.isHidden = false
+            metalTextureViewR.isHidden = false
             
-            imageViewL.frame = CGRect(x:0, y:0, width:CGFloat(viewXS), height:CGFloat(viewYS))
-            imageViewR.frame = CGRect(x:CGFloat(viewXS), y:0, width:CGFloat(viewXS), height:CGFloat(viewYS))
+            metalTextureViewL.frame = CGRect(x:0, y:0, width:CGFloat(viewXS), height:CGFloat(viewYS))
+            metalTextureViewR.frame = CGRect(x:CGFloat(viewXS), y:0, width:CGFloat(viewXS), height:CGFloat(viewYS))
             
             landScapeCommon()
             
@@ -567,10 +572,10 @@ class ViewController: UIViewController {
             viewXS = Int32(xs)
             viewYS = Int32(ys)
 
-            imageViewR.isHidden = true
+            metalTextureViewR.isHidden = true
             sToeIn.isHidden = true
             
-            imageViewL.frame = CGRect(x:0, y:0, width:xs, height:ys)
+            metalTextureViewL.frame = CGRect(x:0, y:0, width:xs, height:ys)
             landScapeCommon()
         }
         
@@ -602,6 +607,7 @@ class ViewController: UIViewController {
         }
         
         setImageViewResolution()
+        updateImage()
     }
     
     //MARK: -
@@ -681,22 +687,20 @@ class ViewController: UIViewController {
     //MARK: -
     
     var isBusy:Bool = false
-    
+
     func updateImage() {
-        queue.async {
-            if self.isBusy { return }
-            self.isBusy = true
+        if isBusy { return }
+        isBusy = true
+        
+        calcRayMarch(0)
+        metalTextureViewL.display(metalTextureViewL.layer)
 
-            self.calcRayMarch(0)
-            DispatchQueue.main.async { self.imageViewL.image = self.image(from: self.outTextureL) }
-            
-            if self.isStereo {
-                self.calcRayMarch(1)
-                DispatchQueue.main.async { self.imageViewR.image = self.image(from: self.outTextureR) }
-            }
-
-            self.isBusy = false
+        if isStereo {
+            calcRayMarch(1)
+            metalTextureViewR.display(metalTextureViewR.layer)
         }
+        
+        isBusy = false
     }
     
     //MARK: -
@@ -722,34 +726,5 @@ class ViewController: UIViewController {
 
         commandBuffer.commit()
         commandBuffer.waitUntilCompleted()
-    }
-    
-    //MARK: -
-    // edit Scheme, Options, Metal API Validation : Disabled
-    //the fix is to turn off Metal API validation under Product -> Scheme -> Options
-    
-    func image(from texture: MTLTexture) -> UIImage {
-        let imageByteCount = texture.width * texture.height * bytesPerPixel
-        let bytesPerRow = texture.width * bytesPerPixel
-        var src = [UInt8](repeating: 0, count: Int(imageByteCount))
-        
-        let region = MTLRegionMake2D(0, 0, texture.width, texture.height)
-        texture.getBytes(&src, bytesPerRow: bytesPerRow, from: region, mipmapLevel: 0)
-        
-        let bitmapInfo = CGBitmapInfo(rawValue: (CGBitmapInfo.byteOrder32Big.rawValue | CGImageAlphaInfo.premultipliedLast.rawValue))
-        
-        let colorSpace = CGColorSpaceCreateDeviceRGB()
-        let bitsPerComponent = 8
-        let context = CGContext(data: &src,
-                                width: texture.width,
-                                height: texture.height,
-                                bitsPerComponent: bitsPerComponent,
-                                bytesPerRow: bytesPerRow,
-                                space: colorSpace,
-                                bitmapInfo: bitmapInfo.rawValue)
-        
-        let dstImageFilter = context?.makeImage()
-        
-        return UIImage(cgImage: dstImageFilter!, scale: 0.0, orientation: UIImageOrientation.up)
     }
 }

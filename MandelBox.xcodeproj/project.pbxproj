@@ -18,12 +18,13 @@
 		1D1490681F9FA199004B538F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D1490671F9FA199004B538F /* ViewController.swift */; };
 		1D14906F1F9FA199004B538F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1D14906E1F9FA199004B538F /* Assets.xcassets */; };
 		1D1490721F9FA199004B538F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1D1490701F9FA199004B538F /* LaunchScreen.storyboard */; };
-		1D37793C20AE438200494F91 /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D37793B20AE438200494F91 /* ImageView.swift */; };
 		1D37794420B705A800494F91 /* CTranslateZ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D37794320B705A800494F91 /* CTranslateZ.swift */; };
 		1DCAC5751FA349E6000E90E8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1DCAC5731FA349E6000E90E8 /* Main.storyboard */; };
 		1DD98919207917B000B209A5 /* CRotate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD98917207917AF00B209A5 /* CRotate.swift */; };
 		1DD9891A207917B000B209A5 /* CTranslate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD98918207917AF00B209A5 /* CTranslate.swift */; };
 		1DD9891E20797A7600B209A5 /* ArcBall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD9891D20797A7600B209A5 /* ArcBall.swift */; };
+		1DDB7FBA20D9E5150052FFDE /* MetalTextureView.metal in Sources */ = {isa = PBXBuildFile; fileRef = 1DDB7FB820D9E5150052FFDE /* MetalTextureView.metal */; };
+		1DDB7FBB20D9E5150052FFDE /* MetalTextureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DDB7FB920D9E5150052FFDE /* MetalTextureView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,13 +41,14 @@
 		1D14906E1F9FA199004B538F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1D1490711F9FA199004B538F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1D1490731F9FA199004B538F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1D37793B20AE438200494F91 /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
 		1D37794320B705A800494F91 /* CTranslateZ.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CTranslateZ.swift; sourceTree = "<group>"; };
 		1D594DC6206B17F900A7EB3A /* MandelBox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MandelBox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DCAC5741FA349E6000E90E8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1DD98917207917AF00B209A5 /* CRotate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CRotate.swift; sourceTree = "<group>"; };
 		1DD98918207917AF00B209A5 /* CTranslate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CTranslate.swift; sourceTree = "<group>"; };
 		1DD9891D20797A7600B209A5 /* ArcBall.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArcBall.swift; sourceTree = "<group>"; };
+		1DDB7FB820D9E5150052FFDE /* MetalTextureView.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = MetalTextureView.metal; sourceTree = "<group>"; };
+		1DDB7FB920D9E5150052FFDE /* MetalTextureView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetalTextureView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,7 +88,8 @@
 				1DD98918207917AF00B209A5 /* CTranslate.swift */,
 				1D37794320B705A800494F91 /* CTranslateZ.swift */,
 				1D1490671F9FA199004B538F /* ViewController.swift */,
-				1D37793B20AE438200494F91 /* ImageView.swift */,
+				1DDB7FB820D9E5150052FFDE /* MetalTextureView.metal */,
+				1DDB7FB920D9E5150052FFDE /* MetalTextureView.swift */,
 				1DCAC5731FA349E6000E90E8 /* Main.storyboard */,
 				1D096F0520237ED600319D47 /* DeltaView.swift */,
 				1D096F0620237ED700319D47 /* SliderView.swift */,
@@ -176,15 +179,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1D37793C20AE438200494F91 /* ImageView.swift in Sources */,
 				1D03ED0D2071A80800E72BC5 /* HelpViewController.swift in Sources */,
 				1DD98919207917B000B209A5 /* CRotate.swift in Sources */,
 				1D03ED0B2070985300E72BC5 /* Shaders.metal in Sources */,
 				1D096F0C2023A4BC00319D47 /* Background.swift in Sources */,
 				1D1490681F9FA199004B538F /* ViewController.swift in Sources */,
+				1DDB7FBA20D9E5150052FFDE /* MetalTextureView.metal in Sources */,
 				1D1490631F9FA199004B538F /* AppDelegate.swift in Sources */,
 				1DD9891A207917B000B209A5 /* CTranslate.swift in Sources */,
 				1D03ED112071A85900E72BC5 /* SaveLoadViewController.swift in Sources */,
+				1DDB7FBB20D9E5150052FFDE /* MetalTextureView.swift in Sources */,
 				1D37794420B705A800494F91 /* CTranslateZ.swift in Sources */,
 				1DD9891E20797A7600B209A5 /* ArcBall.swift in Sources */,
 				1D096F0720237ED700319D47 /* DeltaView.swift in Sources */,

@@ -34,7 +34,7 @@
                                     <action selector="resetButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="Pra-dd-cje"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SKK-Rp-etB" customClass="ImageView" customModule="MandelBox" customModuleProvider="target">
+                            <view contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SKK-Rp-etB" customClass="MetalTextureView" customModule="MandelBox" customModuleProvider="target">
                                 <rect key="frame" x="63" y="67" width="317" height="219"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -192,7 +192,7 @@
                                     <action selector="speedButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="F0R-L0-JXQ"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EjD-bU-DCn" customClass="ImageView" customModule="MandelBox" customModuleProvider="target">
+                            <view contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EjD-bU-DCn" customClass="MetalTextureView" customModule="MandelBox" customModuleProvider="target">
                                 <rect key="frame" x="63" y="309" width="317" height="219"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -266,9 +266,9 @@
                         <outlet property="dLightXY" destination="LiV-GR-noI" id="3Zw-5G-fO0"/>
                         <outlet property="dSphere" destination="skC-Xh-auf" id="r28-jK-ecv"/>
                         <outlet property="helpButton" destination="gUW-2t-ZIx" id="MIj-05-rc9"/>
-                        <outlet property="imageViewL" destination="SKK-Rp-etB" id="7YQ-Bm-Qam"/>
-                        <outlet property="imageViewR" destination="EjD-bU-DCn" id="5cO-g5-DCM"/>
                         <outlet property="juliaOnOff" destination="fcb-ay-gsb" id="Bs4-pi-bhS"/>
+                        <outlet property="metalTextureViewL" destination="SKK-Rp-etB" id="KsK-CZ-yGz"/>
+                        <outlet property="metalTextureViewR" destination="EjD-bU-DCn" id="DCi-kj-JZP"/>
                         <outlet property="resetButton" destination="yfK-it-LnG" id="RUC-au-Bdh"/>
                         <outlet property="resolutionButton" destination="GLu-c9-8ah" id="slJ-DK-uWs"/>
                         <outlet property="sContrast" destination="V2d-j9-spf" id="Vcd-Lb-Swk"/>
