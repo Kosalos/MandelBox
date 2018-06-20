@@ -92,9 +92,9 @@ R. BurningShip
    Has a dramatic effect,
    including resemblance to the burning ship fractal in some regions.
 
-S. Fog
-   Not really fog, but a way to darken objects according to distance.
-   Lower values should render faster as well.
+S. F, C, B
+   F: Fog Not really fog, but a way to darken objects according to distance.
+      Lower values should render faster as well.
+   C: Adjust contrast
+   B: Adjust Blinn lighting effect
 
-   Cont
-   Adjust contrast

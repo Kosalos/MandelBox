@@ -38,6 +38,7 @@ struct Control {
     bool burningShip;
     float maxDist;
     float contrast;
+    float blinn;
     bool bfuture1;
     int ifuture2;
     vector_float2 future2;

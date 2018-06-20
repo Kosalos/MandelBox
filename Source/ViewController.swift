@@ -55,6 +55,7 @@ class ViewController: UIViewController {
     @IBOutlet var sToeIn: SliderView!
     @IBOutlet var sMaxDist: SliderView!
     @IBOutlet var sContrast: SliderView!
+    @IBOutlet var sBlinn: SliderView!
     @IBOutlet var metalTextureViewL: MetalTextureView!
     @IBOutlet var metalTextureViewR: MetalTextureView!
     
@@ -148,7 +149,7 @@ class ViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        sList = [ sZoom,sScaleFactor,sEpsilon,sJuliaZ,sLightZ,sSphere,sToeIn,sMaxDist,sContrast ]
+        sList = [ sZoom,sScaleFactor,sEpsilon,sJuliaZ,sLightZ,sSphere,sToeIn,sMaxDist,sContrast,sBlinn ]
         dList = [ dSphere,dBox,dColorR,dColorG,dColorB,dJuliaXY,dLightXY ]
         bList = [ resetButton,saveLoadButton,helpButton,speedButton,resolutionButton,stereoButton,juliaOnOff,burningShipButton ]
 
@@ -182,9 +183,10 @@ class ViewController: UIViewController {
         sToeIn.initializeFloat(&control.toeIn, .delta, -toeInRange,+toeInRange,0.0002, "Parallax")
         sToeIn.highlight(0)
 
-        sMaxDist.initializeFloat(&control.maxDist, .delta, 0.01,6,0.1, "Fog")
-        sContrast.initializeFloat(&control.contrast, .delta,0.1,5,0.1, "Cont")
-        
+        sMaxDist.initializeFloat(&control.maxDist, .delta, 0.01,6,0.1, "F")
+        sContrast.initializeFloat(&control.contrast, .delta,0.1,5,0.1, "C")
+        sBlinn.initializeFloat(&control.blinn, .delta,0.1,2,0.1, "B")
+
         reset()        
         timer = Timer.scheduledTimer(timeInterval: 1.0/60.0, target:self, selector: #selector(timerHandler), userInfo: nil, repeats:true)
     }
@@ -230,7 +232,8 @@ class ViewController: UIViewController {
         control.toeIn = 0.0011
         control.maxDist = 3
         control.contrast = 0.8
-        
+        control.blinn = 0.5
+
         unWrapFloat3()
         
         for s in sList { s.setNeedsDisplay() }
@@ -366,16 +369,17 @@ class ViewController: UIViewController {
             juliaOnOff.frame = frame(50,30,60,0)
             resetButton.frame = frame(50,bys,0,yHop)
             x = x2
-            let xHop2 = xHop/2 - 10
-            sMaxDist.frame = frame(xHop2,bys,xHop2+2,0)
-            sContrast.frame = frame(xHop2,bys,xHop2,0)
-            x += 18
+            let xHop2 = xHop/3 - 5
+            sMaxDist.frame = frame(xHop2,bys,xHop2+3,0)
+            sContrast.frame = frame(xHop2,bys,xHop2+3,0)
+            sBlinn.frame = frame(xHop2,bys,xHop2,0)
+            x += 8
             
             x2 = x
             y = by
             dLightXY.frame = frame(cxs,cxs,0,xHop)
             sLightZ.frame  = frame(cxs,bys,0,yHop + 5)
-            saveLoadButton.frame = frame(80,bys,0,yHop)
+            saveLoadButton.frame = frame(80,bys,20,yHop)
             helpButton.frame = frame(bys,bys,bys + 20,0)
             burningShipButton.frame = frame(bys,bys,0,0)
             x = x2 + xHop
@@ -472,10 +476,11 @@ class ViewController: UIViewController {
             saveLoadButton.frame = frame(80,bys,0,bys+gap)
 
             x = left
-            let xHop3 = xHop/2 - 6
-            sMaxDist.frame = frame(xHop3,bys,xHop3+2,0)
-            sContrast.frame = frame(xHop3,bys,xHop3,0)
-            x += 10
+            let xHop3 = xHop/3 - 6
+            sMaxDist.frame = frame(xHop3,bys,xHop3+5,0)
+            sContrast.frame = frame(xHop3,bys,xHop3+5,0)
+            sBlinn.frame = frame(xHop3,bys,xHop3,0)
+            x += 15
             
             resetButton.frame = frame(50,bys,0,bys+gap)
             stereoButton.frame = frame(bys,bys,0,bys+gap)
@@ -511,9 +516,10 @@ class ViewController: UIViewController {
             sToeIn.frame = frame(cxs - bys - gap,bys,0,yHop + 4)
             
             x = x2
-            let xHop3 = xHop/2 - 6
-            sMaxDist.frame = frame(xHop3,bys,xHop3+2,0)
-            sContrast.frame = frame(xHop3,bys,xHop3,0)
+            let xHop3 = xHop/3 - 6
+            sMaxDist.frame = frame(xHop3,bys,xHop3+5,0)
+            sContrast.frame = frame(xHop3,bys,xHop3+5,0)
+            sBlinn.frame = frame(xHop3,bys,xHop3,0)
 
             x = x2 + xHop
             y = by

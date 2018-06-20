@@ -95,12 +95,12 @@ float3 getNormal(float3 pos,constant Control &control)
                             -distanceEstimate(pos - eps.xxy,control) + distanceEstimate(pos + eps.xxy,control)));
 }
 
-float3 getBlinnShading(float3 normal, float3 view, float3 light)
+float3 getBlinnShading(float3 normal, float3 view, constant Control &control)
 {
     // boxplorer's method
-    float3 halfLV = normalize(light + view);
+    float3 halfLV = normalize(control.light + view);
     float spe = pow(max( dot(normal, halfLV), 0.420 ), 32);
-    float dif = dot(normal, light) * 0.5 + 0.75;
+    float dif = dot(normal, control.light) * control.blinn + 0.75;
     return dif + spe; // * specularColor;
 }
 
@@ -172,7 +172,7 @@ float4 rayMarch(float3 rayDir,constant Control &control) {
 //                               getBlinnShading(normal, rayDir, normalize(float3(-1.0, 1.5, 2.5))),
 //                               0.5);
 
-            float3 light = getBlinnShading(normal, rayDir, control.light);
+            float3 light = getBlinnShading(normal, rayDir, control);
 
             color = float4(mix(light, color.xyz, 0.8), 1.0);
             

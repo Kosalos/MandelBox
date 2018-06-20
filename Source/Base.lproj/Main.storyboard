@@ -249,6 +249,12 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <gestureRecognizers/>
                             </view>
+                            <view tag="1" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GIi-K8-Kue" customClass="SliderView" customModule="MandelBox" customModuleProvider="target">
+                                <rect key="frame" x="415" y="1260" width="68" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.026657605508461555" green="0.077108541822286741" blue="0.15452622898527923" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <gestureRecognizers/>
@@ -271,6 +277,7 @@
                         <outlet property="metalTextureViewR" destination="EjD-bU-DCn" id="DCi-kj-JZP"/>
                         <outlet property="resetButton" destination="yfK-it-LnG" id="RUC-au-Bdh"/>
                         <outlet property="resolutionButton" destination="GLu-c9-8ah" id="slJ-DK-uWs"/>
+                        <outlet property="sBlinn" destination="GIi-K8-Kue" id="6l9-Y3-v6R"/>
                         <outlet property="sContrast" destination="V2d-j9-spf" id="Vcd-Lb-Swk"/>
                         <outlet property="sEpsilon" destination="eUE-y4-Pwf" id="S6B-Ku-XLz"/>
                         <outlet property="sJuliaZ" destination="ycd-2w-FDg" id="gjw-K1-K2C"/>
