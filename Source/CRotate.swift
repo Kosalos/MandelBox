@@ -44,20 +44,18 @@ class CRotate: UIView {
         context?.addRect(bounds)
         context?.fillPath()
 
+        UIColor.black.set()
         context?.setLineWidth(2)
-        context?.setStrokeColor(UIColor.black.cgColor)
-        context?.addRect(bounds)
-        context?.move(to: CGPoint(x:0, y:bounds.height/2))
-        context?.addLine(to: CGPoint(x:bounds.width, y:bounds.height/2))
-        context?.move(to: CGPoint(x:bounds.width/2, y:0))
-        context?.addLine(to: CGPoint(x:bounds.width/2, y:bounds.height))
-        context?.strokePath()
-        
+        drawVLine(context!,bounds.midX,0,bounds.height)
+        drawHLine(context!,0,bounds.width,bounds.midY)
         drawText(10,8,textColor,16,"Rotate")
+
+        drawBorder(context!,bounds)
         
         if hasFocus {
-            UIColor.red.setStroke()
-            UIBezierPath(rect:bounds).stroke()
+            context?.setLineWidth(1)
+            context!.setStrokeColor(UIColor.red.cgColor)
+            drawRect(context!,bounds)
         }
     }
     
@@ -145,6 +143,12 @@ func drawLine(_ context:CGContext, _ p1:CGPoint, _ p2:CGPoint) {
 func drawVLine(_ context:CGContext, _ x:CGFloat, _ y1:CGFloat, _ y2:CGFloat) { drawLine(context,CGPoint(x:x,y:y1),CGPoint(x:x,y:y2)) }
 func drawHLine(_ context:CGContext, _ x1:CGFloat, _ x2:CGFloat, _ y:CGFloat) { drawLine(context,CGPoint(x:x1, y:y),CGPoint(x: x2, y:y)) }
 
+func drawRect(_ context:CGContext, _ r:CGRect) {
+    context.beginPath()
+    context.addRect(r)
+    context.strokePath()
+}
+
 func drawFilledCircle(_ context:CGContext, _ center:CGPoint, _ diameter:CGFloat, _ color:CGColor) {
     context.beginPath()
     context.addEllipse(in: CGRect(x:CGFloat(center.x - diameter/2), y:CGFloat(center.y - diameter/2), width:CGFloat(diameter), height:CGFloat(diameter)))
@@ -165,6 +169,35 @@ func drawText(_ x:CGFloat, _ y:CGFloat, _ color:UIColor, _ sz:CGFloat, _ str:Str
         ]
     
     str.draw(in: CGRect(x:x, y:y, width:800, height:100), withAttributes: textFontAttributes)
+}
+
+//MARK:-
+
+
+func drawBorder(_ context:CGContext,_ rect:CGRect) {
+    let colorGray1 = UIColor(red:0.01, green:0.01, blue:0.01, alpha:1).cgColor
+    let colorGray3 = UIColor(red:0.4, green:0.4, blue:0.4, alpha:1).cgColor
+    let p1  = CGPoint(x:rect.minX, y:rect.minY)
+    let p2  = CGPoint(x:rect.minX + rect.width, y:rect.minY)
+    let p3  = CGPoint(x:rect.minX + rect.width, y:rect.minY + rect.height)
+    let p4  = CGPoint(x:rect.minX, y:rect.minY + rect.height)
+    
+    func line(_ p1:CGPoint, _ p2:CGPoint, _ strokeColor:CGColor) {
+        let path = CGMutablePath()
+        path.move(to: p1)
+        path.addLine(to: p2)
+        
+        context.setLineWidth(5)
+        context.beginPath()
+        context.setStrokeColor(strokeColor)
+        context.addPath(path)
+        context.drawPath(using:.stroke)
+    }
+    
+    line(p1,p2,colorGray1)
+    line(p1,p4,colorGray1)
+    line(p2,p3,colorGray3)
+    line(p3,p4,colorGray3)
 }
 
 

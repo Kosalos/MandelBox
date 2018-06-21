@@ -31,32 +31,32 @@ class CTranslateZ: UIView {
             xc = bounds.width / 2
             
             let tap1 = UITapGestureRecognizer(target: self, action: #selector(self.handleTap1(_:)))
-    
             tap1.numberOfTapsRequired = 1
             addGestureRecognizer(tap1)
             
             let tap2 = UITapGestureRecognizer(target: self, action: #selector(self.handleTap2(_:)))
             tap2.numberOfTapsRequired = 2
             addGestureRecognizer(tap2)
-
+            
             isUserInteractionEnabled = true
+            self.backgroundColor = .clear
         }
         
         let context = UIGraphicsGetCurrentContext()
         context?.setFillColor(fastEdit ? nrmColorFast.cgColor : nrmColorSlow.cgColor)
         context?.addRect(bounds)
         context?.fillPath()
-
+        
+        UIColor.black.set()
         context?.setLineWidth(2)
-        context?.setStrokeColor(UIColor.black.cgColor)
-        context?.addRect(bounds)
-        context?.move(to: CGPoint(x:0, y:bounds.height/2))
-        context?.addLine(to: CGPoint(x:bounds.width, y:bounds.height/2))
-        context?.strokePath()
+        drawHLine(context!,0,bounds.width,bounds.midY)
+        
+        drawBorder(context!,bounds)
         
         if hasFocus {
-            UIColor.red.setStroke()
-            UIBezierPath(rect:bounds).stroke()
+            context?.setLineWidth(1)
+            context!.setStrokeColor(UIColor.red.cgColor)
+            drawRect(context!,bounds)
         }
     }
     

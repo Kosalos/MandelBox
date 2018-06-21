@@ -34,8 +34,9 @@ class CTranslate: UIView {
             let tap2 = UITapGestureRecognizer(target: self, action: #selector(self.handleTap2(_:)))
             tap2.numberOfTapsRequired = 2
             addGestureRecognizer(tap2)
-
+            
             isUserInteractionEnabled = true
+            self.backgroundColor = .clear
         }
         
         let context = UIGraphicsGetCurrentContext()
@@ -43,23 +44,21 @@ class CTranslate: UIView {
         context?.addRect(bounds)
         context?.fillPath()
         
+        UIColor.black.set()
         context?.setLineWidth(2)
-        context?.setStrokeColor(UIColor.black.cgColor)
-        context?.addRect(bounds)
-        context?.move(to: CGPoint(x:0, y:bounds.height/2))
-        context?.addLine(to: CGPoint(x:bounds.width, y:bounds.height/2))
-        context?.move(to: CGPoint(x:bounds.width/2, y:0))
-        context?.addLine(to: CGPoint(x:bounds.width/2, y:bounds.height))
-        context?.strokePath()
-        
+        drawVLine(context!,bounds.midX,0,bounds.height)
+        drawHLine(context!,0,bounds.width,bounds.midY)
         drawText(10,8,textColor,16,"Move")
         
+        drawBorder(context!,bounds)
+        
         if hasFocus {
-            UIColor.red.setStroke()
-            UIBezierPath(rect:bounds).stroke()
+            context?.setLineWidth(1)
+            context!.setStrokeColor(UIColor.red.cgColor)
+            drawRect(context!,bounds)
         }
     }
-    
+
     //MARK:-
     
     func tapCommon() {

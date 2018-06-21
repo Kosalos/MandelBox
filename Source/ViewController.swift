@@ -138,8 +138,6 @@ class ViewController: UIViewController {
                   dSphere,dBox,dColorR,dColorG,dColorB,dJuliaXY,wLightXY ]
         bList = [ resetButton,saveLoadButton,helpButton,resolutionButton,stereoButton,juliaOnOff,burningShipButton ]
 
-        for w in wList { w.backgroundColor = .clear }
-        
         sZoom.initSingle(&control.zoom,  0.2,2, 0.03, "Zoom")
         sScaleFactor.initSingle(&control.scaleFactor,  -5.0,5.0, 0.1, "Scale Factor")
         sScaleFactor.highlight(3)
@@ -168,7 +166,7 @@ class ViewController: UIViewController {
         sToeIn.initSingle(&control.toeIn,  -toeInRange,+toeInRange,0.0002, "Parallax")
         sToeIn.highlight(0)
 
-        sMaxDist.initSingle(&control.maxDist,  0.01,6,0.1, "F")
+        sMaxDist.initSingle(&control.maxDist,  0.01,6,0.2, "F")
         sContrast.initSingle(&control.contrast, 0.1,5,0.1, "C")
         sBlinn.initSingle(&control.blinn, 0.1,2,0.1, "B")
 

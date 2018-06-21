@@ -17,6 +17,7 @@
 		1D14906F1F9FA199004B538F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1D14906E1F9FA199004B538F /* Assets.xcassets */; };
 		1D1490721F9FA199004B538F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1D1490701F9FA199004B538F /* LaunchScreen.storyboard */; };
 		1D37794420B705A800494F91 /* CTranslateZ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D37794320B705A800494F91 /* CTranslateZ.swift */; };
+		1D94675E20DC5FE800D20060 /* BorderedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D94675D20DC5FE800D20060 /* BorderedButton.swift */; };
 		1DCAC5751FA349E6000E90E8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1DCAC5731FA349E6000E90E8 /* Main.storyboard */; };
 		1DD98919207917B000B209A5 /* CRotate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD98917207917AF00B209A5 /* CRotate.swift */; };
 		1DD9891A207917B000B209A5 /* CTranslate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD98918207917AF00B209A5 /* CTranslate.swift */; };
@@ -40,6 +41,7 @@
 		1D1490731F9FA199004B538F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1D37794320B705A800494F91 /* CTranslateZ.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CTranslateZ.swift; sourceTree = "<group>"; };
 		1D594DC6206B17F900A7EB3A /* MandelBox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MandelBox.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1D94675D20DC5FE800D20060 /* BorderedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderedButton.swift; sourceTree = "<group>"; };
 		1DCAC5741FA349E6000E90E8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1DD98917207917AF00B209A5 /* CRotate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CRotate.swift; sourceTree = "<group>"; };
 		1DD98918207917AF00B209A5 /* CTranslate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CTranslate.swift; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 				1DDB7FCD20DC002E0052FFDE /* Widget.swift */,
 				1D03ED102071A85900E72BC5 /* SaveLoadViewController.swift */,
 				1D03ED0C2071A80800E72BC5 /* HelpViewController.swift */,
+				1D94675D20DC5FE800D20060 /* BorderedButton.swift */,
 				1D096F0B2023A4BC00319D47 /* Background.swift */,
 				1D1490621F9FA199004B538F /* AppDelegate.swift */,
 				1D14906E1F9FA199004B538F /* Assets.xcassets */,
@@ -182,6 +185,7 @@
 				1D03ED0B2070985300E72BC5 /* Shaders.metal in Sources */,
 				1D096F0C2023A4BC00319D47 /* Background.swift in Sources */,
 				1D1490681F9FA199004B538F /* ViewController.swift in Sources */,
+				1D94675E20DC5FE800D20060 /* BorderedButton.swift in Sources */,
 				1DDB7FBA20D9E5150052FFDE /* MetalTextureView.metal in Sources */,
 				1D1490631F9FA199004B538F /* AppDelegate.swift in Sources */,
 				1DD9891A207917B000B209A5 /* CTranslate.swift in Sources */,

@@ -3,10 +3,10 @@ import UIKit
 enum WidgetKind { case single,dual }
 let UNUSED:CGFloat = 9999
 
-let limColor = UIColor(red:0.25, green:0.25, blue:0.2, alpha: 0.4)
-let nrmColorFast = UIColor(red:0.35, green:0.2, blue:0.2, alpha: 0.4)
-let nrmColorSlow = UIColor(red:0.2, green:0.25, blue:0.2, alpha: 0.4)
-let textColor = UIColor.darkGray
+let limColor = UIColor(red:0.25, green:0.25, blue:0.2, alpha: 1)
+let nrmColorFast = UIColor(red:0.2, green:0.2, blue:0.2, alpha: 1)
+let nrmColorSlow = UIColor(red:0.2, green:0.25, blue:0.2, alpha: 1)
+let textColor = UIColor.lightGray
 
 class Widget: UIView {
     var context : CGContext?
@@ -106,7 +106,7 @@ class Widget: UIView {
         
         if fastEdit { nrmColorFast.set() } else { nrmColorSlow.set() }
         UIBezierPath(rect:bounds).fill()
-
+        
         if isMinValue(0) {  // X coord
             limColor.set()
             var r = bounds
@@ -168,12 +168,13 @@ class Widget: UIView {
             }
         }
         
-        let ctx = context!
+        drawBorder(context!,bounds)
+        
         let path = UIBezierPath(rect:bounds)
-        ctx.setStrokeColor(hasFocus ? UIColor.red.cgColor : UIColor.black.cgColor)
-        ctx.setLineWidth(1)
-        ctx.addPath(path.cgPath)
-        ctx.strokePath()
+        context!.setStrokeColor(hasFocus ? UIColor.red.cgColor : UIColor.black.cgColor)
+        context!.setLineWidth(1)
+        context!.addPath(path.cgPath)
+        context!.strokePath()
     }
     
     func fClamp2(_ v:Float, _ range:float2) -> Float {
