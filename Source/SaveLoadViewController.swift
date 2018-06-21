@@ -31,7 +31,7 @@ class SaveLoadViewController: UIViewController,UITableViewDataSource, UITableVie
         
         if dateString == "**" {
             str = "** unused **"
-            cell.loadCell.backgroundColor = widgetEdgeColor
+            cell.loadCell.backgroundColor = UIColor.black
         }
         else {
             str = String(format:"%2d    %@", indexPath.row+1,dateString)

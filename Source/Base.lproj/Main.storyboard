@@ -43,64 +43,64 @@
                                     <outletCollection property="gestureRecognizers" destination="dBU-Ph-gbE" appends="YES" id="2zB-Ab-2hk"/>
                                 </connections>
                             </view>
-                            <view tag="1" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w4S-kB-HIs" customClass="SliderView" customModule="MandelBox" customModuleProvider="target">
+                            <view tag="1" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w4S-kB-HIs" customClass="Widget" customModule="MandelBox" customModuleProvider="target">
                                 <rect key="frame" x="270.99999999999977" y="967" width="200" height="34.999999999999801"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                             </view>
-                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WLa-71-fZs" customClass="SliderView" customModule="MandelBox" customModuleProvider="target">
+                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WLa-71-fZs" customClass="Widget" customModule="MandelBox" customModuleProvider="target">
                                 <rect key="frame" x="270.32608695652129" y="1037" width="200.00000000000023" height="35.000000000000114"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                             </view>
-                            <view tag="1" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eUE-y4-Pwf" userLabel="SEpsilon" customClass="SliderView" customModule="MandelBox" customModuleProvider="target">
+                            <view tag="1" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eUE-y4-Pwf" userLabel="SEpsilon" customClass="Widget" customModule="MandelBox" customModuleProvider="target">
                                 <rect key="frame" x="270.35000000000014" y="1096" width="199.99999999999989" height="35.000000000000057"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                             </view>
-                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="skC-Xh-auf" userLabel="dSphere" customClass="DeltaView" customModule="MandelBox" customModuleProvider="target">
+                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="skC-Xh-auf" userLabel="dSphere" customClass="Widget" customModule="MandelBox" customModuleProvider="target">
                                 <rect key="frame" x="530" y="868" width="127" height="118"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                             </view>
-                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UmV-Sx-Npc" userLabel="dBox" customClass="DeltaView" customModule="MandelBox" customModuleProvider="target">
+                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UmV-Sx-Npc" userLabel="dBox" customClass="Widget" customModule="MandelBox" customModuleProvider="target">
                                 <rect key="frame" x="530" y="1096" width="127" height="98"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                             </view>
-                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mt0-3c-Kgm" userLabel="dColorR" customClass="DeltaView" customModule="MandelBox" customModuleProvider="target">
+                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mt0-3c-Kgm" userLabel="dColorR" customClass="Widget" customModule="MandelBox" customModuleProvider="target">
                                 <rect key="frame" x="794" y="810" width="127" height="118"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                             </view>
-                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sKd-ao-9Ev" userLabel="dColorG" customClass="DeltaView" customModule="MandelBox" customModuleProvider="target">
+                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sKd-ao-9Ev" userLabel="dColorG" customClass="Widget" customModule="MandelBox" customModuleProvider="target">
                                 <rect key="frame" x="794" y="936" width="127" height="118"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                             </view>
-                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oNU-8q-mDD" userLabel="dColorB" customClass="DeltaView" customModule="MandelBox" customModuleProvider="target">
+                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oNU-8q-mDD" userLabel="dColorB" customClass="Widget" customModule="MandelBox" customModuleProvider="target">
                                 <rect key="frame" x="794" y="1062" width="127" height="118"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                             </view>
-                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RDg-xR-1eU" customClass="DeltaView" customModule="MandelBox" customModuleProvider="target">
+                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RDg-xR-1eU" customClass="Widget" customModule="MandelBox" customModuleProvider="target">
                                 <rect key="frame" x="603" y="71" width="119" height="117"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                             </view>
-                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ycd-2w-FDg" customClass="SliderView" customModule="MandelBox" customModuleProvider="target">
+                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ycd-2w-FDg" customClass="Widget" customModule="MandelBox" customModuleProvider="target">
                                 <rect key="frame" x="603" y="206" width="119" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                             </view>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="fcb-ay-gsb">
@@ -151,22 +151,22 @@
                                     </segue>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LiV-GR-noI" customClass="DeltaView" customModule="MandelBox" customModuleProvider="target">
+                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LiV-GR-noI" customClass="Widget" customModule="MandelBox" customModuleProvider="target">
                                 <rect key="frame" x="818" y="71" width="119" height="117"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                             </view>
-                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5dQ-KU-atc" customClass="SliderView" customModule="MandelBox" customModuleProvider="target">
+                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5dQ-KU-atc" customClass="Widget" customModule="MandelBox" customModuleProvider="target">
                                 <rect key="frame" x="818" y="206" width="119" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                             </view>
-                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wrG-vr-fnh" userLabel="sSphere" customClass="SliderView" customModule="MandelBox" customModuleProvider="target">
+                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wrG-vr-fnh" userLabel="sSphere" customClass="Widget" customModule="MandelBox" customModuleProvider="target">
                                 <rect key="frame" x="530" y="994" width="127" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                             </view>
                             <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fQr-Vt-l2n" userLabel="dColorB" customClass="CTranslate" customModule="MandelBox" customModuleProvider="target">
@@ -181,17 +181,6 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qNH-Xz-lx6">
-                                <rect key="frame" x="818" y="575" width="78" height="36"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <state key="normal" title="Speed">
-                                    <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <action selector="speedButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="F0R-L0-JXQ"/>
-                                </connections>
-                            </button>
                             <view contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EjD-bU-DCn" customClass="MetalTextureView" customModule="MandelBox" customModuleProvider="target">
                                 <rect key="frame" x="63" y="309" width="317" height="219"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -213,10 +202,10 @@
                                     <action selector="stereoButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="fem-G1-JNP"/>
                                 </connections>
                             </button>
-                            <view tag="1" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fYb-lO-fub" customClass="SliderView" customModule="MandelBox" customModuleProvider="target">
+                            <view tag="1" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fYb-lO-fub" customClass="Widget" customModule="MandelBox" customModuleProvider="target">
                                 <rect key="frame" x="270" y="1197" width="119" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="09S-7L-pqg">
@@ -231,10 +220,10 @@
                                     <action selector="burningShipButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="zOx-Yi-aCO"/>
                                 </connections>
                             </button>
-                            <view tag="1" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ue-hi-coc" customClass="SliderView" customModule="MandelBox" customModuleProvider="target">
+                            <view tag="1" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ue-hi-coc" customClass="Widget" customModule="MandelBox" customModuleProvider="target">
                                 <rect key="frame" x="270" y="1260" width="53" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                             </view>
                             <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W5q-ES-1LR" userLabel="dColorB" customClass="CTranslateZ" customModule="MandelBox" customModuleProvider="target">
@@ -243,16 +232,16 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                             </view>
-                            <view tag="1" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V2d-j9-spf" customClass="SliderView" customModule="MandelBox" customModuleProvider="target">
+                            <view tag="1" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V2d-j9-spf" customClass="Widget" customModule="MandelBox" customModuleProvider="target">
                                 <rect key="frame" x="331" y="1260" width="68" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                             </view>
-                            <view tag="1" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GIi-K8-Kue" customClass="SliderView" customModule="MandelBox" customModuleProvider="target">
+                            <view tag="1" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GIi-K8-Kue" customClass="Widget" customModule="MandelBox" customModuleProvider="target">
                                 <rect key="frame" x="415" y="1260" width="68" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                             </view>
                         </subviews>
@@ -269,7 +258,6 @@
                         <outlet property="dColorG" destination="sKd-ao-9Ev" id="mLd-cY-lYF"/>
                         <outlet property="dColorR" destination="mt0-3c-Kgm" id="4st-ZI-i3Q"/>
                         <outlet property="dJuliaXY" destination="RDg-xR-1eU" id="A5F-4t-RmD"/>
-                        <outlet property="dLightXY" destination="LiV-GR-noI" id="3Zw-5G-fO0"/>
                         <outlet property="dSphere" destination="skC-Xh-auf" id="r28-jK-ecv"/>
                         <outlet property="helpButton" destination="gUW-2t-ZIx" id="MIj-05-rc9"/>
                         <outlet property="juliaOnOff" destination="fcb-ay-gsb" id="Bs4-pi-bhS"/>
@@ -288,8 +276,8 @@
                         <outlet property="sToeIn" destination="fYb-lO-fub" id="fea-Nj-RC2"/>
                         <outlet property="sZoom" destination="w4S-kB-HIs" id="RkW-rO-Mmn"/>
                         <outlet property="saveLoadButton" destination="HeO-5k-4ZX" id="2lA-b6-kMi"/>
-                        <outlet property="speedButton" destination="qNH-Xz-lx6" id="Sxj-Ur-aeb"/>
                         <outlet property="stereoButton" destination="3I7-x8-5cJ" id="Dw7-Sn-Yfa"/>
+                        <outlet property="wLightXY" destination="LiV-GR-noI" id="WG1-OV-wk5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
@@ -320,7 +308,9 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="58" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="tdf-xW-8Km">
                                 <rect key="frame" x="13" y="9" width="373" height="583"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="separatorColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="sectionIndexBackgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SLCell" rowHeight="58" id="XKy-ra-BmS" customClass="SaveLoadCell" customModule="MandelBox" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="373" height="58"/>
@@ -330,7 +320,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UZq-6A-MRc">
-                                                    <rect key="frame" x="2" y="3" width="287" height="46.5"/>
+                                                    <rect key="frame" x="2" y="6" width="287" height="44"/>
                                                     <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="287" id="KyH-Hh-fWP"/>
@@ -343,7 +333,7 @@
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ufx-IT-ja3">
-                                                    <rect key="frame" x="297" y="3" width="68" height="46.5"/>
+                                                    <rect key="frame" x="304" y="6" width="54" height="41"/>
                                                     <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="54" id="Bc1-68-PZl"/>
@@ -358,14 +348,14 @@
                                             </subviews>
                                             <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <constraints>
-                                                <constraint firstItem="UZq-6A-MRc" firstAttribute="leading" secondItem="fcL-5w-6kH" secondAttribute="leadingMargin" constant="-6" id="1Vs-dq-xRW"/>
+                                                <constraint firstItem="UZq-6A-MRc" firstAttribute="leading" secondItem="fcL-5w-6kH" secondAttribute="leadingMargin" constant="-13" id="1Vs-dq-xRW"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="Ufx-IT-ja3" secondAttribute="trailing" id="5au-fI-CgL"/>
                                                 <constraint firstItem="UZq-6A-MRc" firstAttribute="top" secondItem="fcL-5w-6kH" secondAttribute="topMargin" constant="-5" id="Dr0-oy-cRq"/>
-                                                <constraint firstItem="UZq-6A-MRc" firstAttribute="baseline" secondItem="Ufx-IT-ja3" secondAttribute="firstBaseline" id="HAQ-DG-fYd"/>
-                                                <constraint firstItem="Ufx-IT-ja3" firstAttribute="leading" secondItem="UZq-6A-MRc" secondAttribute="trailing" constant="8" id="Lbl-NF-np0"/>
-                                                <constraint firstItem="Ufx-IT-ja3" firstAttribute="baseline" secondItem="UZq-6A-MRc" secondAttribute="firstBaseline" id="NNO-f4-kY6"/>
+                                                <constraint firstItem="UZq-6A-MRc" firstAttribute="baseline" secondItem="Ufx-IT-ja3" secondAttribute="firstBaseline" constant="1.5" id="HAQ-DG-fYd"/>
+                                                <constraint firstItem="Ufx-IT-ja3" firstAttribute="leading" secondItem="UZq-6A-MRc" secondAttribute="trailing" constant="15" id="Lbl-NF-np0"/>
+                                                <constraint firstItem="Ufx-IT-ja3" firstAttribute="baseline" secondItem="UZq-6A-MRc" secondAttribute="firstBaseline" constant="-1.5" id="NNO-f4-kY6"/>
                                                 <constraint firstItem="UZq-6A-MRc" firstAttribute="top" secondItem="Ufx-IT-ja3" secondAttribute="top" id="aBJ-jd-i7t"/>
-                                                <constraint firstItem="UZq-6A-MRc" firstAttribute="bottom" secondItem="fcL-5w-6kH" secondAttribute="bottomMargin" id="rOP-3M-m4p"/>
+                                                <constraint firstItem="UZq-6A-MRc" firstAttribute="bottom" secondItem="fcL-5w-6kH" secondAttribute="bottomMargin" constant="3" id="rOP-3M-m4p"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -391,7 +381,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wvV-2f-ShA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-943" y="-11"/>
+            <point key="canvasLocation" x="-943.35937499999989" y="-11.420204978038067"/>
         </scene>
         <!--Help View Controller-->
         <scene sceneID="SJ5-qL-JDu">
@@ -444,6 +434,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="help" width="1499" height="527"/>
+        <image name="help" width="1497" height="526"/>
     </resources>
 </document>

@@ -13,9 +13,6 @@ let IMAGESIZE_HIGH:Int32 = 2000
 var control = Control()
 var vc:ViewController! = nil
 
-let speedMult:[Float] = [ 0.02,0.1,1 ]
-var speedIndex:Int = 0
-
 class ViewController: UIViewController {
     var cBuffer:MTLBuffer! = nil
     var isStereo:Bool = false
@@ -39,31 +36,28 @@ class ViewController: UIViewController {
     @IBOutlet var cRotate: CRotate!
     @IBOutlet var cTranslate: CTranslate!
     @IBOutlet var cTranslateZ: CTranslateZ!
-    @IBOutlet var sZoom: SliderView!
-    @IBOutlet var sScaleFactor: SliderView!
-    @IBOutlet var sEpsilon: SliderView!
-    @IBOutlet var dSphere: DeltaView!
-    @IBOutlet var sSphere: SliderView!
-    @IBOutlet var dBox: DeltaView!
-    @IBOutlet var dColorR: DeltaView!
-    @IBOutlet var dColorG: DeltaView!
-    @IBOutlet var dColorB: DeltaView!
-    @IBOutlet var dJuliaXY: DeltaView!
-    @IBOutlet var sJuliaZ: SliderView!
-    @IBOutlet var dLightXY: DeltaView!
-    @IBOutlet var sLightZ: SliderView!
-    @IBOutlet var sToeIn: SliderView!
-    @IBOutlet var sMaxDist: SliderView!
-    @IBOutlet var sContrast: SliderView!
-    @IBOutlet var sBlinn: SliderView!
+    @IBOutlet var sZoom: Widget!
+    @IBOutlet var sScaleFactor: Widget!
+    @IBOutlet var sEpsilon: Widget!
+    @IBOutlet var dSphere: Widget!
+    @IBOutlet var sSphere: Widget!
+    @IBOutlet var dBox: Widget!
+    @IBOutlet var dColorR: Widget!
+    @IBOutlet var dColorG: Widget!
+    @IBOutlet var dColorB: Widget!
+    @IBOutlet var dJuliaXY: Widget!
+    @IBOutlet var sJuliaZ: Widget!
+    @IBOutlet var wLightXY: Widget!
+    @IBOutlet var sLightZ: Widget!
+    @IBOutlet var sToeIn: Widget!
+    @IBOutlet var sMaxDist: Widget!
+    @IBOutlet var sContrast: Widget!
+    @IBOutlet var sBlinn: Widget!
     @IBOutlet var metalTextureViewL: MetalTextureView!
     @IBOutlet var metalTextureViewR: MetalTextureView!
-    
-    
     @IBOutlet var resetButton: UIButton!
     @IBOutlet var saveLoadButton: UIButton!
     @IBOutlet var helpButton: UIButton!
-    @IBOutlet var speedButton: UIButton!
     @IBOutlet var resolutionButton: UIButton!
     @IBOutlet var stereoButton: UIButton!
     @IBOutlet var burningShipButton: UIButton!
@@ -76,14 +70,6 @@ class ViewController: UIViewController {
         isHighRes = !isHighRes
         setImageViewResolution()
         updateImage()
-    }
-
-    @IBAction func speedButtonPressed(_ sender: UIButton) {
-        speedIndex += 1
-        if speedIndex >= speedMult.count { speedIndex = 0 }
-        
-        let sName:[String] = ["Slow", "Med", "Fast" ]
-        speedButton.setTitle("   Speed:" + sName[speedIndex], for: UIControlState.normal)
     }
 
     func updateResolutionButton() { resolutionButton.setTitle(isHighRes ? " Res: High" : " Res: Low", for: UIControlState.normal) }
@@ -119,8 +105,7 @@ class ViewController: UIViewController {
     var lightY:Float = 0.0
     var lightZ:Float = 0.0
 
-    var sList:[SliderView]! = nil
-    var dList:[DeltaView]! = nil
+    var wList:[Widget]! = nil
     var bList:[UIView]! = nil
 
     override var prefersStatusBarHidden: Bool { return true }
@@ -149,43 +134,43 @@ class ViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        sList = [ sZoom,sScaleFactor,sEpsilon,sJuliaZ,sLightZ,sSphere,sToeIn,sMaxDist,sContrast,sBlinn ]
-        dList = [ dSphere,dBox,dColorR,dColorG,dColorB,dJuliaXY,dLightXY ]
-        bList = [ resetButton,saveLoadButton,helpButton,speedButton,resolutionButton,stereoButton,juliaOnOff,burningShipButton ]
+        wList = [ sZoom,sScaleFactor,sEpsilon,sJuliaZ,sLightZ,sSphere,sToeIn,sMaxDist,sContrast,sBlinn,
+                  dSphere,dBox,dColorR,dColorG,dColorB,dJuliaXY,wLightXY ]
+        bList = [ resetButton,saveLoadButton,helpButton,resolutionButton,stereoButton,juliaOnOff,burningShipButton ]
 
-        sZoom.initializeFloat(&control.zoom, .delta, 0.2,2, 0.03, "Zoom")
-        sScaleFactor.initializeFloat(&control.scaleFactor, .delta, -5.0,5.0, 0.1, "Scale Factor")
+        for w in wList { w.backgroundColor = .clear }
+        
+        sZoom.initSingle(&control.zoom,  0.2,2, 0.03, "Zoom")
+        sScaleFactor.initSingle(&control.scaleFactor,  -5.0,5.0, 0.1, "Scale Factor")
         sScaleFactor.highlight(3)
         
-        sEpsilon.initializeFloat(&control.epsilon, .delta, 0.00001, 0.0005, 0.0001, "epsilon")
+        sEpsilon.initSingle(&control.epsilon,  0.00001, 0.0005, 0.0001, "epsilon")
         
-        dSphere.initializeFloat1(&control.sph1, 0,3,0.1 , "Sphere")
-        dSphere.initializeFloat2(&control.sph2)
+        dSphere.initDual(&control.sph1, 0,3,0.1 , "Sphere");  dSphere.initDual2(&control.sph2)
         dSphere.highlight(0.25,1)
-        sSphere.initializeFloat(&control.sph3, .delta, 0.1,6.0,0.1, "Sphere M")
+        sSphere.initSingle(&control.sph3,  0.1,6.0,0.1, "Sphere M")
         sSphere.highlight(4)
 
-        dBox.initializeFloat1(&control.box1, 0,3,0.05, "Box")
-        dBox.initializeFloat2(&control.box2)
+        dBox.initDual(&control.box1, 0,3,0.05, "Box"); dBox.initDual2(&control.box2)
         dBox.highlight(1,2)
 
-        dColorR.initializeFloat1(&control.colorR1, 0,1,0.06, "R"); dColorR.initializeFloat2(&control.colorR2)
-        dColorG.initializeFloat1(&control.colorG1, 0,1,0.06, "G"); dColorG.initializeFloat2(&control.colorG2)
-        dColorB.initializeFloat1(&control.colorB1, 0,1,0.06, "B"); dColorB.initializeFloat2(&control.colorB2)
+        dColorR.initDual(&control.colorR1, 0,1,0.06, "R"); dColorR.initDual2(&control.colorR2)
+        dColorG.initDual(&control.colorG1, 0,1,0.06, "G"); dColorG.initDual2(&control.colorG2)
+        dColorB.initDual(&control.colorB1, 0,1,0.06, "B"); dColorB.initDual2(&control.colorB2)
 
-        dJuliaXY.initializeFloat1(&juliaX, -10,10, 1, "Julia XY"); dJuliaXY.initializeFloat2(&juliaY)
-        sJuliaZ.initializeFloat(&juliaZ, .delta, -10,10,1, "Julia Z")
+        dJuliaXY.initDual(&juliaX, -10,10, 1, "Julia XY"); dJuliaXY.initDual2(&juliaY)
+        sJuliaZ.initSingle(&juliaZ,  -10,10,1, "Julia Z")
 
-        dLightXY.initializeFloat1(&lightX, -1,1, 0.1, "Light XY"); dLightXY.initializeFloat2(&lightY)
-        sLightZ.initializeFloat(&lightZ, .delta, -1,1, 0.1, "Light Z")
+        wLightXY.initDual(&lightX,-1,1, 0.1, "Light XY"); wLightXY.initDual2(&lightY)
+        sLightZ.initSingle(&lightZ,  -1,1, 0.1, "Light Z")
 
         let toeInRange:Float = 0.008
-        sToeIn.initializeFloat(&control.toeIn, .delta, -toeInRange,+toeInRange,0.0002, "Parallax")
+        sToeIn.initSingle(&control.toeIn,  -toeInRange,+toeInRange,0.0002, "Parallax")
         sToeIn.highlight(0)
 
-        sMaxDist.initializeFloat(&control.maxDist, .delta, 0.01,6,0.1, "F")
-        sContrast.initializeFloat(&control.contrast, .delta,0.1,5,0.1, "C")
-        sBlinn.initializeFloat(&control.blinn, .delta,0.1,2,0.1, "B")
+        sMaxDist.initSingle(&control.maxDist,  0.01,6,0.1, "F")
+        sContrast.initSingle(&control.contrast, 0.1,5,0.1, "C")
+        sBlinn.initSingle(&control.blinn, 0.1,2,0.1, "B")
 
         reset()        
         timer = Timer.scheduledTimer(timeInterval: 1.0/60.0, target:self, selector: #selector(timerHandler), userInfo: nil, repeats:true)
@@ -198,9 +183,6 @@ class ViewController: UIViewController {
         isHighRes = false
         updateResolutionButton()
 
-        speedIndex = speedMult.count - 2
-        speedButtonPressed(speedButton) // will bump it to 'fast'
-        
         control.camera = vector_float3(0.38135, 2.3424, -0.380833)
         control.focus = vector_float3(-0.52,-1.22,-0.31)
         control.transformMatrix = matrix_float4x4.init(diagonal: float4(1,1,1,1))
@@ -236,9 +218,7 @@ class ViewController: UIViewController {
 
         unWrapFloat3()
         
-        for s in sList { s.setNeedsDisplay() }
-        for d in dList { d.setNeedsDisplay() }
-        
+        for w in wList { w.setNeedsDisplay() }
         alterAngle(0,0)
         updateImage()
     }
@@ -250,9 +230,7 @@ class ViewController: UIViewController {
         juliaOnOff.isOn = control.juliaboxMode
         unWrapFloat3()
 
-        for s in sList { s.setNeedsDisplay() }
-        for d in dList { d.setNeedsDisplay() }
-        
+        for w in wList { w.setNeedsDisplay() }
         setImageViewResolution()
         updateImage()
     }
@@ -290,16 +268,14 @@ class ViewController: UIViewController {
     //MARK: -
 
     func removeAllFocus() {
-        for s in sList { if s.hasFocus { s.hasFocus = false; s.setNeedsDisplay() }}
-        for d in dList { if d.hasFocus { d.hasFocus = false; d.setNeedsDisplay() }}
+        for w in wList { if w.hasFocus { w.hasFocus = false; w.setNeedsDisplay() }}
         if cTranslate.hasFocus { cTranslate.hasFocus = false; cTranslate.setNeedsDisplay() }
         if cTranslateZ.hasFocus { cTranslateZ.hasFocus = false; cTranslateZ.setNeedsDisplay() }
         if cRotate.hasFocus { cRotate.hasFocus = false; cRotate.setNeedsDisplay() }
     }
     
     func focusMovement(_ pt:CGPoint) {
-        for s in sList { if s.hasFocus { s.focusMovement(pt); return }}
-        for d in dList { if d.hasFocus { d.focusMovement(pt); return }}
+        for w in wList { if w.hasFocus { w.focusMovement(pt); return }}
         if cTranslate.hasFocus { cTranslate.focusMovement(pt); return }
         if cTranslateZ.hasFocus { cTranslateZ.focusMovement(pt); return }
         if cRotate.hasFocus { cRotate.focusMovement(pt); return }
@@ -377,7 +353,7 @@ class ViewController: UIViewController {
             
             x2 = x
             y = by
-            dLightXY.frame = frame(cxs,cxs,0,xHop)
+            wLightXY.frame = frame(cxs,cxs,0,xHop)
             sLightZ.frame  = frame(cxs,bys,0,yHop + 5)
             saveLoadButton.frame = frame(80,bys,20,yHop)
             helpButton.frame = frame(bys,bys,bys + 20,0)
@@ -387,7 +363,6 @@ class ViewController: UIViewController {
             resolutionButton.frame = frame(80,bys,0,yHop)
             sEpsilon.frame = frame(cxs,bys,0,yHop)
             cRotate.frame = frame(cxs,cxs,0,cxs+gap)
-            speedButton.frame = frame(cxs,bys,0,0)
         }
         
         func portraitMono() {
@@ -459,15 +434,14 @@ class ViewController: UIViewController {
             dSphere.frame = frame(cxs,cxs,xHop,0)
             dBox.frame = frame(cxs,cxs,0,xHop)
             x = left
-            sSphere.frame  = frame(cxs,bys,xHop,0)
-            speedButton.frame = frame(cxs,bys,0,bys+gap)
+            sSphere.frame  = frame(cxs,bys,xHop,bys+gap)
             x = left
             dColorR.frame = frame(cxs2,cxs2,xHop2,0)
             dColorG.frame = frame(cxs2,cxs2,xHop2,0)
             dColorB.frame = frame(cxs2,cxs2,0,xHop2)
             x = left
             dJuliaXY.frame = frame(cxs,cxs,xHop,0)
-            dLightXY.frame = frame(cxs,cxs,0,xHop)
+            wLightXY.frame = frame(cxs,cxs,0,xHop)
             x = left
             sJuliaZ.frame  = frame(cxs,bys,cxs+gap,0)
             sLightZ.frame  = frame(cxs,bys,0,yHop)
@@ -489,7 +463,6 @@ class ViewController: UIViewController {
 
             landScapeCommon()
             
-            sZoom.active = !isFullScreen
             sZoom.setNeedsDisplay()
         }
 
@@ -538,7 +511,7 @@ class ViewController: UIViewController {
             resetButton.frame = frame(50,bys,xHop,0)
             y = by
             x2 = x
-            dLightXY.frame = frame(cxs,cxs,0,xHop)
+            wLightXY.frame = frame(cxs,cxs,0,xHop)
             sLightZ.frame  = frame(cxs,bys,0,yHop + 5)
             saveLoadButton.frame = frame(80,bys,0,yHop)
             helpButton.frame = frame(bys,bys,bys + 20,0)
@@ -548,7 +521,6 @@ class ViewController: UIViewController {
             y = by
             resolutionButton.frame = frame(80,bys,0,yHop)
             sEpsilon.frame = frame(cxs,bys,0,yHop)
-            speedButton.frame = frame(cxs,bys,0,0)
             
             landScapeCommon()
         }
@@ -587,9 +559,8 @@ class ViewController: UIViewController {
         
         // ------------------------------------------------------------------
 
-        if sList != nil {
-            for s in sList { s.isHidden = isFullScreen }
-            for d in dList { d.isHidden = isFullScreen }
+        if wList != nil {
+            for w in wList { w.isHidden = isFullScreen }
             for b in bList { b.isHidden = isFullScreen }
         }
 
@@ -607,11 +578,7 @@ class ViewController: UIViewController {
             }
         }
         
-        if sList != nil {
-            for s in sList { s.boundsChanged() }
-            for d in dList { d.boundsChanged() }
-        }
-        
+        if wList != nil { for w in wList { w.setNeedsDisplay() }}
         setImageViewResolution()
         updateImage()
     }
@@ -644,8 +611,7 @@ class ViewController: UIViewController {
         if cTranslate.update() { refresh = true }
         if cTranslateZ.update() { refresh = true }
         if cRotate.update() { refresh = true }
-        for s in sList { if s.update() { refresh = true }}
-        for d in dList { if d.update() { refresh = true }}
+        for w in wList { if w.update() { refresh = true }}
 
         if refresh { updateImage() }
     }

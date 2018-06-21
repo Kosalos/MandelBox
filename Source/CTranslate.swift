@@ -103,7 +103,7 @@ class CTranslate: UIView {
     var dy:Float = 0
 
     func update() -> Bool {
-        if touched { vc.alterPosition(dx * speedMult[speedIndex],dy * speedMult[speedIndex],0) }
+        if touched { vc.alterPosition(dx,dy,0) }
         return touched
     }
 
