@@ -3,7 +3,7 @@ import UIKit
 
 enum RecordState { case idle,recording,playing }
 let numStepsMin:Int = 25
-let numStepsMax:Int = 800
+let numStepsMax:Int = 1600
 
 var recordStruct = RecordStruct()
 
@@ -47,8 +47,6 @@ class Record {
     func recordPressed() {
         if state != .recording {
             state = .recording
-            recordStruct.matrix = arcBall.transformMatrix
-            recordStruct.position = arcBall.endPosition
             recordStruct.count = 0
             saveControlMemory()
         }

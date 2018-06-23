@@ -48,8 +48,6 @@ class SaveLoadViewController: UIViewController,UITableViewDataSource, UITableVie
     }
     
     func didTapButton(_ sender: UIButton) {
-        control.version = versionNumber
-        
         func getCurrentCellIndexPath(_ sender: UIButton) -> IndexPath? {
             let buttonPosition = sender.convert(CGPoint.zero, to: tableView)
             if let indexPath: IndexPath = tableView.indexPathForRow(at: buttonPosition) {
@@ -63,9 +61,15 @@ class SaveLoadViewController: UIViewController,UITableViewDataSource, UITableVie
             
             if sender.tag == 0 {
                 loadAndDismissDialog(indexPath.row)
-                if control.version != versionNumber { vc.reset() }
-                arcBall.startPosition = control.endPosition
-                arcBall.calcTransFormMatrix()
+                
+                if saveLoadStyle == .settings {
+                    if control.version != versionNumber { vc.reset() }
+                    arcBall.startPosition = control.endPosition
+                    arcBall.calcTransFormMatrix()
+                }
+                else {
+                    if recordStruct.version != versionNumber { record.reset() }
+                }
             }
             
             if sender.tag == 1 {
@@ -108,9 +112,11 @@ class SaveLoadViewController: UIViewController,UITableViewDataSource, UITableVie
                 var data:NSData! = nil
                 
                 if saveLoadStyle == .settings {
+                    control.version = versionNumber
                     data = NSData(bytes:&control, length:MemoryLayout<Control>.size)
                 }
                 else {
+                    recordStruct.version = versionNumber
                     data = NSData(bytes:&recordStruct, length:MemoryLayout<RecordStruct>.size)
                 }
                 

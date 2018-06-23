@@ -56,8 +56,6 @@ typedef struct{
 typedef struct{
     int version;
     Control memory;
-    matrix_float4x4 matrix;
-    matrix_float3x3 position;
     int count;
     RecordEntry entry[MAX_ENTRY];
 } RecordStruct;

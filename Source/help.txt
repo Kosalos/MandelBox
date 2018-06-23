@@ -69,7 +69,7 @@ K. "Play"
    with when making the recording. But during playback, only the camera position and aim are
    affected; you are free to change all the other widget settings as playback progresses.
 
-L. "25" ... "800"
+L. "25" ... "1600"
    Controls the 'speed' of playback by setting the number of frames
    that are rendered between recorded keyframes.
    Press this button to cycle through the various settings.
