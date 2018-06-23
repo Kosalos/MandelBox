@@ -129,6 +129,12 @@ class ViewController: UIViewController {
     @IBAction func tapGesture(_ sender: UITapGestureRecognizer) {
         isFullScreen = !isFullScreen
         rotated()
+
+        if isFullScreen && (record.state == .playing) {
+            let mtList = [ cRotate,cTranslate,cTranslateZ,sToeIn ] as [UIView]
+            for m in mtList { m.isHidden = true }
+        }
+        
         updateImage()
     }
     
@@ -171,7 +177,8 @@ class ViewController: UIViewController {
 
         wList = [ sZoom,sScaleFactor,sEpsilon,sJuliaZ,sLightZ,sSphere,sToeIn,sMaxDist,sContrast,sBlinn,
                   dSphere,dBox,dColorR,dColorG,dColorB,dJuliaXY,wLightXY ]
-        bList = [ resetButton,saveLoadButton,helpButton,resolutionButton,stereoButton,juliaOnOff,burningShipButton ]
+        bList = [ resetButton,saveLoadButton,helpButton,resolutionButton,stereoButton,juliaOnOff,burningShipButton,
+                  recordButton,playbackButton,recordSaveButton,playSpeedButton ]
         
         sZoom.initSingle(&control.zoom,  0.2,2, 0.03, "Zoom")
         sScaleFactor.initSingle(&control.scaleFactor,  -5.0,5.0, 0.1, "Scale Factor")
