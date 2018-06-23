@@ -10,7 +10,6 @@ var recordStruct = RecordStruct()
 class Record {
     var state:RecordState = .idle
     var pIndex = Int()
-    var entry = RecordEntry()
     var cameraDelta = float3()
     var focusDelta = float3()
     
@@ -20,7 +19,7 @@ class Record {
 
     func determineDeltas() {
         if recordStruct.count > 1 {
-            entry = getRecordStructEntry(Int32(pIndex))
+            let entry = getRecordStructEntry(Int32(pIndex))
             let nextEntry = getRecordStructEntry(Int32(pIndex+1))
             
             cameraDelta = (nextEntry.camera - entry.camera) / Float(numSteps)
@@ -37,12 +36,9 @@ class Record {
             determineDeltas()
         }
         
-        entry.camera += cameraDelta
-        entry.focus += focusDelta
-        
-        control.camera = entry.camera
-        control.focus = entry.focus
-    }
+        control.camera += cameraDelta
+        control.focus += focusDelta
+     }
     
     func recordPressed() {
         if state != .recording {
