@@ -10,6 +10,10 @@ class SaveLoadCell: UITableViewCell {
     @IBAction func buttonTapped(_ sender: UIButton) {  delegate?.didTapButton(sender) }
 }
 
+enum SaveLoadStyle { case settings,recordings }
+
+var saveLoadStyle:SaveLoadStyle = .settings
+
 //MARK:-
 
 let versionNumber:Int32 = 0x55ab
@@ -17,16 +21,17 @@ let versionNumber:Int32 = 0x55ab
 class SaveLoadViewController: UIViewController,UITableViewDataSource, UITableViewDelegate,SLCellDelegate {
     var cc = Control()
     @IBOutlet var tableView: UITableView!
+    @IBOutlet var legend: UILabel!
     
     func numberOfSections(in tableView: UITableView) -> Int { return 1 }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { return 50 }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SLCell", for: indexPath) as! SaveLoadCell
         cell.delegate = self
         cell.tag = indexPath.row
         
-        let dateString = loadData(indexPath.row,&cc,false)
+        let dateString = determineDateString(indexPath.row)
         var str:String = ""
         
         if dateString == "**" {
@@ -41,8 +46,10 @@ class SaveLoadViewController: UIViewController,UITableViewDataSource, UITableVie
         cell.loadCell.setTitle(str, for: UIControlState.normal)
         return cell
     }
-
+    
     func didTapButton(_ sender: UIButton) {
+        control.version = versionNumber
+        
         func getCurrentCellIndexPath(_ sender: UIButton) -> IndexPath? {
             let buttonPosition = sender.convert(CGPoint.zero, to: tableView)
             if let indexPath: IndexPath = tableView.indexPathForRow(at: buttonPosition) {
@@ -50,14 +57,13 @@ class SaveLoadViewController: UIViewController,UITableViewDataSource, UITableVie
             }
             return nil
         }
-
+        
         if let indexPath = getCurrentCellIndexPath(sender) {
             //Swift.print("Row ",indexPath.row, "        Tag ", sender.tag)
             
             if sender.tag == 0 {
-                loadAndDismissDialog(indexPath.row,&control)
+                loadAndDismissDialog(indexPath.row)
                 if control.version != versionNumber { vc.reset() }
-                
                 arcBall.startPosition = control.endPosition
                 arcBall.calcTransFormMatrix()
             }
@@ -66,7 +72,7 @@ class SaveLoadViewController: UIViewController,UITableViewDataSource, UITableVie
                 control.version = versionNumber
                 control.transformMatrix = arcBall.transformMatrix
                 control.endPosition = arcBall.endPosition
-                saveAndDismissDialog(indexPath.row,control)
+                saveAndDismissDialog(indexPath.row)
             }
         }
     }
@@ -75,34 +81,45 @@ class SaveLoadViewController: UIViewController,UITableViewDataSource, UITableVie
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
+        
+        legend.text = (saveLoadStyle == .settings) ? "Save/Load Settings" : "Save/Load Recordings"
     }
-
+    
     //MARK:-
-
+    
     var fileURL:URL! = nil
-    let sz = MemoryLayout<Control>.size
     
     func determineURL(_ index:Int) {
-        let name = String(format:"Store%d.dat",index)
+        let name = (saveLoadStyle == .settings) ? String(format:"Store%d.dat",index) : String(format:"Record%d.dat",index)
         fileURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent(name)
     }
     
-    func saveAndDismissDialog(_ index:Int, _ ctrl:Control) {
+    func saveAndDismissDialog(_ index:Int) {
+        var alertController:UIAlertController! = nil
+        if saveLoadStyle == .settings {
+            alertController = UIAlertController(title: "Save Settings", message: "Confirm overwrite of Settings storage", preferredStyle: .alert)
+        } else {
+            alertController = UIAlertController(title: "Save Recording", message: "Confirm overwrite of Recording storage", preferredStyle: .alert)
+        }
         
-        let alertController = UIAlertController(title: "Save Settings", message: "Confirm overwrite of Settings storage", preferredStyle: .alert)
-
         let OKAction = UIAlertAction(title: "Continue", style: .default) { (action:UIAlertAction!) in
             do {
                 self.determineURL(index)
-                var c = ctrl
-                let data = NSData(bytes:&c, length:self.sz)
+                var data:NSData! = nil
+                
+                if saveLoadStyle == .settings {
+                    data = NSData(bytes:&control, length:MemoryLayout<Control>.size)
+                }
+                else {
+                    data = NSData(bytes:&recordStruct, length:MemoryLayout<RecordStruct>.size)
+                }
                 
                 try data.write(to: self.fileURL, options: .atomic)
             } catch {
                 print(error)
             }
             
-           self.dismiss(animated: false, completion:nil)
+            self.dismiss(animated: false, completion:nil)
         }
         alertController.addAction(OKAction)
         
@@ -113,12 +130,12 @@ class SaveLoadViewController: UIViewController,UITableViewDataSource, UITableVie
         
         self.present(alertController, animated: true, completion:nil)
     }
-
+    
     //MARK:-
-
+    
     var dateString = String("")
     
-    @discardableResult func loadData(_ index:Int, _ c: inout Control, _ loadFile:Bool) -> String {
+    func determineDateString(_ index:Int) -> String {
         var dStr = String("**")
         
         determineURL(index)
@@ -130,18 +147,46 @@ class SaveLoadViewController: UIViewController,UITableViewDataSource, UITableVie
         } catch {
             // print(error)
         }
-
-        if loadFile {
-            let data = NSData(contentsOf: fileURL)
-            data?.getBytes(&c, length:sz)
-        }
         
         return dStr
     }
     
-    func loadAndDismissDialog(_ index:Int, _ cc: inout Control) {
-        loadData(index,&cc,true)
-        self.dismiss(animated: false, completion: {()->Void in vc.updateWidgets() })
+    //MARK:-
+    
+    @discardableResult func loadData(_ index:Int) -> Bool {
+        determineURL(index)
+        
+        let data = NSData(contentsOf: fileURL)
+        if data == nil { return false } // clicked on empty entry
+        
+        if saveLoadStyle == .settings {
+            data?.getBytes(&control, length:MemoryLayout<Control>.size)
+        }
+        else {
+            data?.getBytes(&recordStruct, length:MemoryLayout<RecordStruct>.size)
+        }
+        
+        return true
+    }
+    
+    func loadAndDismissDialog(_ index:Int) {
+        if !loadData(index) { return } // clicked on empty entry
+        
+        if saveLoadStyle == .settings {
+            self.dismiss(animated: false, completion: {()->Void in
+                vc.controlJustLoaded()
+                record.reset()
+                vc.updateRecordButtons()
+            })
+        }
+        else {
+            self.dismiss(animated: false, completion: {()->Void in
+                restoreControlMemory()
+                vc.updateRecordButtons()
+                record.state = .idle
+                record.playbackPressed()
+            })
+        }
     }
 }
 

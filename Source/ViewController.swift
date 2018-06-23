@@ -11,6 +11,7 @@ let IMAGESIZE_LOW:Int32 = 760
 let IMAGESIZE_HIGH:Int32 = 2000
 
 var control = Control()
+var record = Record()
 var vc:ViewController! = nil
 
 class ViewController: UIViewController {
@@ -20,7 +21,6 @@ class ViewController: UIViewController {
     var isHighRes:Bool = false
     var viewXS = Int32()
     var viewYS = Int32()
-
     var timer = Timer()
     var outTextureL: MTLTexture!
     var outTextureR: MTLTexture!
@@ -29,7 +29,7 @@ class ViewController: UIViewController {
     let queue = DispatchQueue(label: "Queue")
     lazy var device: MTLDevice! = MTLCreateSystemDefaultDevice()
     lazy var commandQueue: MTLCommandQueue! = { return self.device.makeCommandQueue() }()
-
+    
     let threadGroupCount = MTLSizeMake(20,20, 1)   // integer factor of SIZE
     var threadGroups = MTLSize()
     
@@ -62,7 +62,11 @@ class ViewController: UIViewController {
     @IBOutlet var stereoButton: UIButton!
     @IBOutlet var burningShipButton: UIButton!
     @IBOutlet var juliaOnOff: UISwitch!
-    
+    @IBOutlet var recordButton: BorderedButton!
+    @IBOutlet var playbackButton: BorderedButton!
+    @IBOutlet var recordSaveButton: BorderedButton!
+    @IBOutlet var playSpeedButton: BorderedButton!
+
     @IBAction func resetButtonPressed(_ sender: UIButton) { reset() }
     @IBAction func juliaOnOffChanged(_ sender: UISwitch) { control.juliaboxMode = sender.isOn;  updateImage() }
     
@@ -71,27 +75,57 @@ class ViewController: UIViewController {
         setImageViewResolution()
         updateImage()
     }
-
+    
     func updateResolutionButton() { resolutionButton.setTitle(isHighRes ? " Res: High" : " Res: Low", for: UIControlState.normal) }
-
+    
     @IBAction func stereoButtonPressed(_ sender: UIButton) {
         isStereo = !isStereo
         rotated()
         updateImage()
     }
     
+    let bsOff = UIColor(red:0.25, green:0.25, blue:0.25, alpha: 1)
+    let bsOn  = UIColor(red:0.1, green:0.3, blue:0.1, alpha: 1)
+    
     func updateBurningShipButtonBackground() {
-        let bsOff = UIColor(red:0.25, green:0.25, blue:0.25, alpha: 1)
-        let bsOn  = UIColor(red:0.1, green:0.3, blue:0.1, alpha: 1)
         burningShipButton.backgroundColor = control.burningShip ? bsOn : bsOff
     }
-
+    
     @IBAction func burningShipButtonPressed(_ sender: UIButton) {
         control.burningShip = !control.burningShip
         updateBurningShipButtonBackground()
         updateImage()
     }
+    
+    func updateRecordButtons() {
+        if record.getCount() > 0 {
+            let str = String(format:"R %d",record.getCount())
+            recordButton.setTitle(str, for: UIControlState.normal)
+        }
+        else {
+            recordButton.setTitle("Rec", for: UIControlState.normal)
+        }
+    
+        recordButton.backgroundColor = (record.state == .recording) ? bsOn : bsOff
+        playbackButton.backgroundColor = (record.state == .playing) ? bsOn : bsOff
+        
+        let str = String(format:"%d",record.numSteps)
+        playSpeedButton.setTitle(str, for: UIControlState.normal)        
+    }
 
+    @IBAction func recordPressed(_ sender: UIButton) { record.recordPressed() }
+    @IBAction func playbackPressed(_ sender: UIButton) { record.playbackPressed() }
+    @IBAction func playSpeedPressed(_ sender: UIButton) { record.playSpeedPressed() }
+
+    @IBAction func saveSettingsPressed(_ sender: UIButton) {
+        saveLoadStyle = .settings
+        performSegue(withIdentifier: "saveLoadDialog", sender: self)
+    }
+    @IBAction func recSavePressed(_ sender: UIButton) {
+        saveLoadStyle = .recordings
+        performSegue(withIdentifier: "saveLoadDialog", sender: self)
+    }
+    
     @IBAction func tapGesture(_ sender: UITapGestureRecognizer) {
         isFullScreen = !isFullScreen
         rotated()
@@ -104,14 +138,14 @@ class ViewController: UIViewController {
     var lightX:Float = 0.0
     var lightY:Float = 0.0
     var lightZ:Float = 0.0
-
+    
     var wList:[Widget]! = nil
     var bList:[UIView]! = nil
-
+    
     override var prefersStatusBarHidden: Bool { return true }
     
     //MARK: -
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         vc = self
@@ -122,10 +156,10 @@ class ViewController: UIViewController {
             pipeline1 = try device.makeComputePipelineState(function: kf1)
         }
         catch { fatalError("error creating pipelines") }
-
+        
         let hk = cRotate.bounds
         arcBall.initialize(Float(hk.size.width),Float(hk.size.height))
-
+        
         cBuffer = device.makeBuffer(bytes: &control, length: MemoryLayout<Control>.stride, options: MTLResourceOptions.storageModeShared)
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.rotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
@@ -133,11 +167,12 @@ class ViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+        setRecordPointer(&recordStruct,&control)
+
         wList = [ sZoom,sScaleFactor,sEpsilon,sJuliaZ,sLightZ,sSphere,sToeIn,sMaxDist,sContrast,sBlinn,
                   dSphere,dBox,dColorR,dColorG,dColorB,dJuliaXY,wLightXY ]
         bList = [ resetButton,saveLoadButton,helpButton,resolutionButton,stereoButton,juliaOnOff,burningShipButton ]
-
+        
         sZoom.initSingle(&control.zoom,  0.2,2, 0.03, "Zoom")
         sScaleFactor.initSingle(&control.scaleFactor,  -5.0,5.0, 0.1, "Scale Factor")
         sScaleFactor.highlight(3)
@@ -148,39 +183,39 @@ class ViewController: UIViewController {
         dSphere.highlight(0.25,1)
         sSphere.initSingle(&control.sph3,  0.1,6.0,0.1, "Sphere M")
         sSphere.highlight(4)
-
+        
         dBox.initDual(&control.box1, 0,3,0.05, "Box"); dBox.initDual2(&control.box2)
         dBox.highlight(1,2)
-
+        
         dColorR.initDual(&control.colorR1, 0,1,0.06, "R"); dColorR.initDual2(&control.colorR2)
         dColorG.initDual(&control.colorG1, 0,1,0.06, "G"); dColorG.initDual2(&control.colorG2)
         dColorB.initDual(&control.colorB1, 0,1,0.06, "B"); dColorB.initDual2(&control.colorB2)
-
+        
         dJuliaXY.initDual(&juliaX, -10,10, 1, "Julia XY"); dJuliaXY.initDual2(&juliaY)
         sJuliaZ.initSingle(&juliaZ,  -10,10,1, "Julia Z")
-
+        
         wLightXY.initDual(&lightX,-1,1, 0.1, "Light XY"); wLightXY.initDual2(&lightY)
         sLightZ.initSingle(&lightZ,  -1,1, 0.1, "Light Z")
-
+        
         let toeInRange:Float = 0.008
         sToeIn.initSingle(&control.toeIn,  -toeInRange,+toeInRange,0.0002, "Parallax")
         sToeIn.highlight(0)
-
+        
         sMaxDist.initSingle(&control.maxDist,  0.01,6,0.2, "F")
         sContrast.initSingle(&control.contrast, 0.1,5,0.1, "C")
         sBlinn.initSingle(&control.blinn, 0.1,2,0.1, "B")
-
+        
         reset()        
         timer = Timer.scheduledTimer(timeInterval: 1.0/60.0, target:self, selector: #selector(timerHandler), userInfo: nil, repeats:true)
     }
     
-    
     //MARK: -
-
+    
     func reset() {
         isHighRes = false
         updateResolutionButton()
-
+        record.reset()
+        
         control.camera = vector_float3(0.38135, 2.3424, -0.380833)
         control.focus = vector_float3(-0.52,-1.22,-0.31)
         control.transformMatrix = matrix_float4x4.init(diagonal: float4(1,1,1,1))
@@ -208,12 +243,12 @@ class ViewController: UIViewController {
         control.light.x = 0.33
         control.light.y = 0.66
         control.light.z = 1.0
-
+        
         control.toeIn = 0.0011
         control.maxDist = 3
         control.contrast = 0.8
         control.blinn = 0.5
-
+        
         unWrapFloat3()
         
         for w in wList { w.setNeedsDisplay() }
@@ -221,13 +256,13 @@ class ViewController: UIViewController {
         updateImage()
     }
     
-    func updateWidgets() {
+    func controlJustLoaded() {
         if control.maxDist < 0.1 { control.maxDist = 1 }  // so older saves have a initialized fog value
         if control.contrast < 0.1 { control.contrast = 1 }
         updateBurningShipButtonBackground()
         juliaOnOff.isOn = control.juliaboxMode
         unWrapFloat3()
-
+        
         for w in wList { w.setNeedsDisplay() }
         setImageViewResolution()
         updateImage()
@@ -251,7 +286,7 @@ class ViewController: UIViewController {
             mipmapped: false)
         outTextureL = self.device.makeTexture(descriptor: textureDescriptor)!
         outTextureR = self.device.makeTexture(descriptor: textureDescriptor)!
-
+        
         metalTextureViewL.initialize(outTextureL)
         metalTextureViewR.initialize(outTextureR)
         
@@ -264,7 +299,7 @@ class ViewController: UIViewController {
     }
     
     //MARK: -
-
+    
     func removeAllFocus() {
         for w in wList { if w.hasFocus { w.hasFocus = false; w.setNeedsDisplay() }}
         if cTranslate.hasFocus { cTranslate.hasFocus = false; cTranslate.setNeedsDisplay() }
@@ -283,7 +318,7 @@ class ViewController: UIViewController {
     
     var xs = CGFloat()
     var ys = CGFloat()
-
+    
     @objc func rotated() {
         xs = view.bounds.width
         ys = view.bounds.height
@@ -292,7 +327,7 @@ class ViewController: UIViewController {
             xs = scrnLandscape ? scrnSz[scrnIndex].y : scrnSz[scrnIndex].x
             ys = scrnLandscape ? scrnSz[scrnIndex].x : scrnSz[scrnIndex].y
         }
-
+        
         let bys:CGFloat = 32    // slider height
         let gap:CGFloat = 10
         let cxs:CGFloat = 120
@@ -300,18 +335,18 @@ class ViewController: UIViewController {
         let yHop = bys + gap
         let xHop = cxs + gap
         let xHop2 = cxs2 + gap
-
+        
         var sz:CGFloat = xs - 10
         var by:CGFloat = sz + 10  // top of widgets
         var x:CGFloat = 0
         var y = by
-
+        
         func frame(_ xs:CGFloat, _ ys:CGFloat, _ dx:CGFloat, _ dy:CGFloat) -> CGRect {
             let r = CGRect(x:x, y:y, width:xs, height:ys)
             x += dx; y += dy
             return r
         }
-
+        
         func portraitCommon() {
             sZoom.frame = frame(cxs,bys,0,yHop)
             sScaleFactor.frame = frame(cxs,bys,0,yHop)
@@ -321,7 +356,7 @@ class ViewController: UIViewController {
             var x2 = x
             x += xx + 5
             cTranslateZ.frame = frame(bys,cxs,0,xHop)
-
+            
             x = x2
             stereoButton.frame = frame(bys,bys,yHop,0)
             sToeIn.frame = frame(cxs - bys - gap,bys,0,0)
@@ -340,7 +375,7 @@ class ViewController: UIViewController {
             sJuliaZ.frame  = frame(cxs,bys,0,yHop + 5)
             
             x2 = x
-            juliaOnOff.frame = frame(50,30,60,0)
+            juliaOnOff.frame = frame(50,30,70,0)
             resetButton.frame = frame(50,bys,0,yHop)
             x = x2
             let xHop2 = xHop/3 - 5
@@ -351,9 +386,14 @@ class ViewController: UIViewController {
             
             x2 = x
             y = by
-            wLightXY.frame = frame(cxs,cxs,0,xHop)
-            sLightZ.frame  = frame(cxs,bys,0,yHop + 5)
-            saveLoadButton.frame = frame(80,bys,20,yHop)
+            wLightXY.frame = frame(cxs,cxs-36,0,cxs-32)
+            sLightZ.frame  = frame(cxs,bys,0,yHop)
+            recordButton.frame = frame(xHop2,bys,xHop2+3,0)
+            playbackButton.frame = frame(xHop2,bys,xHop2+3,0)
+            recordSaveButton.frame = frame(xHop2,bys,xHop2,yHop+5)
+            x = x2+15
+            saveLoadButton.frame = frame(80,bys,20,yHop-2)
+            x = x2+13
             helpButton.frame = frame(bys,bys,bys + 20,0)
             burningShipButton.frame = frame(bys,bys,0,0)
             x = x2 + xHop
@@ -371,23 +411,23 @@ class ViewController: UIViewController {
             
             viewXS = Int32(sz)
             viewYS = Int32(by-10)
-
+            
             metalTextureViewR.isHidden = true
             sToeIn.isHidden = true
-
+            
             metalTextureViewL.frame = CGRect(x:0, y:0, width:CGFloat(viewXS), height:CGFloat(viewYS))
             portraitCommon()
         }
-
+        
         func portraitStereo() {
             sz = xs
             by = ys - 260  // top of widgets
             x = (xs - 730) / 2
             y = by
-
+            
             viewXS = Int32(sz/2)
             viewYS = Int32(by-10)
-
+            
             metalTextureViewR.isHidden = false
             sToeIn.isHidden = false
             
@@ -395,7 +435,7 @@ class ViewController: UIViewController {
             metalTextureViewR.frame = CGRect(x:CGFloat(viewXS), y:0, width:CGFloat(viewXS), height:CGFloat(viewYS))
             portraitCommon()
         }
-
+        
         func landScapeCommon() {
             x = 30
             y = ys - cxs - 40
@@ -425,7 +465,7 @@ class ViewController: UIViewController {
             sZoom.frame = frame(cxs,bys,0,yHop)
             sScaleFactor.frame = frame(cxs,bys,xHop,0)
             y = by
-            resolutionButton.frame = frame(80,bys,0,yHop)
+            resolutionButton.frame = frame(cxs,bys,0,yHop)
             sEpsilon.frame = frame(cxs,bys,0,0)
             x = left
             y = by + 90
@@ -439,31 +479,44 @@ class ViewController: UIViewController {
             dColorB.frame = frame(cxs2,cxs2,0,xHop2)
             x = left
             dJuliaXY.frame = frame(cxs,cxs,xHop,0)
+            
             wLightXY.frame = frame(cxs,cxs,0,xHop)
             x = left
             sJuliaZ.frame  = frame(cxs,bys,cxs+gap,0)
             sLightZ.frame  = frame(cxs,bys,0,yHop)
             x = left
             juliaOnOff.frame = frame(50,30,xHop,0)
-            saveLoadButton.frame = frame(80,bys,0,bys+gap)
-
+            let x2 = x
+            saveLoadButton.frame = frame(cxs,bys,0,bys+gap)
+            
             x = left
             let xHop3 = xHop/3 - 6
             sMaxDist.frame = frame(xHop3,bys,xHop3+5,0)
             sContrast.frame = frame(xHop3,bys,xHop3+5,0)
             sBlinn.frame = frame(xHop3,bys,xHop3,0)
-            x += 15
+            x = x2
+            resetButton.frame = frame(cxs,bys,0,bys+gap)
             
-            resetButton.frame = frame(50,bys,0,bys+gap)
-            stereoButton.frame = frame(bys,bys,0,bys+gap)
-            helpButton.frame = frame(bys,bys,bys + 20,0)
-            burningShipButton.frame = frame(bys,bys,0,0)
+            x = left
+            let y2 = y
+            let rsz = cxs/2 - 5
+            recordButton.frame = frame(rsz,bys,rsz+5,0)
+            playbackButton.frame = frame(rsz,bys,0,bys+5)
+            x = left
+            playSpeedButton.frame = frame(rsz,bys,rsz+5,0)
+            recordSaveButton.frame = frame(rsz,bys,0,0)
+            
+            x = x2
+            y = y2
+            stereoButton.frame = frame(bys,bys,bys + 15,0)
+            burningShipButton.frame = frame(bys,bys,bys + 15,0)
+            helpButton.frame = frame(bys,bys,0,0)
 
             landScapeCommon()
             
             sZoom.setNeedsDisplay()
         }
-
+        
         func landScapeStereo() {
             let sz2 = xs / 2
             by = ys - 270  // top of widgets
@@ -478,7 +531,7 @@ class ViewController: UIViewController {
             
             metalTextureViewL.frame = CGRect(x:CGFloat(), y:CGFloat(), width:CGFloat(viewXS), height:CGFloat(viewYS))
             metalTextureViewR.frame = CGRect(x:sz2+2, y:CGFloat(), width:CGFloat(viewXS), height:CGFloat(viewYS))
-
+            
             sZoom.frame = frame(cxs,bys,0,yHop)
             sScaleFactor.frame = frame(cxs,bys,0,yHop)
             
@@ -490,7 +543,15 @@ class ViewController: UIViewController {
             let xHop3 = xHop/3 - 6
             sMaxDist.frame = frame(xHop3,bys,xHop3+5,0)
             sContrast.frame = frame(xHop3,bys,xHop3+5,0)
-            sBlinn.frame = frame(xHop3,bys,xHop3,0)
+            sBlinn.frame = frame(xHop3,bys,xHop3,yHop)
+            
+            x = x2
+            let rsz = cxs/2 - 5
+            recordButton.frame = frame(rsz,bys,rsz+5,0)
+            playbackButton.frame = frame(rsz,bys,0,bys+5)
+            x = x2
+            playSpeedButton.frame = frame(rsz,bys,rsz+5,0)
+            recordSaveButton.frame = frame(rsz,bys,0,0)
 
             x = x2 + xHop
             y = by
@@ -506,18 +567,18 @@ class ViewController: UIViewController {
             dJuliaXY.frame = frame(cxs,cxs,0,xHop)
             sJuliaZ.frame  = frame(cxs,bys,0,yHop + 5)
             juliaOnOff.frame = frame(50,30,0,yHop)
-            resetButton.frame = frame(50,bys,xHop,0)
+            resetButton.frame = frame(cxs,bys,xHop,0)
             y = by
             x2 = x
             wLightXY.frame = frame(cxs,cxs,0,xHop)
             sLightZ.frame  = frame(cxs,bys,0,yHop + 5)
-            saveLoadButton.frame = frame(80,bys,0,yHop)
-            helpButton.frame = frame(bys,bys,bys + 20,0)
-            burningShipButton.frame = frame(bys,bys,0,0)
+            saveLoadButton.frame = frame(cxs,bys,20,yHop)
+            burningShipButton.frame = frame(bys,bys,bys + 20,0)
+            helpButton.frame = frame(bys,bys,0,0)
 
             x = x2 + xHop
             y = by
-            resolutionButton.frame = frame(80,bys,0,yHop)
+            resolutionButton.frame = frame(cxs,bys,0,yHop)
             sEpsilon.frame = frame(cxs,bys,0,yHop)
             
             landScapeCommon()
@@ -543,11 +604,11 @@ class ViewController: UIViewController {
             y = ys - 40 - bys
             sToeIn.frame = CGRect(x:x, y:y, width:100, height:bys)
         }
-
+        
         func fullScreenMono() {
             viewXS = Int32(xs)
             viewYS = Int32(ys)
-
+            
             metalTextureViewR.isHidden = true
             sToeIn.isHidden = true
             
@@ -556,12 +617,12 @@ class ViewController: UIViewController {
         }
         
         // ------------------------------------------------------------------
-
+        
         if wList != nil {
             for w in wList { w.isHidden = isFullScreen }
             for b in bList { b.isHidden = isFullScreen }
         }
-
+        
         if isFullScreen {
             if isStereo { fullScreenStereo() } else { fullScreenMono() }
         }
@@ -605,13 +666,19 @@ class ViewController: UIViewController {
     
     @objc func timerHandler() {
         var refresh:Bool = false
-        
         if cTranslate.update() { refresh = true }
         if cTranslateZ.update() { refresh = true }
         if cRotate.update() { refresh = true }
         for w in wList { if w.update() { refresh = true }}
-
-        if refresh { updateImage() }
+        
+        if record.state == .playing {
+            if !isBusy {
+                record.playBack()
+                refresh = true
+            }
+        }
+        
+        if refresh && !isBusy { updateImage() }
     }
     
     //MARK: -
@@ -645,26 +712,26 @@ class ViewController: UIViewController {
             alter(&control.camera)
             alter(&control.focus)
         }
-
+        
         let q:Float = 0.1
         axisAlter(simd_make_float4(q,0,0,0),dx)
         axisAlter(simd_make_float4(0,0,q,0),dy)
         axisAlter(simd_make_float4(0,q,0,0),dz)
-
+        
         updateImage()
     }
     
     //MARK: -
     
     var isBusy:Bool = false
-
+    
     func updateImage() {
         if isBusy { return }
         isBusy = true
         
         calcRayMarch(0)
         metalTextureViewL.display(metalTextureViewL.layer)
-
+        
         if isStereo {
             calcRayMarch(1)
             metalTextureViewR.display(metalTextureViewR.layer)
@@ -677,7 +744,7 @@ class ViewController: UIViewController {
     
     func calcRayMarch(_ who:Int) {
         wrapFloat3()
-
+        
         var c = control
         if who == 0 { c.camera.x -= control.toeIn }
         if who == 1 { c.camera.x += control.toeIn }
@@ -693,7 +760,7 @@ class ViewController: UIViewController {
         commandEncoder.setBuffer(cBuffer, offset: 0, index: 0)
         commandEncoder.dispatchThreadgroups(threadGroups, threadsPerThreadgroup: threadGroupCount)
         commandEncoder.endEncoding()
-
+        
         commandBuffer.commit()
         commandBuffer.waitUntilCompleted()
     }

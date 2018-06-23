@@ -1,5 +1,4 @@
-#ifndef ShaderTypes_h
-#define ShaderTypes_h
+#pragma once
 
 #ifdef __METAL_VERSION__
 #define NS_ENUM(_type, _name) enum _name : _type _name; enum _name : _type
@@ -10,7 +9,7 @@
 
 #include <simd/simd.h>
 
-struct Control {
+typedef struct {
     int version;
     vector_float3 camera;
     vector_float3 focus;
@@ -43,7 +42,33 @@ struct Control {
     int ifuture2;
     vector_float2 future2;
     vector_float2 future3;
-};
+}  Control;
 
-#endif /* ShaderTypes_h */
+//MARK: -
+
+#define MAX_ENTRY 100
+
+typedef struct{
+    vector_float3 camera;
+    vector_float3 focus;
+} RecordEntry;
+
+typedef struct{
+    int version;
+    Control memory;
+    matrix_float4x4 matrix;
+    matrix_float3x3 position;
+    int count;
+    RecordEntry entry[MAX_ENTRY];
+} RecordStruct;
+
+#ifndef __METAL_VERSION__
+
+void setRecordPointer(RecordStruct *rPtr,Control *cPtr);
+void saveControlMemory(void);
+void restoreControlMemory(void);
+void saveRecordStructEntry(void);
+RecordEntry getRecordStructEntry(int index);
+
+#endif
 

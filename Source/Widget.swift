@@ -36,10 +36,6 @@ class Widget: UIView {
         tap2.numberOfTapsRequired = 2
         addGestureRecognizer(tap2)
         
-        let tap3 = UITapGestureRecognizer(target: self, action: #selector(self.handleTap3(_:)))
-        tap3.numberOfTapsRequired = 3
-        addGestureRecognizer(tap3)
-        
         isUserInteractionEnabled = true
     }
     
@@ -75,17 +71,6 @@ class Widget: UIView {
         setNeedsDisplay()
     }
     
-    @objc func handleTap3(_ sender: UITapGestureRecognizer) {
-        if valuePointerX == nil { return }
-        
-        let valueX:Float = Float(highLightPoint.x)
-        let valueY:Float = Float(highLightPoint.y)
-        if let valuePointerX = valuePointerX { valuePointerX.storeBytes(of:valueX, as:Float.self) }
-        if let valuePointerY = valuePointerY { valuePointerY.storeBytes(of:valueY, as:Float.self) }
-        
-        handleTap2(sender) // undo the double tap that was also recognized
-    }
-
     //MARK: ==================================
 
     func highlight(_ x:CGFloat, _ y:CGFloat) {

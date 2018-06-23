@@ -1,96 +1,134 @@
 MandelBox
 
-Algorithm copied from this excellent app:
-http://digitalfreepen.com/mandelbox370/
+Algorithm copied from this excellent app: http://digitalfreepen.com/mandelbox370/
 
 All the slider boxes work the same way:
-* Press and hold to either side of center to affect
-  parameter(s) in specified direction and speed.
-* Double Tap to toggle Fast versus Slow editing.
-  (Red vs Green background color)
-* Triple tap to reset parameter(s).
+* Press and hold to either side of center to affect parameter(s) in specified direction and speed.
+* Double Tap to toggle Fast versus Slow editing. (Gray vs Green background color)
 
 Note: Single tap on any widget to give it the FOCUS.
       It will gain a red colored border.
       Click and drag on the image to apply the movement to the widget.
       The widgets' Fast vs Slow edit style affects the movements.
 
-Note: discovered a bug that is so useful I am calling it a feature:
-  Give any widget the focus, then drag and hold on the image
-  to command that widget to continually update.
-  While still holding down on the image, tap any other widget to give it the focus,
-  then release the hold.
-  Because the focus was changed, the first widget never
-  receives the 'mouse release message', and so will continue to auto
-  update until you press the widget itself at a later time.
-  I like to use this bug to get the forward motion widget to auto update,
-  while I navigate around with 'rotate'.
+Note: Discovered a bug that is so useful I am calling it a feature:
+  Give any widget the focus,
+  then drag and hold on the image to command that widget to continually update.
+  While still holding down on the image, tap any other widget to give it the focus, then release the hold.
+  Because the focus was changed, the first widget never receives the 'mouse release message',
+  and so will continue to auto update until you press the widget itself at a later time.
+  I use this bug to get the forward motion widget to auto update, while I navigate around with 'rotate'.
 
-Double Tap on the image to toggle FULL SCREEN mode.
+Note: Double Tap on the image to toggle FULL SCREEN mode.
 
-A. Move Camera
-   The left widget controls left/right, up/down movement.
-   The right widget controls forward/back movement.
+A. "Move"  Jog Camera position
+   Controls left/right, up/down movement.
 
-B. Rotate Camera
-   Press anywhere to rotate camera in semi-controllable fashion. (algorithm needs work)
+B. Move camera position
+   Controls forward/back movement of the camera.
 
-C. Changing the width of the field of view affects a zoom effect.
+C. "Zoom"
+   Changing the width of the field of view effects a zoom effect.
 
-D. MandelBox parameter controlling the degree of box and sphere folding.
+D. "Scale Factor"
+   MandelBox parameter controlling degree of box and sphere folding.
 
-E. MandelBox parameter specifies how accurately we determine the mandelbox surface.
-   Smaller values (on the left side) result in finer resolution.
-
-F. Mandelbox uses two parameters to determine spherical folding. Both are controlled here.
-   Sphere M controls the Sphere scaling factor.
-
-G. Mandelbox uses two parameters to determine Box folding. Both are controlled here.
-
-H. Each widget controls two aspects of its assigned red, green or blue color.
-
-I. Julia constant
-   If enabled by toggle switch J, this 3D coordinate is the Julia constant.
-
-J. Toggle switch enables the Julia constant coordinate.
-
-K. Reset all params.
-
-L. Launch save/load dialog.
-
-M. Control the position of the light.
-
-N. Press this to toggle image resolution between Low and High.
-   Use Low resolution to quickly navigate to region of interest, then switch to Hi res for viewing.
-
-Q. Stereo
+E. "S"
    Toggle stereo mode on/off.
    Image is rendered twice, for 'cross-eyed' 3D viewing.
-   With the iPad held two feet away,
-   slightly cross your eyes so that there is a third image in the middle.
+   With the iPad held two feet away, slightly cross your eyes so that there is a third image in the middle.
    Relax your gaze, and concentrate only on that middle image, which is in 3D.
 
-   The companion 'Parallax' widget controls the amount of stereo effect.
-   Not all vistas work well in stereo,
-   and each may need parallax adjustment for best effect.
+F. "Parallax"
+   Controls the amount of stereo effect.
+   Not all vistas work well in stereo, and each may need parallax adjustment for best effect.
    When it Does work, the results are fantastic!
 
-R. BurningShip
-   I have no mathematical abilities,
-   but I was reading about the burning ship algorithm,
-   and how it is just like the Mandelbrot algorithm
-   except for using the absolute value of a function term.
+G. "F"
+   Not really fog, but a way to darken objects according to distance.
+   Lower values render faster as well.
 
-   So, in the shader I added the following :
-        v = clamp(v, -control.box1, control.box1) * control.box2 - v;
-        if(control.burningShip) v = -abs(v);   <<---- added this
+H. "C"
+   Adjust contrast.
 
-   Has a dramatic effect,
-   including resemblance to the burning ship fractal in some regions.
+I. "B"
+   Adjust Blinn lighting effect, from smooth to extremely harsh.
 
-S. F, C, B
-   F: Fog Not really fog, but a way to darken objects according to distance.
-      Lower values should render faster as well.
-   C: Adjust contrast
-   B: Adjust Blinn lighting effect
+J. "Rec", or "R ##"
+   Start recording. During a recording session the button shows the number of keyframes recorded.
+   Set all the widget settings as you like, then press this button to start a recording session.
+   Then use "Move" and "Rotate" widgets to navigate to a new position,
+   and press "Rec" again to store the next keyframe.
+   Note: keyframes only record the position and view direction, not changes you make to other widgets.
+
+K. "Play"
+   Once a least two keyframes are recorded, press this button to begin a playback session.
+   Playback automatically rewinds to the beginning.
+   Press this button a second time to stop playback.
+   Note: when playback is started, all the widgets are returned to the settings you started
+   with when making the recording. But during playback, only the camera position and aim are
+   affected; you are free to change all the other widget settings as playback progresses.
+
+L. "25" ... "800"
+   Controls the 'speed' of playback by setting the number of frames
+   that are rendered between recorded keyframes.
+   Press this button to cycle through the various settings.
+
+M. "Rsave"
+   Launch the Recording Save/Load dialog.
+
+N. "Sphere"
+   Mandelbox uses three parameters to control spherical folding.
+   This widget conrols the first two.
+
+O. "Sphere M"
+   Third spherical folding parameter controls the Sphere scaling factor.
+
+P. "Box"
+   Mandelbox uses two parameters to determine Box folding. Both are controlled here.
+
+Q. "R","G","B"
+   Each widget controls two aspects of its assigned red, green or blue color.
+
+R. "Julia XY"
+   When Julia set style is enabled (see below),
+   this widget controls the X and Y coordinates of the Julia point.
+
+S. "Julia Z"
+   When Julia set style is enabled (see below),
+   this widget controls the Z coordinate of the Julia point.
+
+T. Julia enable
+   Toggle switch enables the Julia set style.
+
+U. "Reset""
+   Reset all params.
+
+V. "Light XY"
+   Control X,Y coordinates of the light.
+
+W. "Light Z"
+   Control Z coordinate of the light.
+
+X. "Save/Load"
+   Launch save/load dialog for widget settings.
+
+Y. "B"
+   I have no mathematical abilities, but I was reading about the burning ship algorithm,
+   and how it is just like the Mandelbrot algorithm except for using the
+   absolute value of a function term.  So, in the shader I added the following :
+   v = clamp(v, -control.box1, control.box1) * control.box2 - v;
+   if(control.burningShip) v = -abs(v);   <<---- added this
+   Has a dramatic effect, including resemblance to the burning ship fractal in some regions.
+
+Z. "Res:Low", "Res:High"
+   Press this to toggle image resolution between Low and High.
+   Use Low resolution to quickly navigate to region of interest, then switch to Hi for viewing.
+
+1. "epsilon"
+   MandelBox parameter specifies how accurately we determine the mandelbox surface.
+   Smaller values (on the left side) result in finer resolution (and slower rendering).
+
+2. "Rotate"
+   Press anywhere to rotate camera in semi-controllable fashion. (algorithm needs work)
 
