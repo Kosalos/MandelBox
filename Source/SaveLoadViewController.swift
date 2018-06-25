@@ -190,7 +190,7 @@ class SaveLoadViewController: UIViewController,UITableViewDataSource, UITableVie
                 restoreControlMemory()
                 vc.updateRecordButtons()
                 record.state = .idle
-                record.playbackPressed()
+                vc.playbackPressed(vc.playbackButton)
             })
         }
     }

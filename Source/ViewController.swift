@@ -114,7 +114,15 @@ class ViewController: UIViewController {
     }
 
     @IBAction func recordPressed(_ sender: UIButton) { record.recordPressed() }
-    @IBAction func playbackPressed(_ sender: UIButton) { record.playbackPressed() }
+    
+    @IBAction func playbackPressed(_ sender: UIButton) {
+        record.playbackPressed()
+        
+        let mtList = [ cRotate,cTranslate,cTranslateZ ] as [UIView]
+        for m in mtList { m.isHidden = record.state == .playing }
+        sToeIn.isHidden = !isStereo
+    }
+    
     @IBAction func playSpeedPressed(_ sender: UIButton) { record.playSpeedPressed() }
 
     @IBAction func saveSettingsPressed(_ sender: UIButton) {
@@ -130,10 +138,7 @@ class ViewController: UIViewController {
         isFullScreen = !isFullScreen
         rotated()
 
-        if isFullScreen && (record.state == .playing) {
-            let mtList = [ cRotate,cTranslate,cTranslateZ,sToeIn ] as [UIView]
-            for m in mtList { m.isHidden = true }
-        }
+        if isFullScreen && (record.state == .playing) { sToeIn.isHidden = true }
         
         updateImage()
     }
