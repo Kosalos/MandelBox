@@ -187,7 +187,7 @@ func drawBorder(_ context:CGContext,_ rect:CGRect) {
         path.move(to: p1)
         path.addLine(to: p2)
         
-        context.setLineWidth(5)
+        context.setLineWidth(3)
         context.beginPath()
         context.setStrokeColor(strokeColor)
         context.addPath(path)

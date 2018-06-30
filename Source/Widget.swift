@@ -237,6 +237,7 @@ class Widget: UIView {
     
     //MARK: ==================================
     
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) { touchesBegan(touches, with:event) }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if valuePointerX == nil { return }
         
@@ -256,10 +257,7 @@ class Widget: UIView {
         }
     }
     
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) { touchesBegan(touches, with:event) }
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        touched = false
-    }
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) { touchesEnded(touches, with:event) }
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) { touched = false }
 }
 

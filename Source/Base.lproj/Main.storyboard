@@ -19,12 +19,12 @@
                         <viewControllerLayoutGuide type="top" id="9sQ-bp-QHc"/>
                         <viewControllerLayoutGuide type="bottom" id="yDg-Pc-LEh"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="3se-qz-xqx">
+                    <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="3se-qz-xqx" customClass="Background" customModule="MandelBox" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yfK-it-LnG" customClass="BorderedButton" customModule="MandelBox" customModuleProvider="target">
-                                <rect key="frame" x="818" y="629" width="78" height="36"/>
+                                <rect key="frame" x="214" y="644" width="166" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <state key="normal" title="Reset">
@@ -44,19 +44,19 @@
                                 </connections>
                             </view>
                             <view tag="1" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w4S-kB-HIs" customClass="Widget" customModule="MandelBox" customModuleProvider="target">
-                                <rect key="frame" x="270.99999999999977" y="967" width="200" height="34.999999999999801"/>
+                                <rect key="frame" x="63" y="847" width="200" height="34.999999999999801"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                             </view>
                             <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WLa-71-fZs" customClass="Widget" customModule="MandelBox" customModuleProvider="target">
-                                <rect key="frame" x="270.32608695652129" y="1037" width="200.00000000000023" height="35.000000000000114"/>
+                                <rect key="frame" x="62" y="889" width="200.00000000000023" height="35.000000000000114"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                             </view>
                             <view tag="1" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eUE-y4-Pwf" userLabel="SEpsilon" customClass="Widget" customModule="MandelBox" customModuleProvider="target">
-                                <rect key="frame" x="270.35000000000014" y="1096" width="199.99999999999989" height="35.000000000000057"/>
+                                <rect key="frame" x="62" y="932" width="199.99999999999989" height="35.000000000000057"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
@@ -104,7 +104,7 @@
                                 <gestureRecognizers/>
                             </view>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="fcb-ay-gsb">
-                                <rect key="frame" x="603" y="359" width="49" height="31"/>
+                                <rect key="frame" x="270" y="776" width="49" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -115,7 +115,7 @@
                                 </connections>
                             </switch>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HeO-5k-4ZX" customClass="BorderedButton" customModule="MandelBox" customModuleProvider="target">
-                                <rect key="frame" x="818" y="673" width="78" height="36"/>
+                                <rect key="frame" x="214" y="600" width="175" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <state key="normal" title="Save/Load">
@@ -125,19 +125,8 @@
                                     <action selector="saveSettingsPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="PMe-6d-ppr"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GLu-c9-8ah" customClass="BorderedButton" customModule="MandelBox" customModuleProvider="target">
-                                <rect key="frame" x="818" y="707" width="78" height="36"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <state key="normal" title="Resolution">
-                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <action selector="resolutionButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="jgf-xg-zSw"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="infoDark" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gUW-2t-ZIx">
-                                <rect key="frame" x="740" y="751" width="22" height="22"/>
+                                <rect key="frame" x="285" y="716" width="22" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal">
@@ -189,7 +178,7 @@
                                 </connections>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3I7-x8-5cJ" customClass="BorderedButton" customModule="MandelBox" customModuleProvider="target">
-                                <rect key="frame" x="813" y="745" width="78" height="36"/>
+                                <rect key="frame" x="63" y="732" width="119" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -207,7 +196,7 @@
                                 <gestureRecognizers/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="09S-7L-pqg" customClass="BorderedButton" customModule="MandelBox" customModuleProvider="target">
-                                <rect key="frame" x="915" y="745" width="78" height="36"/>
+                                <rect key="frame" x="63" y="776" width="119" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -243,7 +232,7 @@
                                 <gestureRecognizers/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bCJ-HI-CsL" customClass="BorderedButton" customModule="MandelBox" customModuleProvider="target">
-                                <rect key="frame" x="280" y="678" width="78" height="36"/>
+                                <rect key="frame" x="63" y="556" width="119" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -255,7 +244,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gGH-t9-QQ6" customClass="BorderedButton" customModule="MandelBox" customModuleProvider="target">
-                                <rect key="frame" x="280" y="722" width="78" height="36"/>
+                                <rect key="frame" x="63" y="600" width="119" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -267,7 +256,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UiE-ug-zTk" customClass="BorderedButton" customModule="MandelBox" customModuleProvider="target">
-                                <rect key="frame" x="280" y="766" width="78" height="36"/>
+                                <rect key="frame" x="63" y="644" width="119" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -279,7 +268,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jHb-fc-NeU" customClass="BorderedButton" customModule="MandelBox" customModuleProvider="target">
-                                <rect key="frame" x="280" y="810" width="78" height="36"/>
+                                <rect key="frame" x="63" y="688" width="119" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -290,6 +279,17 @@
                                     <action selector="playSpeedPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="N8v-4O-u9D"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GLu-c9-8ah" customClass="BorderedButton" customModule="MandelBox" customModuleProvider="target">
+                                <rect key="frame" x="225" y="556" width="164" height="36"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <state key="normal" title="Resolution">
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="resolutionButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="jgf-xg-zSw"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.23464600190000001" green="0.23464600190000001" blue="0.23464600190000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <accessibility key="accessibilityConfiguration">
@@ -298,6 +298,7 @@
                         <gestureRecognizers/>
                     </view>
                     <connections>
+                        <outlet property="background" destination="3se-qz-xqx" id="CwW-pt-Q1R"/>
                         <outlet property="burningShipButton" destination="09S-7L-pqg" id="m6r-Aj-Nfj"/>
                         <outlet property="cRotate" destination="BxV-WD-Mvx" id="3GL-WD-q79"/>
                         <outlet property="cTranslate" destination="fQr-Vt-l2n" id="nQI-Gs-tq0"/>
@@ -348,7 +349,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-1502" y="-206"/>
+            <point key="canvasLocation" x="-1502.34375" y="-206.00292825768665"/>
         </scene>
         <!--SaveLoadVC-->
         <scene sceneID="7cL-dd-aq2">
@@ -376,7 +377,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UZq-6A-MRc">
-                                                    <rect key="frame" x="2" y="6" width="287" height="44"/>
+                                                    <rect key="frame" x="-5" y="3" width="287" height="49.5"/>
                                                     <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="287" id="KyH-Hh-fWP"/>
@@ -389,7 +390,7 @@
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ufx-IT-ja3">
-                                                    <rect key="frame" x="304" y="6" width="54" height="41"/>
+                                                    <rect key="frame" x="297" y="3" width="68" height="46.5"/>
                                                     <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="54" id="Bc1-68-PZl"/>

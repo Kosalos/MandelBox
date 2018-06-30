@@ -4,7 +4,7 @@ import simd
 
 let kludgeAutoLayout:Bool = false
 let scrnSz:[CGPoint] = [ CGPoint(x:768,y:1024), CGPoint(x:834,y:1112), CGPoint(x:1024,y:1366) ] // portrait
-let scrnIndex = 1
+let scrnIndex = 0
 let scrnLandscape:Bool = false
 
 let IMAGESIZE_LOW:Int32 = 760
@@ -66,6 +66,7 @@ class ViewController: UIViewController {
     @IBOutlet var playbackButton: BorderedButton!
     @IBOutlet var recordSaveButton: BorderedButton!
     @IBOutlet var playSpeedButton: BorderedButton!
+    @IBOutlet var background: Background!
 
     @IBAction func resetButtonPressed(_ sender: UIButton) { reset() }
     @IBAction func juliaOnOffChanged(_ sender: UISwitch) { control.juliaboxMode = sender.isOn;  updateImage() }
@@ -391,6 +392,7 @@ class ViewController: UIViewController {
             resetButton.frame = frame(50,bys,0,yHop)
             x = x2
             let xHop2 = xHop/3 - 5
+            let y3 = y
             sMaxDist.frame = frame(xHop2,bys,xHop2+3,0)
             sContrast.frame = frame(xHop2,bys,xHop2+3,0)
             sBlinn.frame = frame(xHop2,bys,xHop2,0)
@@ -400,13 +402,19 @@ class ViewController: UIViewController {
             y = by
             wLightXY.frame = frame(cxs,cxs-36,0,cxs-32)
             sLightZ.frame  = frame(cxs,bys,0,yHop)
-            recordButton.frame = frame(xHop2,bys,xHop2+3,0)
-            playbackButton.frame = frame(xHop2,bys,xHop2+3,0)
-            recordSaveButton.frame = frame(xHop2,bys,xHop2,yHop+5)
-            x = x2+15
-            saveLoadButton.frame = frame(80,bys,20,yHop-2)
-            x = x2+13
-            helpButton.frame = frame(bys,bys,bys + 20,0)
+            
+            let rsz = cxs/2 - 3
+            x2 = x
+            recordButton.frame = frame(rsz,bys,rsz+5,0)
+            playbackButton.frame = frame(rsz,bys,0,bys+5)
+            x = x2
+            playSpeedButton.frame = frame(rsz,bys,rsz+5,0)
+            recordSaveButton.frame = frame(rsz,bys,0,bys+5)
+
+            x = x2
+            y = y3
+            saveLoadButton.frame = frame(100,bys,120,0)
+            helpButton.frame = frame(bys,bys,bys+10,0)
             burningShipButton.frame = frame(bys,bys,0,0)
             x = x2 + xHop
             y = by
@@ -652,6 +660,8 @@ class ViewController: UIViewController {
         if wList != nil { for w in wList { w.setNeedsDisplay() }}
         setImageViewResolution()
         updateImage()
+        
+        background.createGradientLayer()
     }
     
     //MARK: -
